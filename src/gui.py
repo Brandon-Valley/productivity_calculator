@@ -18,7 +18,9 @@ def main(msg = None):
     # set to None for default iconphoto
     # can work with either .png or .ico, but if you use a .ico, you need to pass the photo_img_path down to all sub-guis,
     # no clue why but will only inherit iconphoto (png), not iconbitmap(ico) from gui with same app_id    
-    iconphoto_rel_to_this_file_path = 'imgs//icon.png' 
+    # iconphoto_rel_to_this_file_path = 'imgs//icon.png' #FIX
+    iconphoto_rel_to_this_file_path = None
+
     
     # secondary gui params
     
