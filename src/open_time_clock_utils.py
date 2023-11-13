@@ -25,6 +25,7 @@ def _get_date_range_tup(in_csv_path):
     
     return (datetime.strptime(start_date_str, '%Y-%m-%d'), datetime.strptime(end_date_str, '%Y-%m-%d'))
 
+
 def _write_my_payroll_csv(start_datetime, end_datetime, in_csv_path, out_csv_path):
     with open(in_csv_path) as textFile:  # can throw FileNotFoundError
         lines =  list(l.rstrip() for l in textFile.readlines())
@@ -75,7 +76,6 @@ def _write_my_payroll_csv(start_datetime, end_datetime, in_csv_path, out_csv_pat
         ) from e
 
 
-
 def _get_payroll_data_dict_by_employee_name_from_my_payroll_csv(in_csv_path):
     payroll_data_dict_by_employee_name = {}
     
@@ -93,7 +93,6 @@ def _get_payroll_data_dict_by_employee_name_from_my_payroll_csv(in_csv_path):
         payroll_data_dict_by_employee_name[employee_name] = row_dict
         
     return payroll_data_dict_by_employee_name
-
 
 
 def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path = MY_PAYROLL_CSV_PATH, delete_working_payroll_csv_path = False):
@@ -115,6 +114,7 @@ def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path
         os.remove(working_payroll_csv_path)
         
     return payroll_data_dict_by_employee_name
+
 
 if __name__ == "__main__":
     import os.path as path
