@@ -27,14 +27,8 @@ if __name__ == "__main__":
     import os.path as path
     print("Running ",  path.abspath(__file__), '...')
 
-    # in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
-    # out = get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
-    #                                                                                           facility_names = ["TP1"])
-
     main(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
          quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"))
-    
-    # print("out:")
-    # pprint(out)
+
     print("End of Main") 
     

@@ -5,7 +5,7 @@ from pprint import pprint
 import file_io_utils
 
 
-SCRIPT_PARENT_DIR_PATH = Path('__file__').parent#os.path.abspath(os.path.dirname("__file__"))
+SCRIPT_PARENT_DIR_PATH = Path('__file__').parent
 WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
 MY_PAYROLL_CSV_PATH = WRK_DIR_PATH / "my_payroll.csv"
 ROW_DICTS_TMP_JSON_PATH = WRK_DIR_PATH / "otc_row_dicts.json"
