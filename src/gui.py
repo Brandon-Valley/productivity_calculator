@@ -12,7 +12,7 @@ import Main_Tab
 
 def main(msg = None): 
     # main gui params
-    window_title = "Setup New Repository"
+    window_title = "Productivity Calculator"
     want_duplicate_apps_to_stack_in_toolbar = True
     
     # set to None for default iconphoto
