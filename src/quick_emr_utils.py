@@ -5,10 +5,11 @@ from pathlib import Path
 from pprint import pprint
 import file_io_utils
 
+ROW_TYPE_FACILITY_NAME = "FACILITY_NAME"
 ROW_TYPE_PROVIDER_NAME = "PROVIDER_NAME"
 ROW_TYPE_DATE_DATA = "DATE_DATA"
 
-def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
+def get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
     # """
     # Example output:
     # {
@@ -23,7 +24,28 @@ def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv
     # """
     
     def _get_row_type(row_dict):
-        if "Total for" not in row_dict["Prov/Facility"] and row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names:
+
+        row_is_blank = True
+
+        for v in row_dict.values():
+            # if v != "":
+            if v != "":
+                row_is_blank = False
+        if row_is_blank:
+            return None
+
+        if row_dict["Prov/Facility"] in facility_names:
+            return ROW_TYPE_FACILITY_NAME
+        
+        elif "Total for" not in row_dict["Prov/Facility"] and \
+            row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names and \
+            row_dict["DOS"] == "":
+        # row_dict["POS"] == "" and \
+        # row_dict["Patient"] == "" and \
+        # row_dict["Units"] == "" and \
+        # row_dict[""] == "" and \
+        # row_dict[""] == "" and \
+        #           :
             return ROW_TYPE_PROVIDER_NAME
         elif "/" in row_dict["DOS"]:
             return ROW_TYPE_DATE_DATA
@@ -43,38 +65,24 @@ def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv
     for row_dict in row_dicts:
 
         row_type = _get_row_type(row_dict)
-
-        # Set row_type
-        # if "Total for" not in row_dict["Prov/Facility"] and row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names:
-        #     return ROW_TYPE_PROVIDER_NAME
-        # elif "/" in row_dict["DOS"]:
-        #     return ROW_TYPE_DATE_DATA
-        # return None
-
-
-
-
-
+        # print(f"{row_type=} - {row_dict=}")
 
         # Set cur_provider_name if needed
         if row_type == ROW_TYPE_PROVIDER_NAME:
-            cur_provider_name = row_dict["Prov/Facility"]
+            new_provider_name = row_dict["Prov/Facility"]
+            cur_provider_name = new_provider_name
             total_units_dict_by_date_by_provider_name[cur_provider_name] = {}
 
         # Set cur_provider_name if needed
         if row_type == ROW_TYPE_DATE_DATA:
-            cur_provider_name = row_dict["Prov/Facility"]
-            total_units_dict_by_date_by_provider_name[cur_provider_name] = {}
+            date_datetime = datetime.strptime(row_dict["DOS"], '%m/%d/%Y')
 
-            date_datetime = datetime.strptime(row_dict["DOS"], '%Y-%m-%d')
+            if date_datetime not in total_units_dict_by_date_by_provider_name[cur_provider_name]:
+                total_units_dict_by_date_by_provider_name[cur_provider_name][date_datetime] = []
 
-        
-
-
-
-
-
-
+            row_dict.pop("Prov/Facility")
+            row_dict.pop("DOS")
+            total_units_dict_by_date_by_provider_name[cur_provider_name][date_datetime].append(row_dict)
 
 
 
@@ -90,7 +98,7 @@ if __name__ == "__main__":
     print("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
-    out = get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
+    out = get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
                                                                                               facility_names = ["TP1"])
     
     print("out:")
