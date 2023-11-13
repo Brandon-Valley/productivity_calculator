@@ -1,11 +1,11 @@
 
 
 from pathlib import Path
-import pprint
+from pprint import pprint
 import file_io_utils
 
 
-def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path) -> dict:
+def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
     # """
     # Example output:
     # {
@@ -19,13 +19,22 @@ def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv
     
     # """
 
+    total_units_dict_by_date_by_provider_name = {}
+
     row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
     # print(row_dicts)
+    print("row_dicts:")
+    pprint(row_dicts)
 
+    cur_provider_name = None
+    for row_dict in row_dicts:
 
+        # Set cur_provider_name if needed
+        if "Total for" not in row_dict["Prov/Facility"] and row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names:
+            cur_provider_name = row_dict["Prov/Facility"]
+            total_units_dict_by_date_by_provider_name[cur_provider_name] = {}
 
-
-
+    return total_units_dict_by_date_by_provider_name
 
 if __name__ == "__main__":
     SCRIPT_PARENT_DIR_PATH = Path('__file__').parent#os.path.abspath(os.path.dirname("__file__"))
@@ -36,11 +45,12 @@ if __name__ == "__main__":
     import os.path as path
     print("Running ",  path.abspath(__file__), '...')
 
-    in_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv")
-    out = get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path)
+    in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
+    out = get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
+                                                                                              facility_names = ["TP1"])
     
-    # print("out:")
-    # pprint(out)
+    print("out:")
+    pprint(out)
     print("End of Main") 
     
     
