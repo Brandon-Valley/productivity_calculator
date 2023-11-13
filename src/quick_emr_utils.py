@@ -1,9 +1,12 @@
 
 
+from datetime import datetime
 from pathlib import Path
 from pprint import pprint
 import file_io_utils
 
+ROW_TYPE_PROVIDER_NAME = "PROVIDER_NAME"
+ROW_TYPE_DATE_DATA = "DATE_DATA"
 
 def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
     # """
@@ -18,21 +21,62 @@ def get_total_units_dict_by_date_by_provider_name_from_provider_productivity_csv
     # }
     
     # """
+    
+    def _get_row_type(row_dict):
+        if "Total for" not in row_dict["Prov/Facility"] and row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names:
+            return ROW_TYPE_PROVIDER_NAME
+        elif "/" in row_dict["DOS"]:
+            return ROW_TYPE_DATE_DATA
+        return None
+
+
+
 
     total_units_dict_by_date_by_provider_name = {}
 
     row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
     # print(row_dicts)
-    print("row_dicts:")
-    pprint(row_dicts)
+    # print("row_dicts:")
+    # pprint(row_dicts)
 
     cur_provider_name = None
     for row_dict in row_dicts:
 
+        row_type = _get_row_type(row_dict)
+
+        # Set row_type
+        # if "Total for" not in row_dict["Prov/Facility"] and row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names:
+        #     return ROW_TYPE_PROVIDER_NAME
+        # elif "/" in row_dict["DOS"]:
+        #     return ROW_TYPE_DATE_DATA
+        # return None
+
+
+
+
+
+
         # Set cur_provider_name if needed
-        if "Total for" not in row_dict["Prov/Facility"] and row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names:
+        if row_type == ROW_TYPE_PROVIDER_NAME:
             cur_provider_name = row_dict["Prov/Facility"]
             total_units_dict_by_date_by_provider_name[cur_provider_name] = {}
+
+        # Set cur_provider_name if needed
+        if row_type == ROW_TYPE_DATE_DATA:
+            cur_provider_name = row_dict["Prov/Facility"]
+            total_units_dict_by_date_by_provider_name[cur_provider_name] = {}
+
+            date_datetime = datetime.strptime(row_dict["DOS"], '%Y-%m-%d')
+
+        
+
+
+
+
+
+
+
+
 
     return total_units_dict_by_date_by_provider_name
 
