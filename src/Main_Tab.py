@@ -272,16 +272,34 @@ class Main_Tab(Tab.Tab):
         self.output_lbl_frm = LabelFrame(self.master, text=" Output: ")
 
         # Quick EMR Provider Productivity
-        self.output_parent_dir_fsb_wg = self.File_System_Browse_WG(self.output_lbl_frm,
-                                                         lbl_txt = 'Output Parent Folder:',
-                                                         tb_width = None,
-                                                         browse_for = 'file',
-                                                         file_type = '.csv',
-                                                         init_path=DEFAULT_OUTPUT_PARENT_DIR_PATH,# FIX replace with gui var?
-                                                         focus_tb_after_browse = True,
-                                                         tb_edit_func = None)
-        self.output_parent_dir_fsb_wg.tb.delete(0, 'end')
-        self.output_parent_dir_fsb_wg.tb.insert(END, str(DEFAULT_OUTPUT_PARENT_DIR_PATH / DEFAULT_OUTPUT_FILE_NAME)) # FIX replace with gui var?
+        self.output_pdfn_wg = self.Write_Parent_Dir_File_Name_WG(
+                                                                    self.output_lbl_frm,
+                                                                    parent_dir_lbl_txt = "Output Parent Folder:",
+                                                                    file_name_lbl_txt = "Output File Name:",
+                                                                    parent_dir_tb_width = None,
+                                                                    file_name_tb_width = 30,
+                                                                    init_parent_dir_path_str = DEFAULT_OUTPUT_PARENT_DIR_PATH, #FIX replace with gui var?
+                                                                    init_file_name = DEFAULT_OUTPUT_FILE_NAME,
+                                                                    write_file_path_updated_func = None,# FIXME?
+                                                                    focus_parent_dir_tb_after_browse = False,
+                                                                    browse_btn_txt = 'Browse...',
+                                                                    parent_dir_tb_edit_func = None,# FIX?
+                                                                    file_path_tb_edit_func = None,# FIX?
+                                                                )
+        # self.output_parent_dir_fsb_wg.tb.delete(0, 'end')
+        # self.output_parent_dir_fsb_wg.tb.insert(END, str(DEFAULT_OUTPUT_PARENT_DIR_PATH / DEFAULT_OUTPUT_FILE_NAME)) # FIX replace with gui var?
+
+        # # Quick EMR Provider Productivity
+        # self.output_parent_dir_fsb_wg = self.File_System_Browse_WG(self.output_lbl_frm,
+        #                                                  lbl_txt = 'Output Parent Folder:',
+        #                                                  tb_width = None,
+        #                                                  browse_for = 'file',
+        #                                                  file_type = '.csv',
+        #                                                  init_path=DEFAULT_OUTPUT_PARENT_DIR_PATH,# FIX replace with gui var?
+        #                                                  focus_tb_after_browse = True,
+        #                                                  tb_edit_func = None)
+        # self.output_parent_dir_fsb_wg.tb.delete(0, 'end')
+        # self.output_parent_dir_fsb_wg.tb.insert(END, str(DEFAULT_OUTPUT_PARENT_DIR_PATH / DEFAULT_OUTPUT_FILE_NAME)) # FIX replace with gui var?
 
         # # OpenTimeClock Payroll
         # self.payroll_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
@@ -403,9 +421,9 @@ class Main_Tab(Tab.Tab):
          # Used to allow column 2 (w/ the Entry Widget) in root to expand as LabelFrame resized
         self.output_lbl_frm.grid_columnconfigure(2, weight=1)
 
-        self.output_parent_dir_fsb_wg.lbl   .grid(column=1 , row=3, padx=5, pady=5, sticky='E')
-        self.output_parent_dir_fsb_wg.tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
-        self.output_parent_dir_fsb_wg.btn   .grid(column=4 , row=3, padx=5, pady=5, sticky='E')
+        self.output_pdfn_wg.parent_dir_lbl   .grid(column=1 , row=3, padx=5, pady=5, sticky='E')
+        self.output_pdfn_wg.parent_dir_tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
+        self.output_pdfn_wg.btn              .grid(column=4 , row=3, padx=5, pady=5, sticky='E')
 
 
         # --------------------------------------------------------------------------------------------------------------
