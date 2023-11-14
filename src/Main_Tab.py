@@ -425,6 +425,10 @@ class Main_Tab(Tab.Tab):
         self.output_pdfn_wg.parent_dir_tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
         self.output_pdfn_wg.btn              .grid(column=4 , row=3, padx=5, pady=5, sticky='E')
 
+        self.output_pdfn_wg.file_name_lbl    .grid(column=1 , row=4, padx=5, pady=5, sticky='E')
+        self.output_pdfn_wg.file_name_tb     .grid(column=2 , row=4, padx=5, pady=5, sticky='WE')
+        # self.output_pdfn_wg.btn              .grid(column=4 , row=4, padx=5, pady=5, sticky='E')
+
 
         # --------------------------------------------------------------------------------------------------------------
         #  Calculate
