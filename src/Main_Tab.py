@@ -38,11 +38,11 @@ class Main_Tab(Tab.Tab):
 
         # self.read_gui_vars()
 
-        # self.setup_new_repo_btn_____widget_setup()
+        self.calculate_btn_____widget_setup()
         # self.repo_type_____widget_setup()
         self.inputs_____widget_setup()
         # self.remote_____widget_setup()
-        # self.update_setup_new_repo_disable_tool_tip_and_state()
+        self.update_setup_new_repo_disable_tool_tip_and_state()
 
 
         self.repo_type_lbl_frm = LabelFrame(self.master, text=" Repository Type: ")
@@ -169,26 +169,6 @@ class Main_Tab(Tab.Tab):
         else:
             self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = 'This must be a .csv file.'
 
-            # exit(Path(file_path_str).suffix)
-
-
-
-        # def ip_repo_fsb_wg_tb_contains_path_to_existing_git_repo():
-        #     ip_repo_path = self.ip_repo_fsb_wg.tb.get()
-        #     dot_git_dir_path = ip_repo_path + '//.git'
-        #     dot_git_dir_exists = os.path.isdir(dot_git_dir_path)
-        #     return dot_git_dir_exists
-
-
-        # if self.repo_type_cbox.get() == cv.REPO_TYPE_KEY__IP:
-        #     if not ip_repo_fsb_wg_tb_contains_path_to_existing_git_repo():
-        #         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = 'Local ip_repo path must point to an existing Git repository.'
-        #     else:
-        #         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
-
-        #     # self.update_setup_new_repo_disable_tool_tip_and_state()
-
-
 
 
     def inputs_____widget_setup(self):
@@ -218,95 +198,96 @@ class Main_Tab(Tab.Tab):
 
 
 
-    # def setup_new_repo_btn_____widget_setup(self):
+    def calculate_btn_____widget_setup(self):
 
-    #     def setup_new_repo_btn_clk():
+        def calculate_btn_clk():
 
-    #         def remote_url_tb_contains_valid_git_repo_remote_url():
+            def remote_url_tb_contains_valid_git_repo_remote_url():
 
-    #             def remote_exists():
-    #                 cmd = 'env GIT_PROXY_COMMAND=myproxy.sh GIT_TRACE=1 git ls-remote ' + self.remote_url_tb.get()
+                def remote_exists():
+                    cmd = 'env GIT_PROXY_COMMAND=myproxy.sh GIT_TRACE=1 git ls-remote ' + self.remote_url_tb.get()
 
-    #                 try:
-    #                     print('\n>> Checking source...\n')
-    #                     cmd_out = subprocess.call(cmd, shell = True)
-    #                     print('\n>> Finished checking source.')
+                    try:
+                        print('\n>> Checking source...\n')
+                        cmd_out = subprocess.call(cmd, shell = True)
+                        print('\n>> Finished checking source.')
 
-    #                     if cmd_out not in [0, True] and isinstance(cmd_out, int):
-    #                         if cmd_out in KNOWN_ERROR_CODE_MSG_D.keys():
-    #                             return KNOWN_ERROR_CODE_MSG_D[cmd_out]
-    #                         else:
-    #                             return 'Git error code: ' + str(cmd_out)
-    #                     return True
-    #                 except subprocess.CalledProcessError as e:
-    #                     print(e)
-    #                     return False
+                        if cmd_out not in [0, True] and isinstance(cmd_out, int):
+                            if cmd_out in KNOWN_ERROR_CODE_MSG_D.keys():
+                                return KNOWN_ERROR_CODE_MSG_D[cmd_out]
+                            else:
+                                return 'Git error code: ' + str(cmd_out)
+                        return True
+                    except subprocess.CalledProcessError as e:
+                        print(e)
+                        return False
 
-    #             msg = 'Checking if provided url points to a valid Git remote...'
-    #             bounc_speed = 12
-    #             pb_length = 300
-    #             window_title = "Checking Source..."
+                msg = 'Checking if provided url points to a valid Git remote...'
+                bounc_speed = 12
+                pb_length = 300
+                window_title = "Checking Source..."
 
-    #             remote_valid = run_func_with_loading_popup(remote_exists, msg, window_title, bounc_speed, pb_length, app_id = self.app_id, photo_img_path=self.photo_img_path)
-    #             return remote_valid
-
-
-    #         # write gui var so it will auto-fill from now on
-    #         self.write_gui_var('ip_repo_path', self.ip_repo_fsb_wg.tb.get())
-
-    #         repo_type = self.repo_type_cbox.get()
-    #         local_ip_repo_dir_path = self.ip_repo_fsb_wg.tb.get()
-    #         repo_remote_url = self.remote_url_tb.get()
-
-    #         # track the PIDs of all processes so they can all be killed at once
-    #         script_pid = os.getpid()
-    #         json_logger.write([script_pid], cv.PARENT_PID_L_JSON_ABS_PATH)
-
-    #         remote_check_output = remote_url_tb_contains_valid_git_repo_remote_url()
-
-    #         # if the given url points to a valid url, continue
-    #         if remote_check_output == True:
-    #             cmd = '"{}" --repo_type {} --local_ip_repo_dir_path "{}" --repo_remote_url {} --app_id {} --skip_ip_update True'.format(SETUP_NEW_REPO_SCRIPT_ABS_PATH, repo_type, local_ip_repo_dir_path, repo_remote_url, self.app_id)
-    #             print('\n>> Running : {}'.format(cmd))
-    #             subprocess.call(cmd, shell = True)
-    #         else:
-    #             print(cv.WAITING_FOR_USER_INPUT_MSG)
-    #             mbu.msg_box__OK('Invalid Source', 'The provided url does not point to a valid Git remote.\n\n' + str(remote_check_output), icon = 'stop', app_id = self.app_id)
+                remote_valid = run_func_with_loading_popup(remote_exists, msg, window_title, bounc_speed, pb_length, app_id = self.app_id, photo_img_path=self.photo_img_path)
+                return remote_valid
 
 
-    #     self.setup_new_repo_btn = Button(self.master, text="Setup New Repository", wraplength = 90, command = setup_new_repo_btn_clk)
+            # write gui var so it will auto-fill from now on
+            self.write_gui_var('ip_repo_path', self.ip_repo_fsb_wg.tb.get())
+
+            repo_type = self.repo_type_cbox.get()
+            local_ip_repo_dir_path = self.ip_repo_fsb_wg.tb.get()
+            repo_remote_url = self.remote_url_tb.get()
+
+            # FIXME?
+            # # track the PIDs of all processes so they can all be killed at once
+            # script_pid = os.getpid()
+            # json_logger.write([script_pid], cv.PARENT_PID_L_JSON_ABS_PATH)
+
+            remote_check_output = remote_url_tb_contains_valid_git_repo_remote_url()
+
+            # if the given url points to a valid url, continue
+            if remote_check_output == True:
+                cmd = '"{}" --repo_type {} --local_ip_repo_dir_path "{}" --repo_remote_url {} --app_id {} --skip_ip_update True'.format(SETUP_NEW_REPO_SCRIPT_ABS_PATH, repo_type, local_ip_repo_dir_path, repo_remote_url, self.app_id)
+                print('\n>> Running : {}'.format(cmd))
+                subprocess.call(cmd, shell = True)
+            else:
+                print(cv.WAITING_FOR_USER_INPUT_MSG)
+                mbu.msg_box__OK('Invalid Source', 'The provided url does not point to a valid Git remote.\n\n' + str(remote_check_output), icon = 'stop', app_id = self.app_id)
+
+
+        self.calculate_btn = Button(self.master, text="Setup New Repository", wraplength = 90, command = calculate_btn_clk)
 
 
 
-    # def update_setup_new_repo_disable_tool_tip_and_state(self):
+    def update_setup_new_repo_disable_tool_tip_and_state(self):
 
-    #     def add_to_text_if_not_empty(text, str):
-    #         if str == '':
-    #             return text
+        def add_to_text_if_not_empty(text, str):
+            if str == '':
+                return text
 
-    #         if text != '':
-    #             text += '\n'
-    #         return text+ '- ' + str
+            if text != '':
+                text += '\n'
+            return text+ '- ' + str
 
 
-    #     text = ''
+        text = ''
 
-    #     # all vars wont already be initialized first time through
-    #     try:
+        # all vars wont already be initialized first time through
+        try:
 
-    #         text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__repo_type)
-    #         text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__remote_url)
-    #         text = add_to_text_if_not_empty(text, self.provider_prod_csv_export_disable_tool_tip_reason__csv_only)
+            # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__repo_type)
+            # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__remote_url)
+            text = add_to_text_if_not_empty(text, self.provider_prod_csv_export_disable_tool_tip_reason__csv_only)
 
-    #         self.setup_new_repo_btn_tool_tip = self.Tool_Tip(self.setup_new_repo_btn, text = text, wait_time = 0, wrap_length = 200)
+            self.calculate_btn_tool_tip = self.Tool_Tip(self.calculate_btn, text = text, wait_time = 0, wrap_length = 200)
 
-    #     except AttributeError:
-    #         pass
+        except AttributeError:
+            pass
 
-    #     if text == '':
-    #         self.setup_new_repo_btn.configure(state = 'normal')
-    #     else:
-    #         self.setup_new_repo_btn.configure(state = 'disabled')
+        if text == '':
+            self.calculate_btn.configure(state = 'normal')
+        else:
+            self.calculate_btn.configure(state = 'disabled')
 
 
 
@@ -323,7 +304,7 @@ class Main_Tab(Tab.Tab):
         # self.remote_url_lbl      .grid(column=1, row=1, padx=5, pady=5)
         # self.remote_url_tb       .grid(column=2, row=1, padx=5, pady=5)
 
-        # self.setup_new_repo_btn  .grid(column=3, row=1, padx=5, pady=5, sticky='E')
+        self.calculate_btn  .grid(column=3, row=1, padx=5, pady=5, sticky='E')
 
         # self.remote_reminder_lbl.grid(column=2, row=1, padx=5, pady=5, sticky='NSWE')
 
