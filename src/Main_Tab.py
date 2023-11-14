@@ -1,6 +1,7 @@
 # taskkill /im python.exe /F
 
 import os
+from pathlib import Path
 from tkinter.ttk import *
 from tkinter import *
 import subprocess
@@ -162,6 +163,15 @@ class Main_Tab(Tab.Tab):
 
     # FIXME put insidevv?
     def update_provider_productivity_csv_export_tooltip_csv_only(self, event = None):
+        file_path_str = self.ip_repo_fsb_wg.tb.get()
+        if Path(file_path_str).suffix.lower() == "csv":
+            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+        else:
+            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = 'This must be a .csv file.'
+
+            # exit(Path(file_path_str).suffix)
+
+
 
         # def ip_repo_fsb_wg_tb_contains_path_to_existing_git_repo():
         #     ip_repo_path = self.ip_repo_fsb_wg.tb.get()
@@ -177,7 +187,6 @@ class Main_Tab(Tab.Tab):
         #         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
 
         #     # self.update_setup_new_repo_disable_tool_tip_and_state()
-        self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
 
 
 
@@ -186,9 +195,13 @@ class Main_Tab(Tab.Tab):
         
         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
 
-        self.inputs_lbl_frm = LabelFrame(self.master, text=" ip_repo: ")
+        self.inputs_lbl_frm = LabelFrame(self.master, text=" Inputs: ")
 
-        self.ip_repo_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm, lbl_txt = 'Local ip_repo path:', browse_for = 'dir',
+        self.ip_repo_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
+                                                         lbl_txt = 'Quick EMR Export Provider Productivity CSV',
+                                                         tb_width = 40,
+                                                         browse_for = 'file',
+                                                         file_type = '.csv',
                                                          focus_tb_after_browse = True,
                                                          tb_edit_func = self.update_provider_productivity_csv_export_tooltip_csv_only)
 
