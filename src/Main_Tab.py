@@ -163,7 +163,15 @@ class Main_Tab(Tab.Tab):
 
     # FIXME put insidevv?
     def update_provider_prod_csv_export_tooltip_csv_only(self, event = None):
-        print(f"in  update_provider_prod_csv_export_tooltip_csv_only")
+        file_path_str = self.provider_prod_fsb_wg.tb.get()
+        if Path(file_path_str).suffix.lower() == ".csv":
+            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+        else:
+            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
+
+        self.update_setup_new_repo_disable_tool_tip_and_state()
+
+    def update_payroll_csv_export_tooltip_csv_only(self, event = None):
         file_path_str = self.provider_prod_fsb_wg.tb.get()
         if Path(file_path_str).suffix.lower() == ".csv":
             self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
@@ -191,7 +199,19 @@ class Main_Tab(Tab.Tab):
         self.provider_prod_fsb_wg.tb.delete(0, 'end')
         self.provider_prod_fsb_wg.tb.insert(END, "")
 
+        self.payroll_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
+                                                         lbl_txt = 'Quick EMR Export: Provider Productivity CSVafedsf',
+                                                         tb_width = 60,
+                                                         browse_for = 'file',
+                                                         file_type = '.csv',
+                                                         init_path=DOWNLOADS_DIR_PATH_STR,
+                                                         focus_tb_after_browse = True,
+                                                         tb_edit_func = self.update_payroll_csv_export_tooltip_csv_only)
+        self.payroll_fsb_wg.tb.delete(0, 'end')
+        self.payroll_fsb_wg.tb.insert(END, "")
+
         self.update_provider_prod_csv_export_tooltip_csv_only()
+        self.update_payroll_csv_export_tooltip_csv_only()
 
 
 
@@ -275,6 +295,10 @@ class Main_Tab(Tab.Tab):
         self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
         self.provider_prod_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
         self.provider_prod_fsb_wg.btn   .grid(column=4 , row=1, padx=5, pady=5, sticky='E')
+
+        self.payroll_fsb_wg.lbl   .grid(column=1 , row=2, padx=5, pady=5)
+        self.payroll_fsb_wg.tb    .grid(column=2 , row=2, padx=5, pady=5, sticky='WE')
+        self.payroll_fsb_wg.btn   .grid(column=4 , row=2, padx=5, pady=5, sticky='E')
 
         # self.remote_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='NSWE', columnspan=3)
         # self.remote_url_lbl      .grid(column=1, row=1, padx=5, pady=5)
