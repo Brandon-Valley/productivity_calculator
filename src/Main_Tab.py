@@ -168,10 +168,9 @@ class Main_Tab(Tab.Tab):
         if Path(file_path_str).suffix.lower() == ".csv":
             self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
         else:
-            # suffix = Path(file_path_str).suffix
             self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
 
-        self.update_setup_new_repo_disable_tool_tip_and_state()# FIXME need here?
+        self.update_setup_new_repo_disable_tool_tip_and_state()
 
 
 
@@ -182,8 +181,8 @@ class Main_Tab(Tab.Tab):
         self.inputs_lbl_frm = LabelFrame(self.master, text=" Inputs: ")
 
         self.ip_repo_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
-                                                         lbl_txt = 'Quick EMR Export Provider Productivity CSV',
-                                                         tb_width = 90,
+                                                         lbl_txt = 'Quick EMR Export: Provider Productivity CSV',
+                                                         tb_width = 60,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          focus_tb_after_browse = True,
