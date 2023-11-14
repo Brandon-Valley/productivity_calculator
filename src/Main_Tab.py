@@ -1,5 +1,6 @@
 # taskkill /im python.exe /F
 
+from datetime import datetime
 import os
 from pathlib import Path
 from tkinter.ttk import *
@@ -15,6 +16,8 @@ from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_po
 # import                                                  common_vars                 as cv
 
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
+DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"
+DEFAULT_OUTPUT_FILE_NAME = f"Productivity_Report_{datetime.today().strftime('%Y-%m-%d')}.csv"
 
 SETUP_NEW_REPO_SCRIPT_ABS_PATH = os.path.dirname(os.path.abspath(__file__)) + '//setup_new_repo.py'
 
@@ -41,6 +44,7 @@ class Main_Tab(Tab.Tab):
         self.calculate_btn_____widget_setup()
         # self.repo_type_____widget_setup()
         self.inputs_____widget_setup()
+        self.output_____widget_setup()
         # self.remote_____widget_setup()
         self.update_setup_new_repo_disable_tool_tip_and_state()
 
@@ -198,8 +202,6 @@ class Main_Tab(Tab.Tab):
             self.update_setup_new_repo_disable_tool_tip_and_state()
           
 
-
-
         # Label Frame
         self.inputs_lbl_frm = LabelFrame(self.master, text=" Inputs: ")
 
@@ -230,6 +232,72 @@ class Main_Tab(Tab.Tab):
         # Update all
         _update_provider_prod_csv_export_tooltip_csv_only()
         _update_payroll_csv_export_tooltip_csv_only()
+
+
+
+
+    def output_____widget_setup(self):
+
+        # def _get_updated_tooltip_existing_csv_only(report_name, fsb_widget):
+        #     file_path = Path(fsb_widget.tb.get())
+        #     if file_path.suffix.lower() == ".csv":
+        #         if file_path.is_file():
+        #             return ''
+        #         else:
+        #             return f'{report_name} ({file_path}) does not exist.'
+        #     else:
+        #         return f'{report_name} must be an existing .csv file.'
+            
+        
+        # # Tool Tip reasons
+        # self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+        # self.payroll_csv_export_disable_tool_tip_reason__csv_only = ''
+
+        # def _update_provider_prod_csv_export_tooltip_csv_only(event = None):
+        #     self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = _get_updated_tooltip_existing_csv_only(
+        #         report_name="The Quick EMR Provider Productivity Export",
+        #         fsb_widget=self.provider_prod_fsb_wg,
+        #     )
+        #     self.update_setup_new_repo_disable_tool_tip_and_state()
+
+        # def _update_payroll_csv_export_tooltip_csv_only(event = None):
+        #     self.payroll_csv_export_disable_tool_tip_reason__csv_only = _get_updated_tooltip_existing_csv_only(
+        #         report_name="Open Time Clock PayrollExcel Export (Converted to .csv)",
+        #         fsb_widget=self.payroll_fsb_wg,
+        #     )
+        #     self.update_setup_new_repo_disable_tool_tip_and_state()
+          
+
+        # Label Frame
+        self.output_lbl_frm = LabelFrame(self.master, text=" Output: ")
+
+        # Quick EMR Provider Productivity
+        self.output_parent_dir_fsb_wg = self.File_System_Browse_WG(self.output_lbl_frm,
+                                                         lbl_txt = 'Output Parent Folder:',
+                                                         tb_width = 60,
+                                                         browse_for = 'file',
+                                                         file_type = '.csv',
+                                                         init_path=DEFAULT_OUTPUT_PARENT_DIR_PATH,# FIX replace with gui var?
+                                                         focus_tb_after_browse = True,
+                                                         tb_edit_func = None)
+        self.output_parent_dir_fsb_wg.tb.delete(0, 'end')
+        self.output_parent_dir_fsb_wg.tb.insert(END, str(DEFAULT_OUTPUT_PARENT_DIR_PATH / DEFAULT_OUTPUT_FILE_NAME)) # FIX replace with gui var?
+
+        # # OpenTimeClock Payroll
+        # self.payroll_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
+        #                                                  lbl_txt = 'Open Time Clock Export: PayrollExcel (Converted to .csv):',
+        #                                                  tb_width = 60,
+        #                                                  browse_for = 'file',
+        #                                                  file_type = '.csv',
+        #                                                  init_path=DOWNLOADS_DIR_PATH_STR,
+        #                                                  focus_tb_after_browse = True,
+        #                                                  tb_edit_func = _update_payroll_csv_export_tooltip_csv_only)
+        # self.payroll_fsb_wg.tb.delete(0, 'end')
+        # self.payroll_fsb_wg.tb.insert(END, "")
+
+        # # Update all
+        # _update_provider_prod_csv_export_tooltip_csv_only()
+        # _update_payroll_csv_export_tooltip_csv_only()
 
 
 
@@ -309,6 +377,7 @@ class Main_Tab(Tab.Tab):
         self.repo_type_lbl       .grid(column=1, row=1, padx=5, pady=5)
         self.repo_type_cbox      .grid(column=2, row=1, padx=5, pady=5)
 
+        # Inputs
         self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5)
 
         self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
@@ -318,6 +387,14 @@ class Main_Tab(Tab.Tab):
         self.payroll_fsb_wg.lbl   .grid(column=1 , row=2, padx=5, pady=5)
         self.payroll_fsb_wg.tb    .grid(column=2 , row=2, padx=5, pady=5, sticky='WE')
         self.payroll_fsb_wg.btn   .grid(column=4 , row=2, padx=5, pady=5, sticky='E')
+
+        # Output
+        self.output_lbl_frm      .grid(column=1, row=3, padx=5, pady=5, sticky='WE')
+
+        self.output_parent_dir_fsb_wg.lbl   .grid(column=1 , row=3, padx=5, pady=5)
+        self.output_parent_dir_fsb_wg.tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
+        self.output_parent_dir_fsb_wg.btn   .grid(column=4 , row=3, padx=5, pady=5, sticky='E')
+
 
         # self.remote_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='NSWE', columnspan=3)
         # self.remote_url_lbl      .grid(column=1, row=1, padx=5, pady=5)
