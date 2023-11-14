@@ -273,8 +273,8 @@ class Main_Tab(Tab.Tab):
 
         # Quick EMR Provider Productivity
         self.output_parent_dir_fsb_wg = self.File_System_Browse_WG(self.output_lbl_frm,
-                                                         lbl_txt = 'aaaaaaaaaaaaaaaaaOutput Parent Folder:',
-                                                         tb_width = None,
+                                                         lbl_txt = 'Output Parent Folder:',
+                                                         tb_width = 92,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DEFAULT_OUTPUT_PARENT_DIR_PATH,# FIX replace with gui var?
