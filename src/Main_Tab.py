@@ -304,7 +304,7 @@ class Main_Tab(Tab.Tab):
         # self.remote_url_lbl      .grid(column=1, row=1, padx=5, pady=5)
         # self.remote_url_tb       .grid(column=2, row=1, padx=5, pady=5)
 
-        self.calculate_btn  .grid(column=3, row=1, padx=5, pady=5, sticky='E')
+        self.calculate_btn  .grid(column=2, row=3, padx=5, pady=5, sticky='E')
 
         # self.remote_reminder_lbl.grid(column=2, row=1, padx=5, pady=5, sticky='NSWE')
 
