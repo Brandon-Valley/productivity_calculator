@@ -168,20 +168,16 @@ class Main_Tab(Tab.Tab):
 
     def inputs_____widget_setup(self):
 
-        def _get_updated_tooltip_existing_csv_only(report_name, fsb_widget):# FIX HERE!!!!!!!!!!!!!!!!!
+        def _get_updated_tooltip_existing_csv_only(report_name, fsb_widget):
             file_path = Path(fsb_widget.tb.get())
-            print(f"{file_path=}")
-            print(f"{file_path.suffix.lower()=}")
             if file_path.suffix.lower() == ".csv":
-                return ''
                 if file_path.is_file():
                     return ''
                 else:
-                    return f'{report_name} must be a .csv file.'
+                    return f'{report_name} ({file_path}) does not exist.'
             else:
-                return f'{report_name} must be a .csv file.'
+                return f'{report_name} must be an existing .csv file.'
             
-
         
         # Tool Tip reasons
         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
