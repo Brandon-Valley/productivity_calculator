@@ -95,7 +95,7 @@ class Main_Tab(Tab.Tab):
     #         else:
     #             self.setup_new_repo_disable_tool_tip_reason__repo_type = 'You must select a repository type.'
 
-    #         self.update_provider_productivity_csv_export_tooltip_csv_only()
+    #         self.update_provider_prod_csv_export_tooltip_csv_only()
     #         self.update_setup_new_repo_disable_tool_tip_and_state()
 
     #     self.repo_type_lbl_frm = LabelFrame(self.master, text=" Repository Type: ")
@@ -162,9 +162,9 @@ class Main_Tab(Tab.Tab):
 
 
     # FIXME put insidevv?
-    def update_provider_productivity_csv_export_tooltip_csv_only(self, event = None):
-        print(f"in  update_provider_productivity_csv_export_tooltip_csv_only")
-        file_path_str = self.ip_repo_fsb_wg.tb.get()
+    def update_provider_prod_csv_export_tooltip_csv_only(self, event = None):
+        print(f"in  update_provider_prod_csv_export_tooltip_csv_only")
+        file_path_str = self.provider_prod_fsb_wg.tb.get()
         if Path(file_path_str).suffix.lower() == ".csv":
             self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
         else:
@@ -180,24 +180,24 @@ class Main_Tab(Tab.Tab):
 
         self.inputs_lbl_frm = LabelFrame(self.master, text=" Inputs: ")
 
-        self.ip_repo_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
+        self.provider_prod_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
                                                          lbl_txt = 'Quick EMR Export: Provider Productivity CSV',
                                                          tb_width = 60,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
-                                                         tb_edit_func = self.update_provider_productivity_csv_export_tooltip_csv_only)
+                                                         tb_edit_func = self.update_provider_prod_csv_export_tooltip_csv_only)
 
-        self.ip_repo_fsb_wg.tb.delete(0, 'end')
-        self.ip_repo_fsb_wg.tb.insert(END, "")
+        self.provider_prod_fsb_wg.tb.delete(0, 'end')
+        self.provider_prod_fsb_wg.tb.insert(END, "")
 
         # these will only appear when the lbl_frm is grid-ed by repo_type_cbox_updated()# DOC
-        self.ip_repo_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
-        self.ip_repo_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
-        self.ip_repo_fsb_wg.btn   .grid(column=4 , row=1, padx=5, pady=5, sticky='E')
+        self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
+        self.provider_prod_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
+        self.provider_prod_fsb_wg.btn   .grid(column=4 , row=1, padx=5, pady=5, sticky='E')
 
-        self.update_provider_productivity_csv_export_tooltip_csv_only()
+        self.update_provider_prod_csv_export_tooltip_csv_only()
 
 
 
@@ -206,10 +206,10 @@ class Main_Tab(Tab.Tab):
         def calculate_btn_clk():
 
             # # write gui var so it will auto-fill from now on
-            # self.write_gui_var('ip_repo_path', self.ip_repo_fsb_wg.tb.get())
+            # self.write_gui_var('ip_repo_path', self.provider_prod_fsb_wg.tb.get())
 
             # repo_type = self.repo_type_cbox.get()
-            # local_ip_repo_dir_path = self.ip_repo_fsb_wg.tb.get()
+            # local_ip_repo_dir_path = self.provider_prod_fsb_wg.tb.get()
             # repo_remote_url = self.remote_url_tb.get()
 
             # FIXME?
