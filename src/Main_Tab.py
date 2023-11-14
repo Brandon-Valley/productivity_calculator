@@ -95,7 +95,7 @@ class Main_Tab(Tab.Tab):
     #         else:
     #             self.setup_new_repo_disable_tool_tip_reason__repo_type = 'You must select a repository type.'
 
-    #         self.update_provider_prod_csv_export_tooltip_csv_only()
+    #         self._update_provider_prod_csv_export_tooltip_csv_only()
     #         self.update_setup_new_repo_disable_tool_tip_and_state()
 
     #     self.repo_type_lbl_frm = LabelFrame(self.master, text=" Repository Type: ")
@@ -168,57 +168,72 @@ class Main_Tab(Tab.Tab):
 
     def inputs_____widget_setup(self):
 
-        def update_provider_prod_csv_export_tooltip_csv_only(event = None):
-            file_path_str = self.provider_prod_fsb_wg.tb.get()
-            if Path(file_path_str).suffix.lower() == ".csv":
-                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+        def _get_updated_tooltip_existing_csv_only(report_name, fsb_widget):# FIX HERE!!!!!!!!!!!!!!!!!
+            file_path = Path(fsb_widget.tb.get())
+            print(f"{file_path=}")
+            print(f"{file_path.suffix.lower()=}")
+            if file_path.suffix.lower() == ".csv":
+                return ''
+                if file_path.is_file():
+                    return ''
+                else:
+                    return f'{report_name} must be a .csv file.'
             else:
-                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
-
-            self.update_setup_new_repo_disable_tool_tip_and_state()
-
-        def update_payroll_csv_export_tooltip_csv_only(event = None):
-            file_path_str = self.provider_prod_fsb_wg.tb.get()
-            if Path(file_path_str).suffix.lower() == ".csv":
-                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
-            else:
-                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
-
-            self.update_setup_new_repo_disable_tool_tip_and_state()
-
-
-
-
+                return f'{report_name} must be a .csv file.'
+            
 
         
+        # Tool Tip reasons
         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+        self.payroll_csv_export_disable_tool_tip_reason__csv_only = ''
 
+        def _update_provider_prod_csv_export_tooltip_csv_only(event = None):
+            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = _get_updated_tooltip_existing_csv_only(
+                report_name="The Quick EMR Provider Productivity Export",
+                fsb_widget=self.provider_prod_fsb_wg,
+            )
+            self.update_setup_new_repo_disable_tool_tip_and_state()
+
+        def _update_payroll_csv_export_tooltip_csv_only(event = None):
+            self.payroll_csv_export_disable_tool_tip_reason__csv_only = _get_updated_tooltip_existing_csv_only(
+                report_name="Open Time Clock PayrollExcel Export (Converted to .csv)",
+                fsb_widget=self.payroll_fsb_wg,
+            )
+            self.update_setup_new_repo_disable_tool_tip_and_state()
+          
+
+
+
+        # Label Frame
         self.inputs_lbl_frm = LabelFrame(self.master, text=" Inputs: ")
 
+        # Quick EMR Provider Productivity
         self.provider_prod_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
-                                                         lbl_txt = 'Quick EMR Export: Provider Productivity CSV',
+                                                         lbl_txt = 'Quick EMR Export: Provider Productivity CSV:',
                                                          tb_width = 60,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
-                                                         tb_edit_func = update_provider_prod_csv_export_tooltip_csv_only)
+                                                         tb_edit_func = _update_provider_prod_csv_export_tooltip_csv_only)
         self.provider_prod_fsb_wg.tb.delete(0, 'end')
         self.provider_prod_fsb_wg.tb.insert(END, "")
 
+        # OpenTimeClock Payroll
         self.payroll_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
-                                                         lbl_txt = 'Quick EMR Export: Provider Productivity CSVafedsf',
+                                                         lbl_txt = 'Open Time Clock Export: PayrollExcel (Converted to .csv):',
                                                          tb_width = 60,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
-                                                         tb_edit_func = update_payroll_csv_export_tooltip_csv_only)
+                                                         tb_edit_func = _update_payroll_csv_export_tooltip_csv_only)
         self.payroll_fsb_wg.tb.delete(0, 'end')
         self.payroll_fsb_wg.tb.insert(END, "")
 
-        update_provider_prod_csv_export_tooltip_csv_only()
-        update_payroll_csv_export_tooltip_csv_only()
+        # Update all
+        _update_provider_prod_csv_export_tooltip_csv_only()
+        _update_payroll_csv_export_tooltip_csv_only()
 
 
 
@@ -274,6 +289,7 @@ class Main_Tab(Tab.Tab):
             # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__repo_type)
             # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__remote_url)
             text = add_to_text_if_not_empty(text, self.provider_prod_csv_export_disable_tool_tip_reason__csv_only)
+            text = add_to_text_if_not_empty(text, self.payroll_csv_export_disable_tool_tip_reason__csv_only)
             print(f"{text=}")
 
             self.calculate_btn_tool_tip = self.Tool_Tip(self.calculate_btn, text = text, wait_time = 0, wrap_length = 200)
