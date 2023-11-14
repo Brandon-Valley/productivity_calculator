@@ -188,14 +188,8 @@ class Main_Tab(Tab.Tab):
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
                                                          tb_edit_func = self.update_provider_prod_csv_export_tooltip_csv_only)
-
         self.provider_prod_fsb_wg.tb.delete(0, 'end')
         self.provider_prod_fsb_wg.tb.insert(END, "")
-
-        # these will only appear when the lbl_frm is grid-ed by repo_type_cbox_updated()# DOC
-        self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
-        self.provider_prod_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
-        self.provider_prod_fsb_wg.btn   .grid(column=4 , row=1, padx=5, pady=5, sticky='E')
 
         self.update_provider_prod_csv_export_tooltip_csv_only()
 
@@ -277,6 +271,10 @@ class Main_Tab(Tab.Tab):
         self.repo_type_cbox      .grid(column=2, row=1, padx=5, pady=5)
 
         self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5)
+
+        self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
+        self.provider_prod_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
+        self.provider_prod_fsb_wg.btn   .grid(column=4 , row=1, padx=5, pady=5, sticky='E')
 
         # self.remote_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='NSWE', columnspan=3)
         # self.remote_url_lbl      .grid(column=1, row=1, padx=5, pady=5)
