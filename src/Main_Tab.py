@@ -14,7 +14,7 @@ from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_po
 # from   sms.msg_box_utils                         import msg_box_utils               as mbu
 # import                                                  common_vars                 as cv
 
-
+DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 
 SETUP_NEW_REPO_SCRIPT_ABS_PATH = os.path.dirname(os.path.abspath(__file__)) + '//setup_new_repo.py'
 
@@ -185,12 +185,12 @@ class Main_Tab(Tab.Tab):
                                                          tb_width = 60,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
+                                                         init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
                                                          tb_edit_func = self.update_provider_productivity_csv_export_tooltip_csv_only)
 
         self.ip_repo_fsb_wg.tb.delete(0, 'end')
-        # self.ip_repo_fsb_wg.tb.insert(END, self.get_gui_var('ip_repo_path'))# FIX add back?
-        self.ip_repo_fsb_wg.tb.insert(END, "C:\p\productivity_calculator\src")# FIXME
+        self.ip_repo_fsb_wg.tb.insert(END, "")
 
         # these will only appear when the lbl_frm is grid-ed by repo_type_cbox_updated()# DOC
         self.ip_repo_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
