@@ -163,11 +163,15 @@ class Main_Tab(Tab.Tab):
 
     # FIXME put insidevv?
     def update_provider_productivity_csv_export_tooltip_csv_only(self, event = None):
+        print(f"in  update_provider_productivity_csv_export_tooltip_csv_only")
         file_path_str = self.ip_repo_fsb_wg.tb.get()
-        if Path(file_path_str).suffix.lower() == "csv":
+        if Path(file_path_str).suffix.lower() == ".csv":
             self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
         else:
-            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = 'This must be a .csv file.'
+            # suffix = Path(file_path_str).suffix
+            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
+
+        self.update_setup_new_repo_disable_tool_tip_and_state()# FIXME need here?
 
 
 
@@ -179,7 +183,7 @@ class Main_Tab(Tab.Tab):
 
         self.ip_repo_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
                                                          lbl_txt = 'Quick EMR Export Provider Productivity CSV',
-                                                         tb_width = 40,
+                                                         tb_width = 90,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          focus_tb_after_browse = True,
@@ -202,58 +206,31 @@ class Main_Tab(Tab.Tab):
 
         def calculate_btn_clk():
 
-            def remote_url_tb_contains_valid_git_repo_remote_url():
+            # # write gui var so it will auto-fill from now on
+            # self.write_gui_var('ip_repo_path', self.ip_repo_fsb_wg.tb.get())
 
-                def remote_exists():
-                    cmd = 'env GIT_PROXY_COMMAND=myproxy.sh GIT_TRACE=1 git ls-remote ' + self.remote_url_tb.get()
-
-                    try:
-                        print('\n>> Checking source...\n')
-                        cmd_out = subprocess.call(cmd, shell = True)
-                        print('\n>> Finished checking source.')
-
-                        if cmd_out not in [0, True] and isinstance(cmd_out, int):
-                            if cmd_out in KNOWN_ERROR_CODE_MSG_D.keys():
-                                return KNOWN_ERROR_CODE_MSG_D[cmd_out]
-                            else:
-                                return 'Git error code: ' + str(cmd_out)
-                        return True
-                    except subprocess.CalledProcessError as e:
-                        print(e)
-                        return False
-
-                msg = 'Checking if provided url points to a valid Git remote...'
-                bounc_speed = 12
-                pb_length = 300
-                window_title = "Checking Source..."
-
-                remote_valid = run_func_with_loading_popup(remote_exists, msg, window_title, bounc_speed, pb_length, app_id = self.app_id, photo_img_path=self.photo_img_path)
-                return remote_valid
-
-
-            # write gui var so it will auto-fill from now on
-            self.write_gui_var('ip_repo_path', self.ip_repo_fsb_wg.tb.get())
-
-            repo_type = self.repo_type_cbox.get()
-            local_ip_repo_dir_path = self.ip_repo_fsb_wg.tb.get()
-            repo_remote_url = self.remote_url_tb.get()
+            # repo_type = self.repo_type_cbox.get()
+            # local_ip_repo_dir_path = self.ip_repo_fsb_wg.tb.get()
+            # repo_remote_url = self.remote_url_tb.get()
 
             # FIXME?
             # # track the PIDs of all processes so they can all be killed at once
             # script_pid = os.getpid()
             # json_logger.write([script_pid], cv.PARENT_PID_L_JSON_ABS_PATH)
 
-            remote_check_output = remote_url_tb_contains_valid_git_repo_remote_url()
+            # remote_check_output = remote_url_tb_contains_valid_git_repo_remote_url()
 
-            # if the given url points to a valid url, continue
-            if remote_check_output == True:
-                cmd = '"{}" --repo_type {} --local_ip_repo_dir_path "{}" --repo_remote_url {} --app_id {} --skip_ip_update True'.format(SETUP_NEW_REPO_SCRIPT_ABS_PATH, repo_type, local_ip_repo_dir_path, repo_remote_url, self.app_id)
-                print('\n>> Running : {}'.format(cmd))
-                subprocess.call(cmd, shell = True)
-            else:
-                print(cv.WAITING_FOR_USER_INPUT_MSG)
-                mbu.msg_box__OK('Invalid Source', 'The provided url does not point to a valid Git remote.\n\n' + str(remote_check_output), icon = 'stop', app_id = self.app_id)
+            # # if the given url points to a valid url, continue
+            # if remote_check_output == True:
+            #     cmd = '"{}" --repo_type {} --local_ip_repo_dir_path "{}" --repo_remote_url {} --app_id {} --skip_ip_update True'.format(SETUP_NEW_REPO_SCRIPT_ABS_PATH, repo_type, local_ip_repo_dir_path, repo_remote_url, self.app_id)
+            #     print('\n>> Running : {}'.format(cmd))
+            #     subprocess.call(cmd, shell = True)
+            # else:
+            #     print(cv.WAITING_FOR_USER_INPUT_MSG)# FIXME msg box vv
+            #     mbu.msg_box__OK('Invalid Source', 'The provided url does not point to a valid Git remote.\n\n' + str(remote_check_output), icon = 'stop', app_id = self.app_id)
 
+            # Do thing#FIX
+            print("CLICK")
 
         self.calculate_btn = Button(self.master, text="Setup New Repository", wraplength = 90, command = calculate_btn_clk)
 
@@ -269,7 +246,6 @@ class Main_Tab(Tab.Tab):
                 text += '\n'
             return text+ '- ' + str
 
-
         text = ''
 
         # all vars wont already be initialized first time through
@@ -278,10 +254,13 @@ class Main_Tab(Tab.Tab):
             # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__repo_type)
             # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__remote_url)
             text = add_to_text_if_not_empty(text, self.provider_prod_csv_export_disable_tool_tip_reason__csv_only)
+            print(f"{text=}")
 
             self.calculate_btn_tool_tip = self.Tool_Tip(self.calculate_btn, text = text, wait_time = 0, wrap_length = 200)
 
-        except AttributeError:
+        # except AttributeError:
+        except AttributeError as e:
+            raise e
             pass
 
         if text == '':
