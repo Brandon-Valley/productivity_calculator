@@ -375,12 +375,15 @@ class Main_Tab(Tab.Tab):
         self.master.grid_columnconfigure(1, weight=1) # Used to allow column 1 in root to expand as window resized
 
 
+        # --------------------------------------------------------------------------------------------------------------
+        #  Inputs
+        # --------------------------------------------------------------------------------------------------------------
+        
+        # Sticky WE here lets the LabelFrame Expand as the window is resized
+        self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='WE') 
 
-        # Inputs
-        # self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5)
-        self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='WE') # Sticky WE here lets the LabelFrame Expand as the window is resized
-        self.inputs_lbl_frm.grid_columnconfigure(2, weight=1) # Used to allow column 2 (col w/ the Entry Widget) in root to expand as LabelFrame resized
-
+         # Used to allow column 2 (w/ the Entry Widget) in root to expand as LabelFrame resized
+        self.inputs_lbl_frm.grid_columnconfigure(2, weight=1)
 
         self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
         self.provider_prod_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
@@ -390,12 +393,20 @@ class Main_Tab(Tab.Tab):
         self.payroll_fsb_wg.tb    .grid(column=2 , row=2, padx=5, pady=5, sticky='WE')
         self.payroll_fsb_wg.btn   .grid(column=4 , row=2, padx=5, pady=5, sticky='E')
 
-        # Output
-        self.output_lbl_frm      .grid(column=1, row=3, padx=5, pady=5, sticky='W')
+        # --------------------------------------------------------------------------------------------------------------
+        #  Output
+        # --------------------------------------------------------------------------------------------------------------
+        # self.output_lbl_frm      .grid(column=1, row=3, padx=5, pady=5, sticky='W')
+
+        # Sticky WE here lets the LabelFrame Expand as the window is resized
+        self.output_lbl_frm      .grid(column=1, row=3, padx=5, pady=5, sticky='WE') 
+
+         # Used to allow column 2 (w/ the Entry Widget) in root to expand as LabelFrame resized
+        self.output_lbl_frm.grid_columnconfigure(2, weight=1)
 
         self.output_parent_dir_fsb_wg.lbl   .grid(column=1 , row=3, padx=5, pady=5)
         self.output_parent_dir_fsb_wg.tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
-        self.output_parent_dir_fsb_wg.btn   .grid(column=40 , row=3, padx=5, pady=5, sticky='E')
+        self.output_parent_dir_fsb_wg.btn   .grid(column=4 , row=3, padx=5, pady=5, sticky='E')
 
 
         # self.remote_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='NSWE', columnspan=3)
