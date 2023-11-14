@@ -273,8 +273,8 @@ class Main_Tab(Tab.Tab):
 
         # Quick EMR Provider Productivity
         self.output_parent_dir_fsb_wg = self.File_System_Browse_WG(self.output_lbl_frm,
-                                                         lbl_txt = 'Output Parent Folder:',
-                                                         tb_width = 60,
+                                                         lbl_txt = 'aaaaaaaaaaaaaaaaaOutput Parent Folder:',
+                                                         tb_width = None,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DEFAULT_OUTPUT_PARENT_DIR_PATH,# FIX replace with gui var?
@@ -372,10 +372,10 @@ class Main_Tab(Tab.Tab):
 
     def grid_init_widgets(self):
         self.master.grid_columnconfigure(2, weight=1)
-
-        self.repo_type_lbl_frm   .grid(column=1, row=1, padx=5, pady=5, sticky='NSW')
-        self.repo_type_lbl       .grid(column=1, row=1, padx=5, pady=5)
-        self.repo_type_cbox      .grid(column=2, row=1, padx=5, pady=5)
+        # self.master.grid_rowconfigure(3, weight=2)
+        # self.repo_type_lbl_frm   .grid(column=1, row=1, padx=5, pady=5, sticky='NSW')
+        # self.repo_type_lbl       .grid(column=1, row=1, padx=5, pady=5)
+        # self.repo_type_cbox      .grid(column=2, row=1, padx=5, pady=5)
 
         # Inputs
         self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5)
@@ -389,18 +389,19 @@ class Main_Tab(Tab.Tab):
         self.payroll_fsb_wg.btn   .grid(column=4 , row=2, padx=5, pady=5, sticky='E')
 
         # Output
-        self.output_lbl_frm      .grid(column=1, row=3, padx=5, pady=5, sticky='WE')
+        self.output_lbl_frm      .grid(column=1, row=3, padx=5, pady=5, sticky='W')
 
         self.output_parent_dir_fsb_wg.lbl   .grid(column=1 , row=3, padx=5, pady=5)
         self.output_parent_dir_fsb_wg.tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
-        self.output_parent_dir_fsb_wg.btn   .grid(column=4 , row=3, padx=5, pady=5, sticky='E')
+        # self.output_parent_dir_fsb_wg.tb    .grid(column=1 , row=3, padx=5, pady=5, sticky='WE')
+        self.output_parent_dir_fsb_wg.btn   .grid(column=40 , row=3, padx=5, pady=5, sticky='E')
 
 
         # self.remote_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='NSWE', columnspan=3)
         # self.remote_url_lbl      .grid(column=1, row=1, padx=5, pady=5)
         # self.remote_url_tb       .grid(column=2, row=1, padx=5, pady=5)
 
-        self.calculate_btn  .grid(column=2, row=3, padx=5, pady=5, sticky='E')
+        self.calculate_btn  .grid(column=1, row=4, padx=5, pady=5, sticky='E')
 
         # self.remote_reminder_lbl.grid(column=2, row=1, padx=5, pady=5, sticky='NSWE')
 
