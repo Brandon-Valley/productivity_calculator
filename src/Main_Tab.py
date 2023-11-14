@@ -162,27 +162,34 @@ class Main_Tab(Tab.Tab):
 
 
     # FIXME put insidevv?
-    def update_provider_prod_csv_export_tooltip_csv_only(self, event = None):
-        file_path_str = self.provider_prod_fsb_wg.tb.get()
-        if Path(file_path_str).suffix.lower() == ".csv":
-            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
-        else:
-            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
 
-        self.update_setup_new_repo_disable_tool_tip_and_state()
-
-    def update_payroll_csv_export_tooltip_csv_only(self, event = None):
-        file_path_str = self.provider_prod_fsb_wg.tb.get()
-        if Path(file_path_str).suffix.lower() == ".csv":
-            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
-        else:
-            self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
-
-        self.update_setup_new_repo_disable_tool_tip_and_state()
 
 
 
     def inputs_____widget_setup(self):
+
+        def update_provider_prod_csv_export_tooltip_csv_only(event = None):
+            file_path_str = self.provider_prod_fsb_wg.tb.get()
+            if Path(file_path_str).suffix.lower() == ".csv":
+                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+            else:
+                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
+
+            self.update_setup_new_repo_disable_tool_tip_and_state()
+
+        def update_payroll_csv_export_tooltip_csv_only(event = None):
+            file_path_str = self.provider_prod_fsb_wg.tb.get()
+            if Path(file_path_str).suffix.lower() == ".csv":
+                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
+            else:
+                self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = f'The Quick EMR Provider Productivity Export must be a .csv file.'
+
+            self.update_setup_new_repo_disable_tool_tip_and_state()
+
+
+
+
+
         
         self.provider_prod_csv_export_disable_tool_tip_reason__csv_only = ''
 
@@ -195,7 +202,7 @@ class Main_Tab(Tab.Tab):
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
-                                                         tb_edit_func = self.update_provider_prod_csv_export_tooltip_csv_only)
+                                                         tb_edit_func = update_provider_prod_csv_export_tooltip_csv_only)
         self.provider_prod_fsb_wg.tb.delete(0, 'end')
         self.provider_prod_fsb_wg.tb.insert(END, "")
 
@@ -206,12 +213,12 @@ class Main_Tab(Tab.Tab):
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
                                                          focus_tb_after_browse = True,
-                                                         tb_edit_func = self.update_payroll_csv_export_tooltip_csv_only)
+                                                         tb_edit_func = update_payroll_csv_export_tooltip_csv_only)
         self.payroll_fsb_wg.tb.delete(0, 'end')
         self.payroll_fsb_wg.tb.insert(END, "")
 
-        self.update_provider_prod_csv_export_tooltip_csv_only()
-        self.update_payroll_csv_export_tooltip_csv_only()
+        update_provider_prod_csv_export_tooltip_csv_only()
+        update_payroll_csv_export_tooltip_csv_only()
 
 
 
