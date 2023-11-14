@@ -274,7 +274,7 @@ class Main_Tab(Tab.Tab):
         # Quick EMR Provider Productivity
         self.output_parent_dir_fsb_wg = self.File_System_Browse_WG(self.output_lbl_frm,
                                                          lbl_txt = 'Output Parent Folder:',
-                                                         tb_width = 92,
+                                                         tb_width = None,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DEFAULT_OUTPUT_PARENT_DIR_PATH,# FIX replace with gui var?
@@ -371,14 +371,16 @@ class Main_Tab(Tab.Tab):
 
 
     def grid_init_widgets(self):
-        self.master.grid_columnconfigure(2, weight=1)
-        # self.master.grid_rowconfigure(3, weight=2)
-        # self.repo_type_lbl_frm   .grid(column=1, row=1, padx=5, pady=5, sticky='NSW')
-        # self.repo_type_lbl       .grid(column=1, row=1, padx=5, pady=5)
-        # self.repo_type_cbox      .grid(column=2, row=1, padx=5, pady=5)
+        # self.master.grid_columnconfigure(2, weight=1)
+        self.master.grid_columnconfigure(1, weight=1) # Used to allow column 1 in root to expand as window resized
+
+
 
         # Inputs
-        self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5)
+        # self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5)
+        self.inputs_lbl_frm      .grid(column=1, row=2, padx=5, pady=5, sticky='WE') # Sticky WE here lets the LabelFrame Expand as the window is resized
+        self.inputs_lbl_frm.grid_columnconfigure(2, weight=1) # Used to allow column 2 (col w/ the Entry Widget) in root to expand as LabelFrame resized
+
 
         self.provider_prod_fsb_wg.lbl   .grid(column=1 , row=1, padx=5, pady=5)
         self.provider_prod_fsb_wg.tb    .grid(column=2 , row=1, padx=5, pady=5, sticky='WE')
@@ -393,7 +395,6 @@ class Main_Tab(Tab.Tab):
 
         self.output_parent_dir_fsb_wg.lbl   .grid(column=1 , row=3, padx=5, pady=5)
         self.output_parent_dir_fsb_wg.tb    .grid(column=2 , row=3, padx=5, pady=5, sticky='WE')
-        # self.output_parent_dir_fsb_wg.tb    .grid(column=1 , row=3, padx=5, pady=5, sticky='WE')
         self.output_parent_dir_fsb_wg.btn   .grid(column=40 , row=3, padx=5, pady=5, sticky='E')
 
 
