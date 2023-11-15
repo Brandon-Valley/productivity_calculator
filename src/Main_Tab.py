@@ -12,7 +12,7 @@ import subprocess
 from   sms.GUI_tools                             import Tab
 from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
 # from   sms.clipboard_utils                       import clipboard_utils             as cbu
-# from   sms.msg_box_utils                         import msg_box_utils               as mbu
+from   sms.msg_box_utils                         import msg_box_utils               as mbu
 # import                                                  common_vars                 as cv
 
 from main import main
@@ -41,12 +41,14 @@ class Main_Tab(Tab.Tab):
     def __init__(self, master, tab_control, photo_img_path = None, app_id = None):
         Tab.Tab.__init__(self, master, tab_control, photo_img_path, app_id)
 
+        self.app_id = app_id
+
         # self.read_gui_vars()
 
         self.calculate_btn_____widget_setup()
         self.inputs_____widget_setup()
         self.output_____widget_setup()
-        self.update_setup_new_repo_disable_tool_tip_and_state()
+        self.update_calculate_btn_disable_tool_tip_and_state()
 
         self.grid_init_widgets()
 
@@ -92,14 +94,14 @@ class Main_Tab(Tab.Tab):
                 report_name="The Quick EMR Provider Productivity Export",
                 fsb_widget=self.provider_prod_fsb_wg,
             )
-            self.update_setup_new_repo_disable_tool_tip_and_state()
+            self.update_calculate_btn_disable_tool_tip_and_state()
 
         def _update_payroll_csv_export_tooltip_csv_only(event = None):
             self.payroll_csv_export_disable_tool_tip_reason__csv_only = _get_updated_tooltip_existing_csv_only(
                 report_name="Open Time Clock PayrollExcel Export (Converted to .csv)",
                 fsb_widget=self.payroll_fsb_wg,
             )
-            self.update_setup_new_repo_disable_tool_tip_and_state()
+            self.update_calculate_btn_disable_tool_tip_and_state()
           
 
         # Label Frame
@@ -173,14 +175,26 @@ class Main_Tab(Tab.Tab):
                 output_report_file_path=Path(self.output_pdfn_wg.write_file_path_str)
             )
 
-            print("CLICK2")
+            mbu.msg_box__YES_NO(
+                title='Success!',
+                msg=(
+                    f'Calculated Productivity Report has been written to: {self.output_pdfn_wg.write_file_path_str}'
+                    "\n\n Reveal in File Explorer?"
+                ),
+                    icon = 'info',
+                    app_id = self.app_id
+            )
+
+            # Exit gracefully
+            exit()
+
 
 
         self.calculate_btn = Button(self.master, text="Calculate Productivity", wraplength = 90, command = calculate_btn_clk)
 
 
 
-    def update_setup_new_repo_disable_tool_tip_and_state(self):
+    def update_calculate_btn_disable_tool_tip_and_state(self):
 
         def add_to_text_if_not_empty(text, str):
             if str == '':
