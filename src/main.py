@@ -4,7 +4,7 @@
 from pathlib import Path
 from pprint import pprint
 from open_time_clock_utils import get_payroll_data_dict_by_employee_name
-from quick_emr_utils import get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export
+from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
 FACILITY_NAMES = ["TP1"]
 
@@ -15,9 +15,9 @@ def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productiv
     payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(exported_open_time_clock_payroll_csv_path)
     print(f"{payroll_data_dict_by_employee_name=}")
 
-    prod_data_dicts_by_date_by_provider_name = get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(
+    total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
         quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
-    print(f"{prod_data_dicts_by_date_by_provider_name=}")
+    print(f"{total_units_by_date_by_provider_name=}")
 
 
     # FIX todo
@@ -34,7 +34,8 @@ if __name__ == "__main__":
     print("Running ",  path.abspath(__file__), '...')
 
     main(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
-         quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"))
+         quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
+         output_report_file_path="C:/p/productivity_calculator/wrk/out.csv")
 
     print("End of Main") 
     

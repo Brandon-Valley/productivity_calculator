@@ -9,7 +9,7 @@ ROW_TYPE_FACILITY_NAME = "FACILITY_NAME"
 ROW_TYPE_PROVIDER_NAME = "PROVIDER_NAME"
 ROW_TYPE_DATE_DATA = "DATE_DATA"
 
-def get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
+def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
     # """
     # Example output:
     # {
@@ -72,9 +72,18 @@ def get_productivity_data_dicts_by_date_by_provider_name_from_provider_productiv
             row_dict.pop("DOS")
             total_units_dict_by_date_by_provider_name[cur_provider_name][date_datetime].append(row_dict)
 
-
-
     return total_units_dict_by_date_by_provider_name
+
+
+
+
+
+
+def get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names):
+    print("in get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export")
+
+
+
 
 if __name__ == "__main__":
     SCRIPT_PARENT_DIR_PATH = Path('__file__').parent#os.path.abspath(os.path.dirname("__file__"))
@@ -86,7 +95,7 @@ if __name__ == "__main__":
     print("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
-    out = get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
+    out = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
                                                                                               facility_names = ["TP1"])
     
     print("out:")
