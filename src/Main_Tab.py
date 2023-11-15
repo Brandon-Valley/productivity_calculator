@@ -165,7 +165,6 @@ class Main_Tab(Tab.Tab):
     #     update_setup_new_repo_disable_tool_tip_reason__remote_url()
 
 
-    # FIXME put insidevv?
 
 
 
@@ -349,7 +348,7 @@ class Main_Tab(Tab.Tab):
             # Do thing#FIX
             print("CLICK")
 
-        self.calculate_btn = Button(self.master, text="Setup New Repository", wraplength = 90, command = calculate_btn_clk)
+        self.calculate_btn = Button(self.master, text="Calculate Productivity", wraplength = 90, command = calculate_btn_clk)
 
 
 
@@ -365,20 +364,15 @@ class Main_Tab(Tab.Tab):
 
         text = ''
 
-        # all vars wont already be initialized first time through
+        # All vars wont already be initialized first time through
         try:
-
-            # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__repo_type)
-            # text = add_to_text_if_not_empty(text, self.setup_new_repo_disable_tool_tip_reason__remote_url)
             text = add_to_text_if_not_empty(text, self.provider_prod_csv_export_disable_tool_tip_reason__csv_only)
             text = add_to_text_if_not_empty(text, self.payroll_csv_export_disable_tool_tip_reason__csv_only)
             print(f"{text=}")
 
             self.calculate_btn_tool_tip = self.Tool_Tip(self.calculate_btn, text = text, wait_time = 0, wrap_length = 200)
 
-        # except AttributeError:
-        except AttributeError as e:
-            raise e
+        except AttributeError:
             pass
 
         if text == '':
@@ -389,7 +383,6 @@ class Main_Tab(Tab.Tab):
 
 
     def grid_init_widgets(self):
-        # self.master.grid_columnconfigure(2, weight=1)
         self.master.grid_columnconfigure(1, weight=1) # Used to allow column 1 in root to expand as window resized
 
 
