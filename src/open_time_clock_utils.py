@@ -116,15 +116,43 @@ def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path
     return payroll_data_dict_by_employee_name
 
 
+def get_hours_by_date_by_employee_name(in_csv_path, working_payroll_csv_path = MY_PAYROLL_CSV_PATH, delete_working_payroll_csv_path = False):
+    hours_by_date_by_employee_name = {}
+    payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path)
+
+    for employee_name, payroll_data_dict in payroll_data_dict_by_employee_name.items():
+        hours_by_date_by_employee_name[employee_name] = {}
+
+        for k, v in payroll_data_dict.items():
+
+            # If date_str column
+            if k.count("-") == 2:
+                
+                datetime_date = datetime.strptime(k, '%Y-%m-%d') # str -> datetime
+                hours = float(v)
+                hours_by_date_by_employee_name[employee_name][datetime_date] = hours
+
+    return hours_by_date_by_employee_name
+
+
+
+
+
+
+
 if __name__ == "__main__":
     import os.path as path
     print("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv")
-    payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path)
+    # payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path)
     
-    print("payroll_data_dict_by_employee_name:")
-    pprint(payroll_data_dict_by_employee_name)
+    # print("payroll_data_dict_by_employee_name:")
+    # pprint(payroll_data_dict_by_employee_name)
+    out = get_hours_by_date_by_employee_name(in_csv_path)
+    
+    print("out:")
+    pprint(out)
     print("End of Main") 
     
     

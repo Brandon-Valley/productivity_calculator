@@ -15,9 +15,9 @@ def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productiv
     payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(exported_open_time_clock_payroll_csv_path)
     print(f"{payroll_data_dict_by_employee_name=}")
 
-    total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
-        quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
-    print(f"{total_units_by_date_by_provider_name=}")
+    # total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
+    #     quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
+    # print(f"{total_units_by_date_by_provider_name=}")
 
 
     # FIX todo
