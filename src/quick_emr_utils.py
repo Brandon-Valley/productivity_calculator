@@ -28,7 +28,6 @@ def get_productivity_data_dicts_by_date_by_provider_name_from_provider_productiv
         row_is_blank = True
 
         for v in row_dict.values():
-            # if v != "":
             if v != "":
                 row_is_blank = False
         if row_is_blank:
@@ -40,32 +39,21 @@ def get_productivity_data_dicts_by_date_by_provider_name_from_provider_productiv
         elif "Total for" not in row_dict["Prov/Facility"] and \
             row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names and \
             row_dict["DOS"] == "":
-        # row_dict["POS"] == "" and \
-        # row_dict["Patient"] == "" and \
-        # row_dict["Units"] == "" and \
-        # row_dict[""] == "" and \
-        # row_dict[""] == "" and \
-        #           :
+
             return ROW_TYPE_PROVIDER_NAME
         elif "/" in row_dict["DOS"]:
             return ROW_TYPE_DATE_DATA
         return None
-
-
-
+    
 
     total_units_dict_by_date_by_provider_name = {}
 
     row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
-    # print(row_dicts)
-    # print("row_dicts:")
-    # pprint(row_dicts)
 
     cur_provider_name = None
     for row_dict in row_dicts:
 
         row_type = _get_row_type(row_dict)
-        # print(f"{row_type=} - {row_dict=}")
 
         # Set cur_provider_name if needed
         if row_type == ROW_TYPE_PROVIDER_NAME:

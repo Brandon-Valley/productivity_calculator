@@ -20,6 +20,12 @@ def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productiv
     print(f"{prod_data_dicts_by_date_by_provider_name=}")
 
 
+    # FIX todo
+
+    # from my_payroll - for each name for each day (like AH 10/16/2023 = 6.93) * 4 (b/c thats the max units that COULD have been billed / hr)
+    # then summ all UNITS per provider / day from provider Productivity  csv
+    # then just sz sum / (6.93 * 4)
+
 
 
 if __name__ == "__main__":
