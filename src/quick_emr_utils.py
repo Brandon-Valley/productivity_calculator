@@ -76,19 +76,12 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
 
 
 
-
-
-
 def get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names):
     print("in get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export")
 
     total_units_by_date_by_provider_name = {}
     productivity_data_dicts_by_date_by_provider_name = _get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(
         in_csv_path, facility_names)
-    
-
-    # print("productivity_data_dicts_by_date_by_provider_name:")
-    # pprint(productivity_data_dicts_by_date_by_provider_name)
 
     for provider_name, productivity_data_dicts_by_date in productivity_data_dicts_by_date_by_provider_name.items():
         total_units_by_date_by_provider_name[provider_name] = {}
@@ -103,17 +96,13 @@ def get_total_units_by_date_by_provider_name_from_provider_productivity_csv_expo
 
 
 if __name__ == "__main__":
-    SCRIPT_PARENT_DIR_PATH = Path('__file__').parent#os.path.abspath(os.path.dirname("__file__"))
-    # WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
-    # MY_PAYROLL_CSV_PATH = WRK_DIR_PATH / "my_payroll.csv"
-    # ROW_DICTS_TMP_JSON_PATH = WRK_DIR_PATH / "otc_row_dicts.json"
+    SCRIPT_PARENT_DIR_PATH = Path('__file__').parent
 
     import os.path as path
     print("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
-    out = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path,
-                                                                                              facility_names = ["TP1"])
+    out = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path, facility_names = ["TP1"])
     
     print("out:")
     pprint(out)
