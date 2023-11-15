@@ -50,26 +50,36 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
     provider_name_by_employee_name = _get_provider_name_by_employee_name()
     print("provider_name_by_employee_name:")
     pprint(provider_name_by_employee_name)
-    exit("here")
 
 
 
-
-
-
-
-
+    # Build row_dicts
+    row_dicts = []
     for employee_name, hours_by_date in hours_by_date_by_employee_name.items():
-        new_row_dict = {
-            "Employee Name": employee_name
-        }
+        if employee_name not in provider_name_by_employee_name:
+            print(f"{employee_name=} not in provider_name_by_employee_name, skipping...")
+            continue
 
         for date_datetime, hours in hours_by_date.items():
-            new_row_dict["Date"] = date_datetime.strftime('%Y-%m-%d')
-            new_row_dict["Hours Worked"] = hours
+
+            provider_name = provider_name_by_employee_name[employee_name]
+            try:
+                total_units = total_units_by_date_by_provider_name[provider_name][date_datetime]
+            except KeyError:
+                print(f"Got KeyError on {date_datetime=} in total_units_by_date_by_provider_name, must be a non-working day, skipping...")
+                continue
+            
+            new_row_dict = {
+                "Employee Name": employee_name,
+                "Date": date_datetime.strftime('%Y-%m-%d'),
+                "Hours Worked": hours,
+                "Total Units": total_units
+            }
+
 
         print(f"{new_row_dict=}")
 
+# OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
 
     row_dicts = {}
 
