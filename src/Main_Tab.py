@@ -108,7 +108,7 @@ class Main_Tab(Tab.Tab):
         # Quick EMR Provider Productivity
         self.provider_prod_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
                                                          lbl_txt = 'Quick EMR Export: Provider Productivity CSV:',
-                                                         tb_width = 60,
+                                                         tb_width = 80,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
@@ -120,7 +120,7 @@ class Main_Tab(Tab.Tab):
         # OpenTimeClock Payroll
         self.payroll_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
                                                          lbl_txt = 'Open Time Clock Export: PayrollExcel (Converted to .csv):',
-                                                         tb_width = 60,
+                                                         tb_width = 80,
                                                          browse_for = 'file',
                                                          file_type = '.csv',
                                                          init_path=DOWNLOADS_DIR_PATH_STR,
@@ -168,8 +168,9 @@ class Main_Tab(Tab.Tab):
             print("CLICK")
 
             main(
-                exported_open_time_clock_payroll_csv_path=Path(self.payroll_fsb_wg.get()),
-                quick_emr_provider_productivity_csv_path=Path(self.provider_prod_fsb_wg.get())
+                exported_open_time_clock_payroll_csv_path=Path(self.payroll_fsb_wg.tb.get()),
+                quick_emr_provider_productivity_csv_path=Path(self.provider_prod_fsb_wg.tb.get()),
+                output_report_file_path=Path(self.output_pdfn_wg.write_file_path_str)
             )
 
             print("CLICK2")
