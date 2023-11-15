@@ -3,12 +3,86 @@
 
 from pathlib import Path
 from pprint import pprint
-from open_time_clock_utils import get_hours_by_date_by_employee_name, get_payroll_data_dict_by_employee_name
+from file_io_utils import write_csv_from_row_dicts
+from open_time_clock_utils import get_hours_by_date_by_employee_name
 from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
 FACILITY_NAMES = ["TP1"]
 
+OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
+
 # WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
+
+def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_date_by_provider_name, output_report_file_path):
+    # def _get_normalized_provider_name_plus_title(provider_name):
+    #     last_name_plus_title, first_name = provider_name.split(",")
+    #     return first_name + last_name_plus_title
+
+    def _get_provider_name_by_employee_name():
+        provider_name_by_employee_name = {}
+
+        for employee_name, _hours_by_date in hours_by_date_by_employee_name.items():
+            for provider_name, _total_units_by_date in total_units_by_date_by_provider_name.items():
+                print(f"{provider_name.split(',')=}")
+                first_name = provider_name.split(",")[-1].strip()
+                name_suffix = " ".join(provider_name.split(",")[:-1])
+                normalized_provider_name_plus_title = first_name +  " " + name_suffix
+                print(f"{normalized_provider_name_plus_title=}")
+                print(f"{employee_name=}")
+
+                if normalized_provider_name_plus_title.startswith(employee_name):
+                    assert employee_name not in provider_name_by_employee_name, (
+                        f"ERROR, {employee_name=} already in {provider_name_by_employee_name=}, found while handling "
+                        f"{normalized_provider_name_plus_title=}. Something is wrong with name mapping, look at new hire names?"
+                    )
+                    provider_name_by_employee_name[employee_name] = provider_name
+            
+            print(f"Employee: {employee_name} does not appear in Provider Productivity report, skipping...")
+
+            # assert employee_name in provider_name_by_employee_name, (
+            #     f"ERROR: {employee_name=} NOT in {provider_name_by_employee_name=}, Something is wrong with name mapping, look at new hire names?"
+            # )
+
+        return provider_name_by_employee_name
+            
+    
+    # Build provider_name_by_employee_name
+    provider_name_by_employee_name = _get_provider_name_by_employee_name()
+    print("provider_name_by_employee_name:")
+    pprint(provider_name_by_employee_name)
+    exit("here")
+
+
+
+
+
+
+
+
+    for employee_name, hours_by_date in hours_by_date_by_employee_name.items():
+        new_row_dict = {
+            "Employee Name": employee_name
+        }
+
+        for date_datetime, hours in hours_by_date.items():
+            new_row_dict["Date"] = date_datetime.strftime('%Y-%m-%d')
+            new_row_dict["Hours Worked"] = hours
+
+        print(f"{new_row_dict=}")
+
+
+    row_dicts = {}
+
+
+
+
+
+
+
+
+    # write_csv_from_row_dicts(row_dicts, csv_path, ordered_headers: Optional[List[str]])
+
+
 
 def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productivity_csv_path, output_report_file_path):
     print("Parsing payroll CSV...")
@@ -18,6 +92,11 @@ def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productiv
     total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
         quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
     print(f"{total_units_by_date_by_provider_name=}")
+
+    _write_productivity_report(
+        hours_by_date_by_employee_name,
+        total_units_by_date_by_provider_name,
+        output_report_file_path)
 
 
     # FIX todo
