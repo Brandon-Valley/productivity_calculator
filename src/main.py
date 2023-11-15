@@ -3,7 +3,7 @@
 
 from pathlib import Path
 from pprint import pprint
-from open_time_clock_utils import get_payroll_data_dict_by_employee_name
+from open_time_clock_utils import get_hours_by_date_by_employee_name, get_payroll_data_dict_by_employee_name
 from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
 FACILITY_NAMES = ["TP1"]
@@ -12,12 +12,12 @@ FACILITY_NAMES = ["TP1"]
 
 def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productivity_csv_path, output_report_file_path):
     print("Parsing payroll CSV...")
-    payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(exported_open_time_clock_payroll_csv_path)
-    print(f"{payroll_data_dict_by_employee_name=}")
+    hours_by_date_by_employee_name = get_hours_by_date_by_employee_name(exported_open_time_clock_payroll_csv_path)
+    print(f"{hours_by_date_by_employee_name=}")
 
-    # total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
-    #     quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
-    # print(f"{total_units_by_date_by_provider_name=}")
+    total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
+        quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
+    print(f"{total_units_by_date_by_provider_name=}")
 
 
     # FIX todo

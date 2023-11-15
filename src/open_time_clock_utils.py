@@ -118,7 +118,7 @@ def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path
 
 def get_hours_by_date_by_employee_name(in_csv_path, working_payroll_csv_path = MY_PAYROLL_CSV_PATH, delete_working_payroll_csv_path = False):
     hours_by_date_by_employee_name = {}
-    payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path)
+    payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path, delete_working_payroll_csv_path)
 
     for employee_name, payroll_data_dict in payroll_data_dict_by_employee_name.items():
         hours_by_date_by_employee_name[employee_name] = {}
