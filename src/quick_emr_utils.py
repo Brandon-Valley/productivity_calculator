@@ -82,6 +82,23 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
 def get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names):
     print("in get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export")
 
+    total_units_by_date_by_provider_name = {}
+    productivity_data_dicts_by_date_by_provider_name = _get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(
+        in_csv_path, facility_names)
+    
+
+    # print("productivity_data_dicts_by_date_by_provider_name:")
+    # pprint(productivity_data_dicts_by_date_by_provider_name)
+
+    for provider_name, productivity_data_dicts_by_date in productivity_data_dicts_by_date_by_provider_name.items():
+        total_units_by_date_by_provider_name[provider_name] = {}
+
+        for date_datetime, productivity_data_dicts in productivity_data_dicts_by_date.items():
+            total_units_by_date_by_provider_name[provider_name][date_datetime] = 0
+            for productivity_data_dict in productivity_data_dicts:
+                total_units_by_date_by_provider_name[provider_name][date_datetime] += int(productivity_data_dict["Units"])
+
+    return total_units_by_date_by_provider_name
 
 
 
