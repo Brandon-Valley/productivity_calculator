@@ -37,6 +37,7 @@ def write_csv_from_row_dicts(row_dicts, csv_path, ordered_headers: Optional[List
             fieldname_dict_ordered[key] = None
 
     # Write CSV
+    Path(csv_path).parent.mkdir(parents=True, exist_ok=True)
     try:
         with open(csv_path, "w", newline="") as output_file:
             dict_writer = csv.DictWriter(output_file, fieldnames=fieldname_dict_ordered.keys())

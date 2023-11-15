@@ -7,6 +7,8 @@ from file_io_utils import write_csv_from_row_dicts
 from open_time_clock_utils import get_hours_by_date_by_employee_name
 from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
+MAX_POSSIBLE_UNITS_PER_HOUR = 4
+
 FACILITY_NAMES = ["TP1"]
 
 OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
@@ -68,16 +70,25 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
             except KeyError:
                 print(f"Got KeyError on {date_datetime=} in total_units_by_date_by_provider_name, must be a non-working day, skipping...")
                 continue
+
+            max_units = hours * MAX_POSSIBLE_UNITS_PER_HOUR
             
-            new_row_dict = {
-                "Employee Name": employee_name,
-                "Date": date_datetime.strftime('%Y-%m-%d'),
-                "Hours Worked": hours,
-                "Total Units": total_units
-            }
+            row_dicts.append(
+                {
+                    "Employee Name": employee_name,
+                    "Date": date_datetime.strftime('%Y-%m-%d'),
+                    "Hours Worked": hours,
+                    "Total Units": total_units,
+                    "Max Possible Units for Number of Hours Worked": max_units,
+                    "Calculated Productivity %": round((total_units / max_units) * 100, 2)
+                }
+            )
 
+    print("row_dicts:")
+    pprint(row_dicts)
 
-        print(f"{new_row_dict=}")
+    write_csv_from_row_dicts(row_dicts, output_report_file_path, OUTPUT_REPORT_ORDERED_HEADERS)
+
 
 # OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
 
@@ -103,10 +114,14 @@ def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productiv
         quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
     print(f"{total_units_by_date_by_provider_name=}")
 
+    print("Calculating productivity & producing report...")
     _write_productivity_report(
         hours_by_date_by_employee_name,
         total_units_by_date_by_provider_name,
         output_report_file_path)
+    
+    assert output_report_file_path.is_file(), output_report_file_path
+    print(f"Success! Report written to {output_report_file_path}")
 
 
     # FIX todo
@@ -124,7 +139,7 @@ if __name__ == "__main__":
 
     main(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
          quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
-         output_report_file_path="C:/p/productivity_calculator/wrk/out.csv")
+         output_report_file_path=Path("C:/p/productivity_calculator/wrk/out.xlsx"))
 
     print("End of Main") 
     

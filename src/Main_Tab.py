@@ -169,21 +169,25 @@ class Main_Tab(Tab.Tab):
             # Do thing#FIX
             print("CLICK")
 
+            output_report_file_path_str = self.output_pdfn_wg.write_file_path_str
             main(
                 exported_open_time_clock_payroll_csv_path=Path(self.payroll_fsb_wg.tb.get()),
                 quick_emr_provider_productivity_csv_path=Path(self.provider_prod_fsb_wg.tb.get()),
-                output_report_file_path=Path(self.output_pdfn_wg.write_file_path_str)
+                output_report_file_path=Path(output_report_file_path_str)
             )
 
-            mbu.msg_box__YES_NO(
+            reveal_in_file_explorer = mbu.msg_box__YES_NO(
                 title='Success!',
                 msg=(
-                    f'Calculated Productivity Report has been written to: {self.output_pdfn_wg.write_file_path_str}'
+                    f'Calculated Productivity Report has been written to: {output_report_file_path_str}'
                     "\n\n Reveal in File Explorer?"
                 ),
                     icon = 'info',
                     app_id = self.app_id
             )
+
+            if reveal_in_file_explorer:
+                subprocess.Popen(f'explorer /select,"{output_report_file_path_str}"')
 
             # Exit gracefully
             exit()
