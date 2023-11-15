@@ -10,7 +10,7 @@ FACILITY_NAMES = ["TP1"]
 
 # WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
 
-def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productivity_csv_path):
+def main(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productivity_csv_path, output_report_file_path):
     print("Parsing payroll CSV...")
     payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(exported_open_time_clock_payroll_csv_path)
     print(f"{payroll_data_dict_by_employee_name=}")

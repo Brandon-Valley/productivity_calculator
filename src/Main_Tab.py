@@ -15,6 +15,8 @@ from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_po
 # from   sms.msg_box_utils                         import msg_box_utils               as mbu
 # import                                                  common_vars                 as cv
 
+from main import main
+
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"
 DEFAULT_OUTPUT_FILE_NAME = f"Productivity_Report_{datetime.today().strftime('%Y-%m-%d')}.csv"
@@ -160,10 +162,18 @@ class Main_Tab(Tab.Tab):
     def calculate_btn_____widget_setup(self):
 
         def calculate_btn_clk():
-
+            
 
             # Do thing#FIX
             print("CLICK")
+
+            main(
+                exported_open_time_clock_payroll_csv_path=Path(self.payroll_fsb_wg.get()),
+                quick_emr_provider_productivity_csv_path=Path(self.provider_prod_fsb_wg.get())
+            )
+
+            print("CLICK2")
+
 
         self.calculate_btn = Button(self.master, text="Calculate Productivity", wraplength = 90, command = calculate_btn_clk)
 
