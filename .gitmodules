@@ -4,3 +4,6 @@
 [submodule "src/sms/msg_box_utils"]
 	path = src/sms/msg_box_utils
 	url = https://github.com/Brandon-Valley/msg_box_utils.git
+[submodule "app/app_tools"]
+	path = app/app_tools
+	url = https://github.com/Brandon-Valley/app_tools.git
