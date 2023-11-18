@@ -1,51 +1,50 @@
 # taskkill /im python.exe /F
 
 from __future__ import absolute_import
+import os
+from pathlib import Path
+import sys
 
 from tkinter.ttk import *
 from tkinter import *
 
 
-# try:
-#     from   sms.GUI_tools import GUI_tools_utils as gtu
-#     import Main_Tab
-
-# except ImportError as e1:
-#     try:
-#         from . sms.GUI_tools import GUI_tools_utils as gtu
-#         from . import Main_Tab
-#     except Exception as e2:
-#         raise e2 from e1
-
-
 from   sms.GUI_tools import GUI_tools_utils as gtu
 import Main_Tab
 
+SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
 
-# import Main_Tab
-
-# try:
-#     # When running cx_Freeze to create exe
-#     from sms.GUI_tools import GUI_tools_utils as gtu
-# except ImportError:
-#     # When running as python file for local testing
-#     from  . sms.GUI_tools import GUI_tools_utils as gtu
-
-# import Main_Tab
-
-
+def _get_data_dir_path():
+    """
+    Returns dir path from which paths to data files like icons should be based - needed for after freezing w/ cx_freeze
+      - This assumes the data files have been added to the build dir when setup.py was run
+    """
+    if getattr(sys, 'frozen', False):
+        # The application is frozen
+        #   - sys.executable is the path to the .exe created by cx_freeze
+        return Path(sys.executable).parent
+    else:
+        # The application is not 
+        print("not frozen")
+        return SCRIPT_PARENT_DIR_PATH
 
 def main(msg = None): 
     # main gui params
     window_title = "Productivity Calculator"
     want_duplicate_apps_to_stack_in_toolbar = True
-    
-    # set to None for default iconphoto
-    # can work with either .png or .ico, but if you use a .ico, you need to pass the photo_img_path down to all sub-guis,
-    # no clue why but will only inherit iconphoto (png), not iconbitmap(ico) from gui with same app_id    
-    # iconphoto_rel_to_this_file_path = 'imgs//icon.png' #FIX
-    iconphoto_rel_to_this_file_path = None
+
+    data_dir_path = _get_data_dir_path()
+    print(f"{data_dir_path=}")
+
+    # Set to None for default iconphoto
+    # Can work with either .png or .ico, but if you use a .ico, you need to pass the photo_img_path down to all sub-guis,
+    # no clue why but will only inherit iconphoto (png), not iconbitmap(ico) from gui with same app_id
+    # iconphoto_rel_to_this_file_path = 'imgs//icon.png'
+    iconphoto_abs_path_str = (data_dir_path / "imgs" / "icon.png").as_posix()
+    print(f"{iconphoto_abs_path_str=}")
+    # iconphoto_rel_to_this_file_path = None
+    # iconphoto_rel_to_this_file_path = (Path("__file__").parent / "imgs" / "icon.png").as_posix()# FIX rename?
 
     
     # secondary gui params
@@ -69,14 +68,14 @@ def main(msg = None):
         app_id = None
     
     # get and set iconphoto
-    iconphoto_abs_path = gtu.rel_path_to_this_file__to__abs_path__if_not_None(__file__, iconphoto_rel_to_this_file_path)
-    gtu.set_iconphoto_if_not_None(master, iconphoto_abs_path)
+    # iconphoto_abs_path = gtu.rel_path_to_this_file__to__abs_path__if_not_None(__file__, iconphoto_rel_to_this_file_path)
+    gtu.set_iconphoto_if_not_None(master, iconphoto_abs_path_str)
       
     # tab_control
     tab_control = Notebook(master)
     tab_control.grid(row=1, column=0, sticky='NESW')
     
-    Main_Tab.Main_Tab(master, tab_control, iconphoto_abs_path, app_id)
+    Main_Tab.Main_Tab(master, tab_control, iconphoto_abs_path_str, app_id)
 
     master.mainloop()
  

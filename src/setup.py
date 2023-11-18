@@ -16,19 +16,19 @@
 
 from cx_Freeze import setup, Executable
 from pathlib import Path
+import sys
 
 SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 
-# executables = [
-#     Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py")
-# ]
+
+# base="Win32GUI" should be used only for Windows GUI app
+BASE = "Win32GUI" if sys.platform == "win32" else None
 
 PRODUCT_NAME = "Productivity Calculator"
 PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
-# options = {
-#     # 'build_exe': (SCRIPT_PARENT_DIR_PATH.parent / "build").as_posix()
-#     'build_exe': "..\\build"
-# }
+ICON_STR_PATH = "imgs//icon.ico" # FIX rename to rel pat? 
+ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat? 
+
 
 
 # http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
@@ -39,11 +39,11 @@ shortcut_table = [
      "TARGETDIR",              # Component_
      "[TARGETDIR]gui.exe",# Target exe to execute
      None,                     # Arguments
-     None,                     # Description # FIX?
+     PRODUCT_DESCRIPTION,                      # Description # FIX?
      None,                     # Hotkey
-     None,                     # Icon
+     "imgs//icon.ico",                     # Icon
      None,                     # IconIndex
-     None,                     # ShowCmd
+     True,                     # ShowCmd
      'TARGETDIR'               # WkDir
      )
     ]
@@ -54,9 +54,9 @@ msi_data = {"Shortcut": shortcut_table}
 # Change some default MSI options and specify the use of the above defined tables
 bdist_msi_options = {'data': msi_data}
 
-options = {
-    'bdist_msi': bdist_msi_options
-}
+# options = {
+#     'bdist_msi': bdist_msi_options
+# }
 #     #   # Comment this out if only want exe & run with: python setup.py build
 #     #   options={
 #     #       'bdist_msi': bdist_msi_options, # if need msi - run with: python setup.py bdist_msi
@@ -65,13 +65,30 @@ options = {
 #       )
 
 setup(
-    name='Productivity Calculator',
-    version='0.0.0',
+    name=PRODUCT_NAME,
+    version='0.0.2',
     description=PRODUCT_DESCRIPTION,
     executables=[
-        Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py")
+        Executable(
+            SCRIPT_PARENT_DIR_PATH  / "gui.py",
+            # copyright="Copyright (C) 2024 cx_Freeze",
+            base=BASE,
+            icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
+            shortcut_name=PRODUCT_NAME,
+            shortcut_dir="MyProgramMenu",
+        ),
     ],
-    options=options
+    options={
+    "build_exe": {
+        # "includes": BasicPackages,
+        # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
+        "include_files": [
+            (ICON_PNG_STR_PATH, "imgs/icon.png") # Include .png icon for GUI to use
+            ],
+        # "zip_include_packages": ["encodings"] ##
+    },
+    'bdist_msi': bdist_msi_options
+}
 )
 
 # if __name__ == "__main__":
