@@ -25,12 +25,12 @@ def _get_data_dir_path():
         #   - sys.executable is the path to the .exe created by cx_freeze
         return Path(sys.executable).parent
     else:
-        # The application is not 
+        # The application is not
         print("not frozen")
         return SCRIPT_PARENT_DIR_PATH
 
-def main(msg = None): 
-    # main gui params
+def main(msg = None):
+    # Main GUI params
     window_title = "Productivity Calculator"
     want_duplicate_apps_to_stack_in_toolbar = True
 
@@ -46,42 +46,42 @@ def main(msg = None):
     # iconphoto_rel_to_this_file_path = None
     # iconphoto_rel_to_this_file_path = (Path("__file__").parent / "imgs" / "icon.png").as_posix()# FIX rename?
 
-    
-    # secondary gui params
-    
-    # if you do not set the app_id:                                                             
+
+    # Secondary gui params
+
+    # If you do not set the app_id:
     #     - if no iconphoto is set, tool bar image will be default python, instead of tk feather
-    #     - duplicate applications will stack, but you will be unable to stack additional applications, such as a child msg_box                                               
+    #     - duplicate applications will stack, but you will be unable to stack additional applications, such as a child msg_box
     set_app_id = True
-                      
-                      
-    # highest level GUI must always use TK(), not Toplevel(), PhotoImage can only work after TK(), but if this has already been called in a higher level GUI, use Toplevel()
-    # running with Toplevel as your root GUI will also make a blank window appear
+
+
+    # Highest level GUI must always use TK(), not Toplevel(), PhotoImage can only work after TK(), but if this has
+    # already been called in a higher level GUI, use Toplevel()
+    # Running with Toplevel as your root GUI will also make a blank window appear
     master = Tk()
     master.title(window_title)
 
-    # get and set app_id
+    #Gget and set app_id
     if set_app_id:
         app_id = gtu.get_app_id_unique_to_this_file(__file__, want_duplicate_apps_to_stack_in_toolbar)
         gtu.set_app_id(app_id)
     else:
         app_id = None
-    
-    # get and set iconphoto
-    # iconphoto_abs_path = gtu.rel_path_to_this_file__to__abs_path__if_not_None(__file__, iconphoto_rel_to_this_file_path)
+
+    # Set iconphoto
     gtu.set_iconphoto_if_not_None(master, iconphoto_abs_path_str)
-      
-    # tab_control
+
+    # Tab_control
     tab_control = Notebook(master)
     tab_control.grid(row=1, column=0, sticky='NESW')
-    
+
     Main_Tab.Main_Tab(master, tab_control, iconphoto_abs_path_str, app_id)
 
     master.mainloop()
- 
 
- 
 
- 
+
+
+
 if __name__ == '__main__':
     main()
