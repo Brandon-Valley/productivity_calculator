@@ -8,7 +8,6 @@ import sys
 from tkinter.ttk import *
 from tkinter import *
 
-
 from   sms.GUI_tools import GUI_tools_utils as gtu
 import Main_Tab
 
@@ -40,12 +39,7 @@ def main(msg = None):
     # Set to None for default iconphoto
     # Can work with either .png or .ico, but if you use a .ico, you need to pass the photo_img_path down to all sub-guis,
     # no clue why but will only inherit iconphoto (png), not iconbitmap(ico) from gui with same app_id
-    # iconphoto_rel_to_this_file_path = 'imgs//icon.png'
     iconphoto_abs_path_str = (data_dir_path / "imgs" / "icon.png").as_posix()
-    print(f"{iconphoto_abs_path_str=}")
-    # iconphoto_rel_to_this_file_path = None
-    # iconphoto_rel_to_this_file_path = (Path("__file__").parent / "imgs" / "icon.png").as_posix()# FIX rename?
-
 
     # Secondary gui params
 
@@ -54,14 +48,13 @@ def main(msg = None):
     #     - duplicate applications will stack, but you will be unable to stack additional applications, such as a child msg_box
     set_app_id = True
 
-
     # Highest level GUI must always use TK(), not Toplevel(), PhotoImage can only work after TK(), but if this has
     # already been called in a higher level GUI, use Toplevel()
     # Running with Toplevel as your root GUI will also make a blank window appear
     master = Tk()
     master.title(window_title)
 
-    #Gget and set app_id
+    #Get and set app_id
     if set_app_id:
         app_id = gtu.get_app_id_unique_to_this_file(__file__, want_duplicate_apps_to_stack_in_toolbar)
         gtu.set_app_id(app_id)
