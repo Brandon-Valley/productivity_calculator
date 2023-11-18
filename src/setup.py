@@ -14,7 +14,8 @@ from pathlib import Path
 SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 
 executables = [
-    Executable(SCRIPT_PARENT_DIR_PATH / "src" / "gui.py")
+    # Executable(SCRIPT_PARENT_DIR_PATH / "src" / "gui.py")
+    Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py")
 ]
 
 setup(name='Productivity Calculator',
