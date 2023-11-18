@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# python setup.py build
-# python setup.py bdist_msi
 
+# Usage:
+#  - To just run a quick test for the built exe, run:  `python setup.py build`
+#  - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
 
+# https://stackoverflow.com/questions/57339138/msi-created-in-cx-freeze-does-not-install-program
+# msiexec -i "Productivity Calculator-0.0.3-win64.msi" -l*vx log.txt
 
-
-# relimport.py is a very simple script that tests importing using relative
-# imports (available in Python 2.5 and up)
-#
-# Run the build process by running the command 'python setup.py build'
-#
-# If everything works well you should find a subdirectory in the build
-# subdirectory that contains the files needed to run the script without Python
 
 from cx_Freeze import setup, Executable
 from pathlib import Path
@@ -32,20 +27,53 @@ ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat?
 
 
 # http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
+# https://github.com/marcelotduarte/cx_Freeze/issues/48
+# shortcut_table = [
+#     (
+#         "DesktopShortcut",        # Shortcut
+#      "DesktopFolder",          # Directory_
+#      PRODUCT_NAME,           # Name that will be show on the link
+#      "TARGETDIR",              # Component_
+#      "[TARGETDIR]gui.exe",# Target exe to execute
+#      None,                     # Arguments
+#      PRODUCT_DESCRIPTION,                      # Description # FIX?
+#      None,                     # Hotkey
+#      "imgs//icon.ico",                     # Icon
+#      None,                     # IconIndex
+#      True,                     # ShowCmd
+#      'TARGETDIR'               # WkDir
+#      )
+#     ]
 shortcut_table = [
     ("DesktopShortcut",        # Shortcut
      "DesktopFolder",          # Directory_
-     PRODUCT_NAME,           # Name that will be show on the link
+     "program",     # Name
      "TARGETDIR",              # Component_
-     "[TARGETDIR]gui.exe",# Target exe to execute
+     "[TARGETDIR]gui.exe",   # Target
      None,                     # Arguments
-     PRODUCT_DESCRIPTION,                      # Description # FIX?
+     None,                     # Description
      None,                     # Hotkey
-     "imgs//icon.ico",                     # Icon
+     None,                     # Icon
      None,                     # IconIndex
-     True,                     # ShowCmd
+     None,                     # ShowCmd
      'TARGETDIR'               # WkDir
-     )
+     ),
+
+    # For adding separate shortcut to Startup folder so the program will run whenever PC is restarted
+
+    # ("StartupShortcut",        # Shortcut
+    #  "StartupFolder",          # Directory_
+    #  "program",     # Name
+    #  "TARGETDIR",              # Component_
+    #  "[TARGETDIR]main.exe",   # Target
+    #  None,                     # Arguments
+    #  None,                     # Description
+    #  None,                     # Hotkey
+    #  None,                     # Icon
+    #  None,                     # IconIndex
+    #  None,                     # ShowCmd
+    #  'TARGETDIR'               # WkDir
+    #  ),
     ]
 
 # Now create the table dictionary
@@ -66,7 +94,7 @@ bdist_msi_options = {'data': msi_data}
 
 setup(
     name=PRODUCT_NAME,
-    version='0.0.2',
+    version='0.0.5',
     description=PRODUCT_DESCRIPTION,
     executables=[
         Executable(
@@ -90,6 +118,39 @@ setup(
     'bdist_msi': bdist_msi_options
 }
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # if __name__ == "__main__":
 #     import os.path as path
