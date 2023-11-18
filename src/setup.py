@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+# python setup.py build
+# python setup.py bdist_msi
+
+
+
+
 # relimport.py is a very simple script that tests importing using relative
 # imports (available in Python 2.5 and up)
 #
@@ -13,18 +19,68 @@ from pathlib import Path
 
 SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 
-executables = [
-    # Executable(SCRIPT_PARENT_DIR_PATH / "src" / "gui.py")
-    Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py")
-]
+# executables = [
+#     Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py")
+# ]
 
-setup(name='Productivity Calculator',
-      version='0.1.0',
-      description='Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity',
-      executables=executables
-      )
+PRODUCT_NAME = "Productivity Calculator"
+PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
+# options = {
+#     # 'build_exe': (SCRIPT_PARENT_DIR_PATH.parent / "build").as_posix()
+#     'build_exe': "..\\build"
+# }
 
 
+# http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
+shortcut_table = [
+    ("DesktopShortcut",        # Shortcut
+     "DesktopFolder",          # Directory_
+     PRODUCT_NAME,           # Name that will be show on the link
+     "TARGETDIR",              # Component_
+     "[TARGETDIR]gui.exe",# Target exe to execute
+     None,                     # Arguments
+     None,                     # Description # FIX?
+     None,                     # Hotkey
+     None,                     # Icon
+     None,                     # IconIndex
+     None,                     # ShowCmd
+     'TARGETDIR'               # WkDir
+     )
+    ]
+
+# Now create the table dictionary
+msi_data = {"Shortcut": shortcut_table}
+
+# Change some default MSI options and specify the use of the above defined tables
+bdist_msi_options = {'data': msi_data}
+
+options = {
+    'bdist_msi': bdist_msi_options
+}
+#     #   # Comment this out if only want exe & run with: python setup.py build
+#     #   options={
+#     #       'bdist_msi': bdist_msi_options, # if need msi - run with: python setup.py bdist_msi
+#     #     #   'build_exe': build_exe_options # If dont need msi
+#     #       }   
+#       )
+
+setup(
+    name='Productivity Calculator',
+    version='0.0.0',
+    description=PRODUCT_DESCRIPTION,
+    executables=[
+        Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py")
+    ],
+    options=options
+)
+
+# if __name__ == "__main__":
+#     import os.path as path
+#     import subprocess
+#     subprocess.call("python setup.py build", shell=True)
+#     # print("Running " , path.abspath(__file__) , '...')
+
+#     # print("End of Main") 
 
 
 

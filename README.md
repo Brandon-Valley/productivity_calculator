@@ -11,6 +11,8 @@ Uses exports from QuickEMR & opentimeclock.com to calculate employee productivit
 ### CX-Freeze
 
 - `pip install --upgrade cx_Freeze`
+- `cd src`
+- `python setup.py build`
 
 ### Inno
 
