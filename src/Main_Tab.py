@@ -8,14 +8,26 @@ from tkinter import *
 import subprocess
 
 
-# from   sms.logger                                import json_logger
+
+# if __name__ == "__main__": 
 from   sms.GUI_tools                             import Tab
 from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
-# from   sms.clipboard_utils                       import clipboard_utils             as cbu
 from   sms.msg_box_utils                         import msg_box_utils               as mbu
-# import                                                  common_vars                 as cv
+from   main import main
 
-from main import main
+# else:
+#     from . sms.GUI_tools                             import Tab
+#     from . sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
+#     from . sms.msg_box_utils                         import msg_box_utils               as mbu
+#     from . main import main
+
+# # from   sms.logger                                import json_logger
+# from   sms.GUI_tools                             import Tab
+# from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
+# # from   sms.clipboard_utils                       import clipboard_utils             as cbu
+# from   sms.msg_box_utils                         import msg_box_utils               as mbu
+# # import                                                  common_vars                 as cv
+
 
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"

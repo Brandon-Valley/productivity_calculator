@@ -1,12 +1,38 @@
 # taskkill /im python.exe /F
 
+from __future__ import absolute_import
 
 from tkinter.ttk import *
 from tkinter import *
 
-from sms.GUI_tools import GUI_tools_utils as gtu
 
+# try:
+#     from   sms.GUI_tools import GUI_tools_utils as gtu
+#     import Main_Tab
+
+# except ImportError as e1:
+#     try:
+#         from . sms.GUI_tools import GUI_tools_utils as gtu
+#         from . import Main_Tab
+#     except Exception as e2:
+#         raise e2 from e1
+
+
+from   sms.GUI_tools import GUI_tools_utils as gtu
 import Main_Tab
+
+
+
+# import Main_Tab
+
+# try:
+#     # When running cx_Freeze to create exe
+#     from sms.GUI_tools import GUI_tools_utils as gtu
+# except ImportError:
+#     # When running as python file for local testing
+#     from  . sms.GUI_tools import GUI_tools_utils as gtu
+
+# import Main_Tab
 
 
 
