@@ -19,8 +19,23 @@ SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 # base="Win32GUI" should be used only for Windows GUI app
 BASE = "Win32GUI" if sys.platform == "win32" else None
 
+########################################################################################################################
+# Inputs
+########################################################################################################################
+PRODUCT_VERSION_STR = "0.0.8"
 PRODUCT_NAME = "Productivity Calculator"
 PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
+
+ADD_DESKTOP_SHORTCUT_FROM_MSI = True
+ADD_STARTUP_SHORTCUT_FROM_MSI = False
+ADD_START_MENU_SHORTCUT_FROM_MSI = False
+
+SHOW_CMD = False # Useful for testing
+
+EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
+
+
+
 ICON_STR_PATH = "imgs//icon.ico" # FIX rename to rel pat? 
 ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat? 
 
@@ -30,45 +45,61 @@ ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat?
 
 
 
+def _get_shortcut_table():
+    """ http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx """
+    shortcut_table = []
+
+    if ADD_DESKTOP_SHORTCUT_FROM_MSI:
+        shortcut_table.append(
+            (
+                "DesktopShortcut",        # Shortcut
+                "DesktopFolder",          # Directory_
+                PRODUCT_NAME,           # Name that will be show on the link
+                "TARGETDIR",              # Component_
+                "[TARGETDIR]gui.exe",     # Target exe to execute # FIX
+                None,                     # Arguments
+                PRODUCT_DESCRIPTION,      # Description
+                None,                     # Hotkey
+                EXE_ICON_ICO_PATH.as_posix(),                     # Icon
+                None,                     # IconIndex
+                SHOW_CMD,                 # ShowCmd
+                'TARGETDIR'               # WkDir
+            )
+        )
+    if ADD_STARTUP_SHORTCUT_FROM_MSI:
+        shortcut_table.append(
+            (
+                "StartupShortcut",        # Shortcut
+                "StartupFolder",          # Directory_
+                PRODUCT_NAME,           # Name that will be show on the link
+                "TARGETDIR",              # Component_
+                "[TARGETDIR]gui.exe",     # Target exe to execute # FIX
+                None,                     # Arguments
+                PRODUCT_DESCRIPTION,      # Description
+                None,                     # Hotkey
+                EXE_ICON_ICO_PATH.as_posix(),                     # Icon
+                None,                     # IconIndex
+                SHOW_CMD,                 # ShowCmd
+                'TARGETDIR'               # WkDir
+            )
+        )
+    if ADD_START_MENU_SHORTCUT_FROM_MSI:
+        raise NotImplementedError("Pinning the shortcut to start from msi is not yet implemented")
+
+    return shortcut_table
 
 
 
-
-
-
-
-
-# http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
-shortcut_table = [
-    ("DesktopShortcut",        # Shortcut
-     "DesktopFolder",          # Directory_
-     "ProductivityCalculator",           # Name that will be show on the link
-     "TARGETDIR",              # Component_
-     "[TARGETDIR]gui.exe",# Target exe to execute
-     None,                     # Arguments
-     None,                     # Description
-     None,                     # Hotkey
-     "C:/p/productivity_calculator/src/imgs/icon.ico",                     # Icon
-     None,                     # IconIndex
-     None,                     # ShowCmd
-     'TARGETDIR'               # WkDir
-     )
-    ]
 
 # Now create the table dictionary
-msi_data = {"Shortcut": shortcut_table}
+msi_data = {"Shortcut": _get_shortcut_table()}
 
 # Change some default MSI options and specify the use of the above defined tables
 bdist_msi_options = {'data': msi_data}
 
 
-
-# executables = [
-#     Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py", base=BASE)
-# ]
-
 setup(name='ProductivityCalculator',
-      version='0.0.6',
+      version=PRODUCT_VERSION_STR,
       description=PRODUCT_DESCRIPTION,
     executables=[
         Executable(
@@ -76,8 +107,10 @@ setup(name='ProductivityCalculator',
             # copyright="Copyright (C) 2024 cx_Freeze",
             base=BASE,
             icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
-            # shortcut_name=PRODUCT_NAME,
-            # shortcut_dir="MyProgramMenu",
+
+            # # Cant the same shortcut_dir here as used for msi or it will throw error 2756
+            # shortcut_name="ProductivityCalculatorStartMenuShortcut",
+            # shortcut_dir="ProgramFilesFolder",
         )
     ],
 
