@@ -6,8 +6,9 @@ import os
 from pathlib import Path
 from tkinter.ttk import *
 from tkinter import *
+from tkinter.messagebox import askyesno
+
 import subprocess
-from file_io_utils import write_json
 
 
 
@@ -174,17 +175,16 @@ class Main_Tab(Tab.Tab):
                 output_report_file_path=Path(output_report_file_path_str)
             )
 
-            reveal_in_file_explorer = mbu.msg_box__YES_NO(
+
+            reveal_in_file_explorer = askyesno(
                 title='Success!',
-                msg=(
+                message=(
                     f'Calculated Productivity Report has been written to: {output_report_file_path_str}'
                     "\n\n Reveal in File Explorer?"
                 ),
-                    icon = 'info',
-                    app_id = self.app_id
             )
 
-            if reveal_in_file_explorer == "yes":
+            if reveal_in_file_explorer:
                 subprocess.Popen(f'explorer /select,"{output_report_file_path_str}"')
 
 

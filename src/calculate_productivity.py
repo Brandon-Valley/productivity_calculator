@@ -3,7 +3,7 @@
 
 from pathlib import Path
 from pprint import pprint
-from file_io_utils import write_csv_from_row_dicts, write_json
+from file_io_utils import write_csv_from_row_dicts
 from open_time_clock_utils import get_hours_by_date_by_employee_name
 from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
@@ -16,14 +16,9 @@ FACILITY_NAMES = ["TP1"]
 
 OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
 
-# WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
 
 def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_date_by_provider_name, output_report_file_path):
-    # def _get_normalized_provider_name_plus_title(provider_name):
-    #     last_name_plus_title, first_name = provider_name.split(",")
-    #     return first_name + last_name_plus_title
 
-    # raise  ValueError("test error")#TMP
 
     def _get_provider_name_by_employee_name():
         provider_name_by_employee_name = {}
@@ -46,9 +41,6 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
             
             print(f"Employee: {employee_name} does not appear in Provider Productivity report, skipping...")
 
-            # assert employee_name in provider_name_by_employee_name, (
-            #     f"ERROR: {employee_name=} NOT in {provider_name_by_employee_name=}, Something is wrong with name mapping, look at new hire names?"
-            # )
 
         return provider_name_by_employee_name
             
@@ -95,38 +87,14 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
     write_csv_from_row_dicts(row_dicts, output_report_file_path, OUTPUT_REPORT_ORDERED_HEADERS)
 
 
-# OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
-
-    row_dicts = {}
-
-
-
-
-
-
-
-
-    # write_csv_from_row_dicts(row_dicts, csv_path, ordered_headers: Optional[List[str]])
-
-
-
 def calculate_productivity(exported_open_time_clock_payroll_csv_path, quick_emr_provider_productivity_csv_path, output_report_file_path):
-    write_json(["here"], "C:/p/productivity_calculator/src/wrk/in_main_top.json")#TMP
-
-
     print("Parsing payroll CSV...")
     hours_by_date_by_employee_name = get_hours_by_date_by_employee_name(exported_open_time_clock_payroll_csv_path)
     print(f"{hours_by_date_by_employee_name=}")
 
-    write_json(["here"], "C:/p/productivity_calculator/src/wrk/in_main__after_get_hours.json")#TMP
-
-
     total_units_by_date_by_provider_name = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(
         quick_emr_provider_productivity_csv_path, FACILITY_NAMES)
     print(f"{total_units_by_date_by_provider_name=}")
-
-    write_json(["here"], "C:/p/productivity_calculator/src/wrk/in_main__after_get_units.json")#TMP
-
 
     print("Calculating productivity & producing report...")
     _write_productivity_report(
@@ -134,15 +102,8 @@ def calculate_productivity(exported_open_time_clock_payroll_csv_path, quick_emr_
         total_units_by_date_by_provider_name,
         output_report_file_path)
     
-    write_json(["here"], "C:/p/productivity_calculator/src/wrk/in_main__after_wrote_prod_report.json")
-
-    
     assert output_report_file_path.is_file(), output_report_file_path
     print(f"Success! Report written to {output_report_file_path}")
-
-    write_json(["here"], "C:/p/productivity_calculator/src/wrk/in_main__after_assert_get_units.json")#TMP
-
-
 
 
 if __name__ == "__main__":
