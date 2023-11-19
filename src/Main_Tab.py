@@ -182,12 +182,53 @@ class Main_Tab(Tab.Tab):
             # Do thing#FIX
             print("CLICK")
 
+
+                        
+            MB_OK = 0x0#TMP
+            MB_OKCXL = 0x01
+            MB_YESNOCXL = 0x03
+            MB_YESNO = 0x04
+            MB_HELP = 0x4000
+            MB_SYSTEMMODAL = 4096
+            ICON_EXCLAIM = 0x30
+            ICON_INFO = 0x40
+            ICON_STOP = 0x10
+            hwnd = ctypes.windll.user32.GetActiveWindow()
+            print(f"{hwnd=}")
+            def message_box(title, text):
+                ctypes.windll.user32.MessageBoxW(hwnd, text, title, MB_OK | ICON_INFO | MB_SYSTEMMODAL)
+            message_box("test", "this is 1.5")
+
+            reveal_in_file_explorer = mbu.msg_box__YES_NO_TEST()
+
+
+
             output_report_file_path_str = self.output_pdfn_wg.write_file_path_str
             main(
                 exported_open_time_clock_payroll_csv_path=Path(self.payroll_fsb_wg.tb.get()),
                 quick_emr_provider_productivity_csv_path=Path(self.provider_prod_fsb_wg.tb.get()),
                 output_report_file_path=Path(output_report_file_path_str)
             )
+
+
+            
+            MB_OK = 0x0#TMP
+            MB_OKCXL = 0x01
+            MB_YESNOCXL = 0x03
+            MB_YESNO = 0x04
+            MB_HELP = 0x4000
+            MB_SYSTEMMODAL = 4096
+            ICON_EXCLAIM = 0x30
+            ICON_INFO = 0x40
+            ICON_STOP = 0x10
+            hwnd = ctypes.windll.user32.GetActiveWindow()
+            print(f"{hwnd=}")
+            def message_box(title, text):
+                ctypes.windll.user32.MessageBoxW(hwnd, text, title, MB_OK | ICON_INFO | MB_SYSTEMMODAL)
+            message_box("test", "this is 2")
+
+            reveal_in_file_explorer = mbu.msg_box__YES_NO_TEST()
+
 
             reveal_in_file_explorer = mbu.msg_box__YES_NO(
                 title='Success!',
@@ -198,9 +239,8 @@ class Main_Tab(Tab.Tab):
                     icon = 'info',
                     app_id = self.app_id
             )
-            print(f"{reveal_in_file_explorer=}")#TMP
 
-            if reveal_in_file_explorer:
+            if reveal_in_file_explorer == "yes":
                 subprocess.Popen(f'explorer /select,"{output_report_file_path_str}"')
 
             # Exit gracefully
@@ -291,7 +331,7 @@ class Main_Tab(Tab.Tab):
         self.calculate_btn  .grid(column=1, row=4, padx=5, pady=5, sticky='E')
 
 
-        MB_OK = 0x0
+        MB_OK = 0x0#TMP
         MB_OKCXL = 0x01
         MB_YESNOCXL = 0x03
         MB_YESNO = 0x04
