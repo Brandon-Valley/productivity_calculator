@@ -21,7 +21,7 @@ SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 BASE = "Win32GUI" if sys.platform == "win32" else None
 
 ########################################################################################################################
-# Inputs
+# Inputs (Also see cfg.py)
 ########################################################################################################################
 
 PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
@@ -44,9 +44,7 @@ ADD_START_MENU_SHORTCUT_FROM_MSI = False
 SHOW_CMD = False # Useful for testing
 
 
-ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat?
-
-# Derived
+# Derived Constants
 EXE_FILE_NAME = cfg.PRODUCT_NAME + ".exe"
 
 
@@ -70,35 +68,35 @@ def _get_shortcut_table():
     if ADD_DESKTOP_SHORTCUT_FROM_MSI:
         shortcut_table.append(
             (
-                "DesktopShortcut",        # Shortcut
-                "DesktopFolder",          # Directory_
-                cfg.PRODUCT_NAME,           # Name that will be show on the link
-                "TARGETDIR",              # Component_
-                f"[TARGETDIR]{EXE_FILE_NAME}",     # Target exe to execute # FIX
-                None,                     # Arguments
-                PRODUCT_DESCRIPTION,      # Description
-                None,                     # Hotkey
-                EXE_ICON_ICO_PATH.as_posix(),                     # Icon
-                None,                     # IconIndex
-                SHOW_CMD,                 # ShowCmd
-                'TARGETDIR'               # WkDir
+                "DesktopShortcut",             # Shortcut
+                "DesktopFolder",               # Directory_
+                cfg.PRODUCT_NAME,              # Name that will be show on the link
+                "TARGETDIR",                   # Component_
+                f"[TARGETDIR]{EXE_FILE_NAME}", # Target exe to execute
+                None,                          # Arguments
+                PRODUCT_DESCRIPTION,           # Description
+                None,                          # Hotkey
+                EXE_ICON_ICO_PATH.as_posix(),  # Icon
+                None,                          # IconIndex
+                SHOW_CMD,                      # ShowCmd
+                'TARGETDIR'                    # WkDir
             )
         )
     if ADD_STARTUP_SHORTCUT_FROM_MSI:
         shortcut_table.append(
             (
-                "StartupShortcut",        # Shortcut
-                "StartupFolder",          # Directory_
-                cfg.PRODUCT_NAME,           # Name that will be show on the link
-                "TARGETDIR",              # Component_
-                f"[TARGETDIR]{EXE_FILE_NAME}",     # Target exe to execute # FIX
-                None,                     # Arguments
-                PRODUCT_DESCRIPTION,      # Description
-                None,                     # Hotkey
-                EXE_ICON_ICO_PATH.as_posix(),                     # Icon
-                None,                     # IconIndex
-                SHOW_CMD,                 # ShowCmd
-                'TARGETDIR'               # WkDir
+                "StartupShortcut",             # Shortcut
+                "StartupFolder",               # Directory_
+                cfg.PRODUCT_NAME,              # Name that will be show on the link
+                "TARGETDIR",                   # Component_
+                f"[TARGETDIR]{EXE_FILE_NAME}", # Target exe to execute
+                None,                          # Arguments
+                PRODUCT_DESCRIPTION,           # Description
+                None,                          # Hotkey
+                EXE_ICON_ICO_PATH.as_posix(),  # Icon
+                None,                          # IconIndex
+                SHOW_CMD,                      # ShowCmd
+                'TARGETDIR'                    # WkDir
             )
         )
     if ADD_START_MENU_SHORTCUT_FROM_MSI:
@@ -107,14 +105,6 @@ def _get_shortcut_table():
 
     return shortcut_table
 
-
-
-
-# Now create the table dictionary
-msi_data = {"Shortcut": _get_shortcut_table()}
-
-# Change some default MSI options and specify the use of the above defined tables
-bdist_msi_options = {'data': msi_data}
 
 
 setup(
@@ -140,14 +130,16 @@ setup(
             # "includes": BasicPackages,
             # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
             "include_files": _get_input_file_tups_from_data_file_paths(DATA_FILE_PATHS)
-            
-            # [
-            #     (ICON_PNG_STR_PATH, "imgs/icon.png") # Include .png icon for GUI to use
-            #     ],
             # "zip_include_packages": ["encodings"] ##
         },
 
-        'bdist_msi': bdist_msi_options,
+        # Change some default MSI options and specify the use of the above defined tables
+        'bdist_msi': {
+            'data': {
+                # Create the table dictionary
+                "Shortcut": _get_shortcut_table()
+            }
+}
 
     }
 )
