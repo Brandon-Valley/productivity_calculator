@@ -4,8 +4,10 @@
 #  Packaging:
 #    - To just run a quick test for the built exe, run:  `python setup.py build`
 #    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
-#  Icon File Creation:
-#    - #DOC
+#  Icon Files:
+#    - There are many icons/imgs that could all be made different but for simplicity have been set up to be the same
+#    - 
+#    - #DOC # DOC https://www.freeconvert.com/png-to-ico/download
 
 # Future Improvements:
 #  - Add option to prompt user to open program after install
