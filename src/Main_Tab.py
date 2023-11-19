@@ -18,14 +18,12 @@ from pprint import pprint
 
 
 from   sms.GUI_tools                             import Tab
-from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup # FIX?
+from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
 from   calculate_productivity import calculate_productivity
 
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"
 DEFAULT_OUTPUT_FILE_NAME = f"Productivity_Report_{datetime.today().strftime('%Y-%m-%d')}.csv"
-
-SETUP_NEW_REPO_SCRIPT_ABS_PATH = os.path.dirname(os.path.abspath(__file__)) + '//setup_new_repo.py'
 
 # GUI_VARS_JSON_PATH = cv.PROGRAM_DATA_DIR_PATH + '\\setup_new_repo_gui_vars.json'
 
