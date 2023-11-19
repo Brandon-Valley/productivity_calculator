@@ -17,7 +17,7 @@ import sys
 #         print("not frozen")
 #         return SCRIPT_PARENT_DIR_PATH
 
-PRODUCT_VERSION_STR = "0.0.9"
-PRODUCT_NAME = "Productivity Calculator"
+PRODUCT_VERSION_STR = "0.0.10"
+PRODUCT_NAME = "ProductivityCalculator"
 IMGS_DIR_PATH = Path("__file__").parent / "imgs"
 GUI_ICON_PNG_PATH =  IMGS_DIR_PATH / "icon.png"
