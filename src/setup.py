@@ -20,9 +20,9 @@ SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 # base="Win32GUI" should be used only for Windows GUI app
 BASE = "Win32GUI" if sys.platform == "win32" else None
 
-########################################################################################################################
-# Inputs (Also see cfg.py)
-########################################################################################################################
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+#  .msi / .exe / General Dist. Inputs (Also see cfg.py)
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
 
@@ -31,8 +31,16 @@ TOP_LEVEL_PY_FILE_PATH = SCRIPT_PARENT_DIR_PATH  / "gui.py"
 EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
 GUI_ICON_PNG_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.png"
 
-# Paths to non-python data/config files that need to be copied to the build dir so they will be accessible by the python
-# script files after freeze. - icon image paths used for the GUI for example
+# DATA_FILE_PATHS:
+# - Paths to non-python data/config files that need to be copied to the build dir so they will be accessible by the
+#   python script files after freeze.
+#     - Icon image paths used for the GUI for example
+# - To keep things simple, the paths of all "data files" will be re-created such that the relative paths of each
+#   original "data file" to this file before freezing (./imgs/icon.png for example) will be the same as the relative
+#   paths of each copied-over/included "data file" relative to the created .exe after freezing.
+# - Additionally, (also to keep things simple) when the .msi is created, it will include everything in/under the
+#   parent dir of the created .exe
+# - THEREFORE TO KEEP THINGS SIMPLE, `DATA_FILE_PATHS` should not include paths to files above this file's parent dir.
 DATA_FILE_PATHS = [
     GUI_ICON_PNG_PATH
 ]
@@ -43,6 +51,10 @@ ADD_START_MENU_SHORTCUT_FROM_MSI = False
 
 SHOW_CMD = False # Useful for testing
 
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 # Derived Constants
 EXE_FILE_NAME = cfg.PRODUCT_NAME + ".exe"
@@ -52,7 +64,7 @@ def _get_input_file_tups_from_data_file_paths(data_file_paths: List[Path]) -> Li
     """
     (This example assumes this file exists at c/p/myapp/src/setup.py)
     Input: [Path("c/p/myapp/src/imgs/gui_icon.png"), Path("c/p/myapp/src/config/some_file.txt")]
-    Output: 
+    Output:
     [
         ("c/p/myapp/src/imgs/gui_icon.png", "imgs/gui_icon.png"),
         ("c/p/myapp/src/config/some_file.txt", "config/some_file.txt"),
