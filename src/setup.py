@@ -104,6 +104,7 @@ setup(name='ProductivityCalculator',
     executables=[
         Executable(
             SCRIPT_PARENT_DIR_PATH  / "gui.py",
+            target_name = PRODUCT_NAME + ".exe",
             # copyright="Copyright (C) 2024 cx_Freeze",
             base=BASE,
             icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
