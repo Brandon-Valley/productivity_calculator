@@ -3,7 +3,7 @@
 # Usage:
 #  Packaging (Run commands from parent dir of this file):
 #    - Prerequisite: `pip install --upgrade cx_Freeze`
-#    - To just run a quick test for the built exe, run:  `python setup.py build`
+#    - To just run a quick test for the built exe, run:          `python setup.py build`
 #    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
 #  Icon Files:
 #    Icon Creation:
@@ -29,9 +29,7 @@ from pathlib import Path
 import sys
 import cfg
 from os.path import relpath
-
-# import ctypes# TMP
-# MessageBox = ctypes.WinDLL('user32').MessageBoxW
+import uuid
 
 SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
@@ -170,7 +168,7 @@ setup(
             "include_files": _get_input_file_tups_from_data_file_paths(DATA_FILE_PATHS),
 
             # # Haven't needed these options yet, but I think they're for including/excluding python files?
-            # "includes": ["ctypes"],#TMP
+            # "includes": ["abc"],
             # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
             # "zip_include_packages": ["encodings"] ##
         },
@@ -179,8 +177,10 @@ setup(
         'bdist_msi': {
             'data': {
                 # Create the table dictionary
-                "Shortcut": _get_shortcut_table()
-                # FIX add upgrade code at least
+                "Shortcut": _get_shortcut_table(),
+                # https://stackoverflow.com/questions/68539511/is-there-a-way-to-update-application-created-with-cx-freeze
+                # 'upgrade_code': '{3F2504E0-4F89-11D3-9A0C-0305E82C3301}',
+                # 'add_to_path': False,
             }
         }
     }

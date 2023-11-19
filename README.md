@@ -11,3 +11,7 @@ Uses exports from QuickEMR & opentimeclock.com to calculate employee productivit
 
 See `src/setup.py`
 
+## Versioning
+
+See `src/cfg.py` & `CHANGELOG.md`
+

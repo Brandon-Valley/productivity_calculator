@@ -20,7 +20,6 @@ from pprint import pprint
 from   sms.GUI_tools                             import Tab
 from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup # FIX?
 from   calculate_productivity import calculate_productivity
-# FIX remove mbu sm
 
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"
@@ -133,7 +132,6 @@ class Main_Tab(Tab.Tab):
 
 
 
-
     def output_____widget_setup(self):
 
         # Label Frame
@@ -148,11 +146,11 @@ class Main_Tab(Tab.Tab):
                                                                     file_name_tb_width = 30,
                                                                     init_parent_dir_path_str = DEFAULT_OUTPUT_PARENT_DIR_PATH, #FIX replace with gui var?
                                                                     init_file_name = DEFAULT_OUTPUT_FILE_NAME,
-                                                                    write_file_path_updated_func = None,# FIXME?
+                                                                    write_file_path_updated_func = None,
                                                                     focus_parent_dir_tb_after_browse = False,
                                                                     browse_btn_txt = 'Browse...',
-                                                                    parent_dir_tb_edit_func = None,# FIX?
-                                                                    file_path_tb_edit_func = None,# FIX?
+                                                                    parent_dir_tb_edit_func = None,
+                                                                    file_path_tb_edit_func = None,
                                                                 )
 
 
@@ -169,7 +167,6 @@ class Main_Tab(Tab.Tab):
                 output_report_file_path=Path(output_report_file_path_str)
             )
 
-
             reveal_in_file_explorer = askyesno(
                 title='Success!',
                 message=(
@@ -183,8 +180,6 @@ class Main_Tab(Tab.Tab):
 
             # Exit gracefully
             self.master.destroy()
-
-
 
         self.calculate_btn = Button(self.master, text="Calculate Productivity", wraplength = 90, command = calculate_btn_clk)
 
@@ -223,7 +218,6 @@ class Main_Tab(Tab.Tab):
     def grid_init_widgets(self):
         self.master.grid_columnconfigure(1, weight=1) # Used to allow column 1 in root to expand as window resized
 
-
         # --------------------------------------------------------------------------------------------------------------
         #  Inputs
         # --------------------------------------------------------------------------------------------------------------
@@ -261,7 +255,6 @@ class Main_Tab(Tab.Tab):
 
         self.output_pdfn_wg.write_file_path_descrip_lbl .grid(column=1 , row=5, padx=5, pady=5, sticky='E')
         self.output_pdfn_wg.write_file_path_lbl         .grid(column=2 , row=5, padx=5, pady=5, sticky='W', columnspan = 4)
-
 
         # --------------------------------------------------------------------------------------------------------------
         #  Calculate

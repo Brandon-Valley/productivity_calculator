@@ -93,5 +93,4 @@ def main(msg = None):
 
 
 if __name__ == '__main__':
-    set_up_logging()
     main()
