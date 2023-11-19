@@ -185,10 +185,8 @@ class Main_Tab(Tab.Tab):
             if reveal_in_file_explorer:
                 subprocess.Popen(f'explorer /select,"{output_report_file_path_str}"')
 
-
-
             # Exit gracefully
-            exit()
+            self.master.destroy()
 
 
 
