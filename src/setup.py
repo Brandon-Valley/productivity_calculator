@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Usage:
-#  - To just run a quick test for the built exe, run:  `python setup.py build`
-#  - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
+#  Packaging:
+#    - To just run a quick test for the built exe, run:  `python setup.py build`
+#    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
+#  Icon File Creation:
+#    - #DOC
 
 # Future Improvements:
 #  - Add option to prompt user to open program after install
@@ -94,34 +97,35 @@ def _get_shortcut_table():
       - http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
       - List of possible values for Directory_:
           - https://learn.microsoft.com/en-us/windows/win32/msi/property-reference?redirectedfrom=MSDN#system-folder-properties
+    It is technically possible to set a different icon, target, args, etc. for each shortcut, but to keep things simple,
+    everything other than the first 2 items (Shortcut & Directory_) comes from a common derived constant
     """
     shortcut_table = []
 
     if ADD_DESKTOP_SHORTCUT_FROM_MSI:
+        # Example: C:\Users\Bob\Desktop\MyGreatShortcut.lnk
         shortcut_table.append(
             (
-                "DesktopShortcut",             # Shortcut
+                "DesktopShortcut",             # Shortcut (Not sure if the exact name matters for this)
                 "DesktopFolder",               # Directory_
+            ) + COMMON_SHORTCUT_TABLE_TUP
+        )
+    if ADD_START_MENU_SHORTCUT_FROM_MSI:
+        # Example: C:\Users\Bob\AppData\Roaming\Microsoft\Windows\Start Menu\MyGreatShortcut.lnk
+        shortcut_table.append(
+            (
+                "StartMenuShortcut",           # Shortcut (Not sure if the exact name matters for this)
+                "StartMenuFolder",             # Directory_
             ) + COMMON_SHORTCUT_TABLE_TUP
         )
     # Wont automatically Pin shortcut to start menu, but will make it appear in the "Recently Added" section in the top
     # right of the start menu with a right-click option to pin
     if ADD_STARTUP_SHORTCUT_FROM_MSI:
-        # Example: C:\Users\Brandon\AppData\Roaming\Microsoft\Windows\Start Menu
+        # Example: C:\Users\Bob\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\MyGreatShortcut.lnk
         shortcut_table.append(
             (
-                "StartupShortcut",             # Shortcut
+                "StartupShortcut",             # Shortcut (Not sure if the exact name matters for this)
                 "StartupFolder",               # Directory_
-            ) + COMMON_SHORTCUT_TABLE_TUP
-        )
-    if ADD_START_MENU_SHORTCUT_FROM_MSI:
-        # # Possible solution: https://github.com/marcelotduarte/cx_Freeze/issues/48
-        # raise NotImplementedError("Pinning the shortcut to start from msi is not yet implemented")
-    
-        shortcut_table.append(
-            (
-                "StartMenuShortcut",           # Shortcut
-                "StartMenuFolder",             # Directory_
             ) + COMMON_SHORTCUT_TABLE_TUP
         )
 
@@ -139,7 +143,7 @@ setup(
             target_name = EXE_FILE_NAME,
             # copyright="Copyright (C) 2024 cx_Freeze",
             base=BASE,
-            icon=EXE_ICON_ICO_PATH, # DOC https://www.freeconvert.com/png-to-ico/download
+            icon=EXE_ICON_ICO_PATH,
 
             # # Cant use the same shortcut_dir here as used for msi or it will throw error 2756
             # shortcut_name="ProductivityCalculatorStartMenuShortcut",
