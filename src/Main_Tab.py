@@ -14,9 +14,8 @@ import subprocess
 
 from   sms.GUI_tools                             import Tab
 from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup # FIX?
-from   sms.msg_box_utils                         import msg_box_utils               as mbu
 from   calculate_productivity import calculate_productivity
-
+# FIX remove mbu sm
 
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"
@@ -159,7 +158,6 @@ class Main_Tab(Tab.Tab):
                                                                     parent_dir_tb_edit_func = None,# FIX?
                                                                     file_path_tb_edit_func = None,# FIX?
                                                                 )
-  
 
 
     def calculate_btn_____widget_setup(self):

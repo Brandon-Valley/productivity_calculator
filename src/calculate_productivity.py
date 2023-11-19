@@ -19,7 +19,6 @@ OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total
 
 def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_date_by_provider_name, output_report_file_path):
 
-
     def _get_provider_name_by_employee_name():
         provider_name_by_employee_name = {}
 
@@ -41,16 +40,15 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
             
             print(f"Employee: {employee_name} does not appear in Provider Productivity report, skipping...")
 
-
         return provider_name_by_employee_name
             
-    
+    print(f"{hours_by_date_by_employee_name=}")
+    print(f"{total_units_by_date_by_provider_name=}")
     # Build provider_name_by_employee_name
     provider_name_by_employee_name = _get_provider_name_by_employee_name()
+    print(f"{provider_name_by_employee_name=}")
     print("provider_name_by_employee_name:")
-    pprint(provider_name_by_employee_name)
-
-
+    pprint(provider_name_by_employee_name)#FIX HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     # Build row_dicts
     row_dicts = []

@@ -1,9 +1,11 @@
 # taskkill /im python.exe /F
 
 from __future__ import absolute_import
+from datetime import datetime
 import os
 from pathlib import Path
 import sys
+import time
 
 from tkinter.ttk import *
 from tkinter import *
@@ -12,7 +14,10 @@ import traceback
 
 import cfg
 from   sms.GUI_tools import GUI_tools_utils as gtu
+from   sms.file_system_utils import file_system_utils as fsu
 import Main_Tab
+
+import logging
 
 SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
@@ -32,14 +37,46 @@ def _get_data_dir_path():
         # The application is not
         print("not frozen")
         return SCRIPT_PARENT_DIR_PATH
+    
+
+
+def _set_up_logging(log_file_parent_dir_path: Path, max_old_log_file_age_sec: int = 2628288) -> Path:# FIX add delete old
+    """2628288 sec ~= 1 month"""
+    # Delete any log files older than max_old_log_file_age_sec
+    if log_file_parent_dir_path:
+        for path_obj in log_file_parent_dir_path.glob("*"):
+            num_sec_since_last_modified = int(time.time() - os.path.getmtime(path_obj))
+            if max_old_log_file_age_sec < num_sec_since_last_modified:
+                os.remove(path_obj)
+
+    if log_file_parent_dir_path:
+        log_file_parent_dir_path.mkdir(parents=True, exist_ok=True)
+
+    log_file_name = cfg.PRODUCT_NAME.replace(" ", "_") + "_" + datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S') + ".log"
+    log_file_path = log_file_parent_dir_path / log_file_name
+
+    logging.root.handlers = []
+    logging.basicConfig(
+        level=logging.INFO,
+        # format="%(asctime)s [%(levelname)s] %(message)s",
+        format="%(message)s",
+        handlers=[logging.FileHandler(log_file_path), logging.StreamHandler(sys.stdout)]
+    )
+    logging.info(f"Initialized logging for {log_file_path=}...\n")
+    return log_file_path
+
+
 
 def main(msg = None):
+    data_dir_path = _get_data_dir_path()
+    print(f"{data_dir_path=}")
+
+
+    _log_file_path = _set_up_logging(data_dir_path / "logs")
+
     # Main GUI params
     window_title = f"{cfg.PRODUCT_NAME}  v{cfg.PRODUCT_VERSION_STR}"
     want_duplicate_apps_to_stack_in_toolbar = True
-
-    data_dir_path = _get_data_dir_path()
-    print(f"{data_dir_path=}")
 
     # Set to None for default iconphoto
     # Can work with either .png or .ico, but if you use a .ico, you need to pass the photo_img_path down to all sub-guis,
