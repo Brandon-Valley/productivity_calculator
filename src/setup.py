@@ -5,9 +5,17 @@
 #    - To just run a quick test for the built exe, run:  `python setup.py build`
 #    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
 #  Icon Files:
-#    - There are many icons/imgs that could all be made different but for simplicity have been set up to be the same
-#    - 
-#    - #DOC # DOC https://www.freeconvert.com/png-to-ico/download
+#    Icon Creation:
+#      - .png -> .ico: https://www.freeconvert.com/png-to-ico/download
+#      - Looks best if img is square, PowerPoint w/ right-click "Size & Position" is good enough for me at least
+#    Addition Icon File Doc:
+#      - There are many icons/imgs that could all be made different but for simplicity have been set up to be the same
+#      - The best way to do this is to have the same image file in 2 formats:
+#        - .ico - Required for .exe, .msi, and .lnk icons
+#        - .png - For the image that appears in the top left of the Tkinter GUI and the in the taskbar
+#          - Not technically required but recommended:
+#            - It is possible to use the same .ico for the GUI, but .png is better for some complicated sub-gui reason
+#              - (See gui.py for details)
 
 # Future Improvements:
 #  - Add option to prompt user to open program after install
@@ -169,8 +177,7 @@ setup(
                 # Create the table dictionary
                 "Shortcut": _get_shortcut_table()
             }
-}   
-
+        }
     }
 )
 
