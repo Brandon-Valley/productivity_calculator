@@ -4,16 +4,13 @@ from pathlib import Path
 import logging
 from pprint import pformat
 from pprint import pprint
+import tempfile
 
 import file_io_utils
 
 
-
 SCRIPT_PARENT_DIR_PATH = Path('__file__').parent
-# WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
-# MY_PAYROLL_CSV_PATH = WRK_DIR_PATH / "my_payroll.csv"#TMP
-MY_PAYROLL_CSV_PATH = Path("C:/p/productivity_calculator/src/wrk/my_payroll.csv")
-# ROW_DICTS_TMP_JSON_PATH = WRK_DIR_PATH / "otc_row_dicts.json"
+MY_PAYROLL_CSV_PATH = Path(tempfile.gettempdir()) / "open_time_clock_utils/my_payroll.csv"
 
 class CsvWriteFailedException(Exception):
     pass
@@ -21,7 +18,6 @@ class CsvWriteFailedException(Exception):
 
 def _get_date_range_tup(in_csv_path):
     lines = file_io_utils.read_lines_from_txt(in_csv_path)
-    logging.info(f"{lines[1]=}")
     
     # Example: 'Date range:,2023-10-16  -  2023-10-27'
     date_range_line = lines[1]
@@ -71,6 +67,7 @@ def _write_my_payroll_csv(start_datetime, end_datetime, in_csv_path, out_csv_pat
     new_csv_lines = [new_header_line] + data_lines
     
     try:
+        out_csv_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_csv_path, "w") as textFile:  # can throw FileNotFoundError
             for line in new_csv_lines:
                 textFile.writelines(line.replace(",", ",") + "\n")
@@ -103,8 +100,6 @@ def _get_payroll_data_dict_by_employee_name_from_my_payroll_csv(in_csv_path):
 def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path = MY_PAYROLL_CSV_PATH, delete_working_payroll_csv_path = False):
     """in_csv_path - Path to CSV created by exporting default PayrollExcel.xlsx downloaded from OpenTimeClock"""
     logging.info(f"in get_payroll_data_dict_by_employee_name - {in_csv_path=}")
-    # row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
-    # file_io_utils.write_json(row_dicts, ROW_DICTS_TMP_JSON_PATH)#TMP
     
     start_datetime, end_datetime = _get_date_range_tup(in_csv_path)
     logging.info(f"{(start_datetime, end_datetime)=}")
