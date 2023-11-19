@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter.messagebox import askyesno
 
 import subprocess
+from typing import Optional, Union
 
 
 
@@ -25,23 +26,14 @@ SETUP_NEW_REPO_SCRIPT_ABS_PATH = os.path.dirname(os.path.abspath(__file__)) + '/
 
 # GUI_VARS_JSON_PATH = cv.PROGRAM_DATA_DIR_PATH + '\\setup_new_repo_gui_vars.json'
 
-# REPO_TYPE_CBOX_VALUES = [cv.REPO_TYPE_KEY__IP, cv.REPO_TYPE_KEY__PIC, cv.REPO_TYPE_KEY__OTHER]
-REPO_TYPE_CBOX_VALUES = ["a", "b", "c"]
-
-KNOWN_ERROR_CODE_MSG_D = {128: 'fatal: remote error: Repository not found.  The requested repository does not exist, or you do not have permission to access it.'}
-
-REMOTE_URL_TB_WIDTH = 77 # the width of the whole window is dependent on this value, as long as it is => 77
-
-DEFAULT_FONT_STR              = 'Helvetica 9'
-REMOTE_WARNING_FINAL_FONT_STR = 'Helvetica 10 bold'
-
-
-
+# FIX formatter
 class Main_Tab(Tab.Tab):
-    def __init__(self, master, tab_control, photo_img_path = None, app_id = None):
-        Tab.Tab.__init__(self, master, tab_control, photo_img_path, app_id)
+    def __init__(self, master, tab_control, photo_img_path_str: Optional[str] = None, app_id = None, root_dir_path: Optional[Path] = None, log_file_path: Optional[Path] = None):
+        Tab.Tab.__init__(self, master, tab_control, str(photo_img_path_str), app_id)
 
         self.app_id = app_id
+        self.root_dir_path = root_dir_path
+        self.log_file_path = log_file_path
 
         # self.read_gui_vars()
 

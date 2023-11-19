@@ -21,11 +21,11 @@ import logging
 
 SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
-# import ctypes# TMP
-# MessageBox = ctypes.WinDLL('user32').MessageBoxW
-
-def _get_data_dir_path():
+def _get_root_dir_path():
     """
+    Returns:
+        If Frozen: .exe parent dir path (dependent on setup.py config)
+        Else:      Parent dir of this file
     Returns dir path from which paths to data files like icons should be based - needed for after freezing w/ cx_freeze
       - This assumes the data files have been added to the build dir when setup.py was run
     """
@@ -40,7 +40,7 @@ def _get_data_dir_path():
     
 
 
-def _set_up_logging(log_file_parent_dir_path: Path, max_old_log_file_age_sec: int = 2628288) -> Path:# FIX add delete old
+def _set_up_logging(log_file_parent_dir_path: Path, max_old_log_file_age_sec: int = 2628288) -> Path:
     """2628288 sec ~= 1 month"""
     # Delete any log files older than max_old_log_file_age_sec
     if log_file_parent_dir_path:
@@ -68,11 +68,10 @@ def _set_up_logging(log_file_parent_dir_path: Path, max_old_log_file_age_sec: in
 
 
 def main(msg = None):
-    data_dir_path = _get_data_dir_path()
-    print(f"{data_dir_path=}")
+    root_dir_path = _get_root_dir_path()
+    print(f"{root_dir_path=}")
 
-
-    _log_file_path = _set_up_logging(data_dir_path / "logs")
+    log_file_path = _set_up_logging(root_dir_path / "logs")
 
     # Main GUI params
     window_title = f"{cfg.PRODUCT_NAME}  v{cfg.PRODUCT_VERSION_STR}"
@@ -81,7 +80,7 @@ def main(msg = None):
     # Set to None for default iconphoto
     # Can work with either .png or .ico, but if you use a .ico, you need to pass the photo_img_path down to all sub-guis,
     # no clue why but will only inherit iconphoto (png), not iconbitmap(ico) from gui with same app_id
-    iconphoto_abs_path_str = (data_dir_path / "imgs" / "icon.png").as_posix()
+    iconphoto_abs_path_str = (root_dir_path / "imgs" / "icon.png").as_posix()
 
     # Secondary gui params
 
@@ -115,7 +114,7 @@ def main(msg = None):
     tab_control = Notebook(master)
     tab_control.grid(row=1, column=0, sticky='NESW')
 
-    Main_Tab.Main_Tab(master, tab_control, iconphoto_abs_path_str, app_id)
+    Main_Tab.Main_Tab(master, tab_control, iconphoto_abs_path_str, app_id, root_dir_path, log_file_path)
 
     master.mainloop()
 
