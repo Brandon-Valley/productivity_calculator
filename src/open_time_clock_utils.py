@@ -6,9 +6,10 @@ import file_io_utils
 
 
 SCRIPT_PARENT_DIR_PATH = Path('__file__').parent
-WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
-MY_PAYROLL_CSV_PATH = WRK_DIR_PATH / "my_payroll.csv"
-ROW_DICTS_TMP_JSON_PATH = WRK_DIR_PATH / "otc_row_dicts.json"
+# WRK_DIR_PATH = SCRIPT_PARENT_DIR_PATH / "wrk"
+# MY_PAYROLL_CSV_PATH = WRK_DIR_PATH / "my_payroll.csv"#TMP
+MY_PAYROLL_CSV_PATH = Path("C:/p/productivity_calculator/src/wrk/my_payroll.csv")
+# ROW_DICTS_TMP_JSON_PATH = WRK_DIR_PATH / "otc_row_dicts.json"
 
 class CsvWriteFailedException(Exception):
     pass
@@ -98,8 +99,8 @@ def _get_payroll_data_dict_by_employee_name_from_my_payroll_csv(in_csv_path):
 def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path = MY_PAYROLL_CSV_PATH, delete_working_payroll_csv_path = False):
     """in_csv_path - Path to CSV created by exporting default PayrollExcel.xlsx downloaded from OpenTimeClock"""
     print(f"in get_payroll_data_dict_by_employee_name - {in_csv_path=}")
-    row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
-    file_io_utils.write_json(row_dicts, ROW_DICTS_TMP_JSON_PATH)
+    # row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
+    # file_io_utils.write_json(row_dicts, ROW_DICTS_TMP_JSON_PATH)#TMP
     
     start_datetime, end_datetime = _get_date_range_tup(in_csv_path)
     print(f"{(start_datetime, end_datetime)=}")

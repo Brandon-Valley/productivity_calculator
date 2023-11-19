@@ -7,6 +7,8 @@ import sys
 
 from tkinter.ttk import *
 from tkinter import *
+from tkinter.messagebox import showerror
+import traceback
 
 import cfg
 from   sms.GUI_tools import GUI_tools_utils as gtu
@@ -50,6 +52,15 @@ def main(msg = None):
     #     - if no iconphoto is set, tool bar image will be default python, instead of tk feather
     #     - duplicate applications will stack, but you will be unable to stack additional applications, such as a child msg_box
     set_app_id = True
+
+    #DOC https://stackoverflow.com/questions/15246523/handling-exception-in-python-tkinter
+        # any name as accepted but not signature
+    def report_callback_exception(self, exc, val, tb):
+        # showerror("Error", message=str(val))
+        showerror("Error", message=traceback.format_exc())
+
+    
+    Tk.report_callback_exception = report_callback_exception
 
     # Highest level GUI must always use TK(), not Toplevel(), PhotoImage can only work after TK(), but if this has
     # already been called in a higher level GUI, use Toplevel()
