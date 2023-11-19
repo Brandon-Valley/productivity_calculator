@@ -2,6 +2,7 @@
 
 # Usage:
 #  Packaging (Run commands from parent dir of this file):
+#    - Prerequisite: `pip install --upgrade cx_Freeze`
 #    - To just run a quick test for the built exe, run:  `python setup.py build`
 #    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
 #  Icon Files:
