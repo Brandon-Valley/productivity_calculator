@@ -15,7 +15,7 @@ import sys
 import cfg
 from os.path import relpath
 
-SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
+SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
 # base="Win32GUI" should be used only for Windows GUI app
 BASE = "Win32GUI" if sys.platform == "win32" else None
