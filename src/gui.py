@@ -8,6 +8,7 @@ import sys
 from tkinter.ttk import *
 from tkinter import *
 
+import cfg
 from   sms.GUI_tools import GUI_tools_utils as gtu
 import Main_Tab
 
@@ -30,7 +31,7 @@ def _get_data_dir_path():
 
 def main(msg = None):
     # Main GUI params
-    window_title = "Productivity Calculator"
+    window_title = f"{cfg.PRODUCT_NAME} v{cfg.PRODUCT_VERSION_STR}"
     want_duplicate_apps_to_stack_in_toolbar = True
 
     data_dir_path = _get_data_dir_path()

@@ -12,6 +12,7 @@
 from cx_Freeze import setup, Executable
 from pathlib import Path
 import sys
+import cfg
 
 SCRIPT_PARENT_DIR_PATH = Path("__file__").parent
 
@@ -22,9 +23,12 @@ BASE = "Win32GUI" if sys.platform == "win32" else None
 ########################################################################################################################
 # Inputs
 ########################################################################################################################
-PRODUCT_VERSION_STR = "0.0.8"
-PRODUCT_NAME = "Productivity Calculator"
+
 PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
+
+TOP_LEVEL_PY_FILE_PATH = SCRIPT_PARENT_DIR_PATH  / "gui.py"
+
+EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
 
 ADD_DESKTOP_SHORTCUT_FROM_MSI = True
 ADD_STARTUP_SHORTCUT_FROM_MSI = False
@@ -32,15 +36,12 @@ ADD_START_MENU_SHORTCUT_FROM_MSI = False
 
 SHOW_CMD = False # Useful for testing
 
-EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
-
-
 
 ICON_STR_PATH = "imgs//icon.ico" # FIX rename to rel pat? 
 ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat? 
 
 # Derived
-EXE_FILE_NAME = PRODUCT_NAME + ".exe"
+EXE_FILE_NAME = cfg.PRODUCT_NAME + ".exe"
 
 
 
@@ -54,7 +55,7 @@ def _get_shortcut_table():
             (
                 "DesktopShortcut",        # Shortcut
                 "DesktopFolder",          # Directory_
-                PRODUCT_NAME,           # Name that will be show on the link
+                cfg.PRODUCT_NAME,           # Name that will be show on the link
                 "TARGETDIR",              # Component_
                 f"[TARGETDIR]{EXE_FILE_NAME}",     # Target exe to execute # FIX
                 None,                     # Arguments
@@ -71,7 +72,7 @@ def _get_shortcut_table():
             (
                 "StartupShortcut",        # Shortcut
                 "StartupFolder",          # Directory_
-                PRODUCT_NAME,           # Name that will be show on the link
+                cfg.PRODUCT_NAME,           # Name that will be show on the link
                 "TARGETDIR",              # Component_
                 f"[TARGETDIR]{EXE_FILE_NAME}",     # Target exe to execute # FIX
                 None,                     # Arguments
@@ -99,11 +100,11 @@ bdist_msi_options = {'data': msi_data}
 
 
 setup(name='ProductivityCalculator',
-      version=PRODUCT_VERSION_STR,
+      version=cfg.PRODUCT_VERSION_STR,
       description=PRODUCT_DESCRIPTION,
     executables=[
         Executable(
-            SCRIPT_PARENT_DIR_PATH  / "gui.py",
+            script = TOP_LEVEL_PY_FILE_PATH,
             target_name = EXE_FILE_NAME,
             # copyright="Copyright (C) 2024 cx_Freeze",
             base=BASE,
@@ -142,7 +143,7 @@ setup(name='ProductivityCalculator',
 # #     (
 # #         "DesktopShortcut",        # Shortcut
 # #      "DesktopFolder",          # Directory_
-# #      PRODUCT_NAME,           # Name that will be show on the link
+# #      cfg.PRODUCT_NAME,           # Name that will be show on the link
 # #      "TARGETDIR",              # Component_
 # #      "[TARGETDIR]gui.exe",# Target exe to execute
 # #      None,                     # Arguments
@@ -193,7 +194,7 @@ setup(name='ProductivityCalculator',
 # bdist_msi_options = {'data': msi_data}
 
 # setup(
-#     name=PRODUCT_NAME,
+#     name=cfg.PRODUCT_NAME,
 #     version='0.0.5',
 #     description=PRODUCT_DESCRIPTION,
 #     executables=[
@@ -202,7 +203,7 @@ setup(name='ProductivityCalculator',
 #             # copyright="Copyright (C) 2024 cx_Freeze",
 #             base=BASE,
 #             icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
-#             shortcut_name=PRODUCT_NAME,
+#             shortcut_name=cfg.PRODUCT_NAME,
 #             shortcut_dir="MyProgramMenu",
 #         ),
 #     ],
@@ -285,7 +286,7 @@ setup(name='ProductivityCalculator',
 
 # # https://stackoverflow.com/questions/17307934/creating-msi-with-cx-freeze-and-bdist-msi-for-pyside-app
 
-# product_name = "Sample_TK_App"
+# cfg.PRODUCT_NAME = "Sample_TK_App"
 
 
 # base = None
@@ -297,7 +298,7 @@ setup(name='ProductivityCalculator',
 # # bdist_msi_options = {
 # #     # 'upgrade_code': '{66620F3A-DC3A-11E2-B341-002219E9B01E}',
 # #     'add_to_path': False,
-# #     'initial_target_dir': r'[ProgramFilesFolder]\%s' % (product_name),
+# #     'initial_target_dir': r'[ProgramFilesFolder]\%s' % (cfg.PRODUCT_NAME),
 # #     }
 
 
