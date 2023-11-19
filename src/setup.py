@@ -39,8 +39,8 @@ EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
 ICON_STR_PATH = "imgs//icon.ico" # FIX rename to rel pat? 
 ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat? 
 
-
-
+# Derived
+EXE_FILE_NAME = PRODUCT_NAME + ".exe"
 
 
 
@@ -56,7 +56,7 @@ def _get_shortcut_table():
                 "DesktopFolder",          # Directory_
                 PRODUCT_NAME,           # Name that will be show on the link
                 "TARGETDIR",              # Component_
-                "[TARGETDIR]gui.exe",     # Target exe to execute # FIX
+                f"[TARGETDIR]{EXE_FILE_NAME}",     # Target exe to execute # FIX
                 None,                     # Arguments
                 PRODUCT_DESCRIPTION,      # Description
                 None,                     # Hotkey
@@ -73,7 +73,7 @@ def _get_shortcut_table():
                 "StartupFolder",          # Directory_
                 PRODUCT_NAME,           # Name that will be show on the link
                 "TARGETDIR",              # Component_
-                "[TARGETDIR]gui.exe",     # Target exe to execute # FIX
+                f"[TARGETDIR]{EXE_FILE_NAME}",     # Target exe to execute # FIX
                 None,                     # Arguments
                 PRODUCT_DESCRIPTION,      # Description
                 None,                     # Hotkey
@@ -104,7 +104,7 @@ setup(name='ProductivityCalculator',
     executables=[
         Executable(
             SCRIPT_PARENT_DIR_PATH  / "gui.py",
-            target_name = PRODUCT_NAME + ".exe",
+            target_name = EXE_FILE_NAME,
             # copyright="Copyright (C) 2024 cx_Freeze",
             base=BASE,
             icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
