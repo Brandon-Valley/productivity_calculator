@@ -8,6 +8,7 @@
 #  - Add option to prompt user to open program after install
 #    - https://cx-freeze-users.narkive.com/xThwhu4x/cx-freeze-bdist-msi-install-script-option
 
+from pprint import pprint
 from typing import List, Tuple
 from cx_Freeze import setup, Executable
 from pathlib import Path
@@ -46,8 +47,8 @@ DATA_FILE_PATHS = [
 ]
 
 ADD_DESKTOP_SHORTCUT_FROM_MSI = True
-ADD_STARTUP_SHORTCUT_FROM_MSI = False
-ADD_START_MENU_SHORTCUT_FROM_MSI = False
+ADD_START_MENU_SHORTCUT_FROM_MSI = True # Adds to "Recently Added"
+ADD_STARTUP_SHORTCUT_FROM_MSI = False # Only use if program should run on startup
 
 SHOW_CMD = False # Useful for testing
 
@@ -57,6 +58,20 @@ SHOW_CMD = False # Useful for testing
 
 # Derived Constants
 EXE_FILE_NAME = cfg.PRODUCT_NAME + ".exe"
+
+# See `_get_shortcut_table()` for doc
+COMMON_SHORTCUT_TABLE_TUP = (
+    cfg.PRODUCT_NAME,              # Name that will be show on the link
+    "TARGETDIR",                   # Component_
+    f"[TARGETDIR]{EXE_FILE_NAME}", # Target exe to execute
+    None,                          # Arguments
+    PRODUCT_DESCRIPTION,           # Description
+    None,                          # Hotkey
+    EXE_ICON_ICO_PATH.as_posix(),  # Icon
+    None,                          # IconIndex
+    SHOW_CMD,                      # ShowCmd
+    'TARGETDIR'                    # WkDir
+)
 
 
 def _get_input_file_tups_from_data_file_paths(data_file_paths: List[Path]) -> List[Tuple[str, str]]:
@@ -77,6 +92,8 @@ def _get_shortcut_table():
     This gets into the Windows shortcut / directory tables, seems complicated, never dove very deep into this, probably
     possible to do more useful things here.
       - http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
+      - List of possible values for Directory_:
+          - https://learn.microsoft.com/en-us/windows/win32/msi/property-reference?redirectedfrom=MSDN#system-folder-properties
     """
     shortcut_table = []
 
@@ -85,38 +102,28 @@ def _get_shortcut_table():
             (
                 "DesktopShortcut",             # Shortcut
                 "DesktopFolder",               # Directory_
-                cfg.PRODUCT_NAME,              # Name that will be show on the link
-                "TARGETDIR",                   # Component_
-                f"[TARGETDIR]{EXE_FILE_NAME}", # Target exe to execute
-                None,                          # Arguments
-                PRODUCT_DESCRIPTION,           # Description
-                None,                          # Hotkey
-                EXE_ICON_ICO_PATH.as_posix(),  # Icon
-                None,                          # IconIndex
-                SHOW_CMD,                      # ShowCmd
-                'TARGETDIR'                    # WkDir
-            )
+            ) + COMMON_SHORTCUT_TABLE_TUP
         )
+    # Wont automatically Pin shortcut to start menu, but will make it appear in the "Recently Added" section in the top
+    # right of the start menu with a right-click option to pin
     if ADD_STARTUP_SHORTCUT_FROM_MSI:
+        # Example: C:\Users\Brandon\AppData\Roaming\Microsoft\Windows\Start Menu
         shortcut_table.append(
             (
                 "StartupShortcut",             # Shortcut
                 "StartupFolder",               # Directory_
-                cfg.PRODUCT_NAME,              # Name that will be show on the link
-                "TARGETDIR",                   # Component_
-                f"[TARGETDIR]{EXE_FILE_NAME}", # Target exe to execute
-                None,                          # Arguments
-                PRODUCT_DESCRIPTION,           # Description
-                None,                          # Hotkey
-                EXE_ICON_ICO_PATH.as_posix(),  # Icon
-                None,                          # IconIndex
-                SHOW_CMD,                      # ShowCmd
-                'TARGETDIR'                    # WkDir
-            )
+            ) + COMMON_SHORTCUT_TABLE_TUP
         )
     if ADD_START_MENU_SHORTCUT_FROM_MSI:
-        # Possible solution: https://github.com/marcelotduarte/cx_Freeze/issues/48
-        raise NotImplementedError("Pinning the shortcut to start from msi is not yet implemented")
+        # # Possible solution: https://github.com/marcelotduarte/cx_Freeze/issues/48
+        # raise NotImplementedError("Pinning the shortcut to start from msi is not yet implemented")
+    
+        shortcut_table.append(
+            (
+                "StartMenuShortcut",           # Shortcut
+                "StartMenuFolder",             # Directory_
+            ) + COMMON_SHORTCUT_TABLE_TUP
+        )
 
     return shortcut_table
 
