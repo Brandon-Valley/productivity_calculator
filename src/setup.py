@@ -26,54 +26,33 @@ ICON_PNG_STR_PATH = "imgs//icon.png" # FIX rename to rel pat?
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 # http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
-# https://github.com/marcelotduarte/cx_Freeze/issues/48
-# shortcut_table = [
-#     (
-#         "DesktopShortcut",        # Shortcut
-#      "DesktopFolder",          # Directory_
-#      PRODUCT_NAME,           # Name that will be show on the link
-#      "TARGETDIR",              # Component_
-#      "[TARGETDIR]gui.exe",# Target exe to execute
-#      None,                     # Arguments
-#      PRODUCT_DESCRIPTION,                      # Description # FIX?
-#      None,                     # Hotkey
-#      "imgs//icon.ico",                     # Icon
-#      None,                     # IconIndex
-#      True,                     # ShowCmd
-#      'TARGETDIR'               # WkDir
-#      )
-#     ]
 shortcut_table = [
     ("DesktopShortcut",        # Shortcut
      "DesktopFolder",          # Directory_
-     "program",     # Name
+     "ProductivityCalculator",           # Name that will be show on the link
      "TARGETDIR",              # Component_
-     "[TARGETDIR]gui.exe",   # Target
+     "[TARGETDIR]gui.exe",# Target exe to execute
      None,                     # Arguments
      None,                     # Description
      None,                     # Hotkey
-     None,                     # Icon
+     "C:/p/productivity_calculator/src/imgs/icon.ico",                     # Icon
      None,                     # IconIndex
      None,                     # ShowCmd
      'TARGETDIR'               # WkDir
-     ),
-
-    # For adding separate shortcut to Startup folder so the program will run whenever PC is restarted
-
-    # ("StartupShortcut",        # Shortcut
-    #  "StartupFolder",          # Directory_
-    #  "program",     # Name
-    #  "TARGETDIR",              # Component_
-    #  "[TARGETDIR]main.exe",   # Target
-    #  None,                     # Arguments
-    #  None,                     # Description
-    #  None,                     # Hotkey
-    #  None,                     # Icon
-    #  None,                     # IconIndex
-    #  None,                     # ShowCmd
-    #  'TARGETDIR'               # WkDir
-    #  ),
+     )
     ]
 
 # Now create the table dictionary
@@ -82,42 +61,120 @@ msi_data = {"Shortcut": shortcut_table}
 # Change some default MSI options and specify the use of the above defined tables
 bdist_msi_options = {'data': msi_data}
 
-# options = {
+
+
+executables = [
+    Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py", base=BASE)
+]
+
+setup(name='ProductivityCalculator',
+      version='0.0.6',
+      description=PRODUCT_DESCRIPTION,
+      executables=executables,
+
+    #   # Comment this out if only want exe & run with: python setup.py build
+      options={
+        'bdist_msi': bdist_msi_options, # if need msi - run with: python setup.py bdist_msi
+        "build_exe": {
+            # "includes": BasicPackages,
+            # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
+            "include_files": [
+                (ICON_PNG_STR_PATH, "imgs/icon.png") # Include .png icon for GUI to use
+                ],
+            # "zip_include_packages": ["encodings"] ##
+        }
+          }   
+      )
+
+
+
+
+
+
+
+
+# # http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
+# # https://github.com/marcelotduarte/cx_Freeze/issues/48
+# # shortcut_table = [
+# #     (
+# #         "DesktopShortcut",        # Shortcut
+# #      "DesktopFolder",          # Directory_
+# #      PRODUCT_NAME,           # Name that will be show on the link
+# #      "TARGETDIR",              # Component_
+# #      "[TARGETDIR]gui.exe",# Target exe to execute
+# #      None,                     # Arguments
+# #      PRODUCT_DESCRIPTION,                      # Description # FIX?
+# #      None,                     # Hotkey
+# #      "imgs//icon.ico",                     # Icon
+# #      None,                     # IconIndex
+# #      True,                     # ShowCmd
+# #      'TARGETDIR'               # WkDir
+# #      )
+# #     ]
+# shortcut_table = [
+#     ("DesktopShortcut",        # Shortcut
+#      "DesktopFolder",          # Directory_
+#      "program",     # Name
+#      "TARGETDIR",              # Component_
+#      "[TARGETDIR]gui.exe",   # Target
+#      None,                     # Arguments
+#      None,                     # Description
+#      None,                     # Hotkey
+#      None,                     # Icon
+#      None,                     # IconIndex
+#      None,                     # ShowCmd
+#      'TARGETDIR'               # WkDir
+#      ),
+
+#     # For adding separate shortcut to Startup folder so the program will run whenever PC is restarted
+
+#     # ("StartupShortcut",        # Shortcut
+#     #  "StartupFolder",          # Directory_
+#     #  "program",     # Name
+#     #  "TARGETDIR",              # Component_
+#     #  "[TARGETDIR]main.exe",   # Target
+#     #  None,                     # Arguments
+#     #  None,                     # Description
+#     #  None,                     # Hotkey
+#     #  None,                     # Icon
+#     #  None,                     # IconIndex
+#     #  None,                     # ShowCmd
+#     #  'TARGETDIR'               # WkDir
+#     #  ),
+#     ]
+
+# # Now create the table dictionary
+# msi_data = {"Shortcut": shortcut_table}
+
+# # Change some default MSI options and specify the use of the above defined tables
+# bdist_msi_options = {'data': msi_data}
+
+# setup(
+#     name=PRODUCT_NAME,
+#     version='0.0.5',
+#     description=PRODUCT_DESCRIPTION,
+#     executables=[
+#         Executable(
+#             SCRIPT_PARENT_DIR_PATH  / "gui.py",
+#             # copyright="Copyright (C) 2024 cx_Freeze",
+#             base=BASE,
+#             icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
+#             shortcut_name=PRODUCT_NAME,
+#             shortcut_dir="MyProgramMenu",
+#         ),
+#     ],
+#     options={
+#     "build_exe": {
+#         # "includes": BasicPackages,
+#         # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
+#         "include_files": [
+#             (ICON_PNG_STR_PATH, "imgs/icon.png") # Include .png icon for GUI to use
+#             ],
+#         # "zip_include_packages": ["encodings"] ##
+#     },
 #     'bdist_msi': bdist_msi_options
 # }
-#     #   # Comment this out if only want exe & run with: python setup.py build
-#     #   options={
-#     #       'bdist_msi': bdist_msi_options, # if need msi - run with: python setup.py bdist_msi
-#     #     #   'build_exe': build_exe_options # If dont need msi
-#     #       }   
-#       )
-
-setup(
-    name=PRODUCT_NAME,
-    version='0.0.5',
-    description=PRODUCT_DESCRIPTION,
-    executables=[
-        Executable(
-            SCRIPT_PARENT_DIR_PATH  / "gui.py",
-            # copyright="Copyright (C) 2024 cx_Freeze",
-            base=BASE,
-            icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
-            shortcut_name=PRODUCT_NAME,
-            shortcut_dir="MyProgramMenu",
-        ),
-    ],
-    options={
-    "build_exe": {
-        # "includes": BasicPackages,
-        # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
-        "include_files": [
-            (ICON_PNG_STR_PATH, "imgs/icon.png") # Include .png icon for GUI to use
-            ],
-        # "zip_include_packages": ["encodings"] ##
-    },
-    'bdist_msi': bdist_msi_options
-}
-)
+# )
 
 
 
