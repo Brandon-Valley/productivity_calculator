@@ -11,6 +11,10 @@ from tkinter.messagebox import askyesno
 import subprocess
 from typing import Optional, Union
 
+import logging
+from pprint import pformat
+from pprint import pprint
+
 
 
 from   sms.GUI_tools                             import Tab
@@ -155,7 +159,7 @@ class Main_Tab(Tab.Tab):
     def calculate_btn_____widget_setup(self):
 
         def calculate_btn_clk():
-            print("CLICK")
+            logging.info("CLICK")
 
             output_report_file_path_str = self.output_pdfn_wg.write_file_path_str
 
@@ -202,7 +206,7 @@ class Main_Tab(Tab.Tab):
         try:
             text = add_to_text_if_not_empty(text, self.provider_prod_csv_export_disable_tool_tip_reason__csv_only)
             text = add_to_text_if_not_empty(text, self.payroll_csv_export_disable_tool_tip_reason__csv_only)
-            print(f"{text=}")
+            logging.info(f"{text=}")
 
             self.calculate_btn_tool_tip = self.Tool_Tip(self.calculate_btn, text = text, wait_time = 0, wrap_length = 200)
 

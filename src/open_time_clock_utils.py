@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta
 import os
 from pathlib import Path
+import logging
+from pprint import pformat
 from pprint import pprint
+
 import file_io_utils
+
 
 
 SCRIPT_PARENT_DIR_PATH = Path('__file__').parent
@@ -17,7 +21,7 @@ class CsvWriteFailedException(Exception):
 
 def _get_date_range_tup(in_csv_path):
     lines = file_io_utils.read_lines_from_txt(in_csv_path)
-    print(f"{lines[1]=}")
+    logging.info(f"{lines[1]=}")
     
     # Example: 'Date range:,2023-10-16  -  2023-10-27'
     date_range_line = lines[1]
@@ -33,15 +37,15 @@ def _write_my_payroll_csv(start_datetime, end_datetime, in_csv_path, out_csv_pat
         
         init_header_line = lines[2]
         data_lines = lines[3:]
-        print(f"{init_header_line=}")
+        logging.info(f"{init_header_line=}")
         
     day_strs = init_header_line.split("Department,Employee Number,Employee Name,")[1].split(",Basic Hours")[0].split(",")
-    print(f"{day_strs=}")
+    logging.info(f"{day_strs=}")
     
     num_days_timedelta = start_datetime - end_datetime
     num_days_int = num_days_timedelta.days * -1
-    print(f"{num_days_timedelta=}")
-    print(f"{num_days_int=}")
+    logging.info(f"{num_days_timedelta=}")
+    logging.info(f"{num_days_int=}")
     
     assert num_days_int + 1 == len(day_strs), f"{num_days_int + 1=} != {len(day_strs)=}, {day_strs} - Something wrong with date range?"
     
@@ -51,17 +55,17 @@ def _write_my_payroll_csv(start_datetime, end_datetime, in_csv_path, out_csv_pat
         new_datetime = start_datetime + timedelta(days=i)
         date_strs.append(new_datetime.strftime('%Y-%m-%d'))
     
-    print(f"{date_strs=}")
+    logging.info(f"{date_strs=}")
     assert end_datetime.strftime('%Y-%m-%d') == date_strs[-1], f"{end_datetime.strftime('%Y-%m-%d')=} == {date_strs[-1]=}"
 
     # Build new_header_line
     og_day_strs_str = ",".join(day_strs)
-    print(f"\n{og_day_strs_str=}\n")
+    logging.info(f"\n{og_day_strs_str=}\n")
     new_date_strs_str = ",".join(date_strs)
     new_header_line = init_header_line.replace(og_day_strs_str, new_date_strs_str)
     assert new_header_line != init_header_line, f"{new_header_line=} == {init_header_line=}"
-    print(f"")
-    print(f"{new_header_line=}")
+    logging.info(f"")
+    logging.info(f"{new_header_line=}")
     
     # Write new csv
     new_csv_lines = [new_header_line] + data_lines
@@ -98,16 +102,16 @@ def _get_payroll_data_dict_by_employee_name_from_my_payroll_csv(in_csv_path):
 
 def get_payroll_data_dict_by_employee_name(in_csv_path, working_payroll_csv_path = MY_PAYROLL_CSV_PATH, delete_working_payroll_csv_path = False):
     """in_csv_path - Path to CSV created by exporting default PayrollExcel.xlsx downloaded from OpenTimeClock"""
-    print(f"in get_payroll_data_dict_by_employee_name - {in_csv_path=}")
+    logging.info(f"in get_payroll_data_dict_by_employee_name - {in_csv_path=}")
     # row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
     # file_io_utils.write_json(row_dicts, ROW_DICTS_TMP_JSON_PATH)#TMP
     
     start_datetime, end_datetime = _get_date_range_tup(in_csv_path)
-    print(f"{(start_datetime, end_datetime)=}")
+    logging.info(f"{(start_datetime, end_datetime)=}")
     
     _write_my_payroll_csv(start_datetime, end_datetime, in_csv_path, working_payroll_csv_path)
     assert working_payroll_csv_path.is_file(), working_payroll_csv_path
-    print(f"Wrote {working_payroll_csv_path=}")
+    logging.info(f"Wrote {working_payroll_csv_path=}")
     
     payroll_data_dict_by_employee_name = _get_payroll_data_dict_by_employee_name_from_my_payroll_csv(working_payroll_csv_path)
     
@@ -143,18 +147,18 @@ def get_hours_by_date_by_employee_name(in_csv_path, working_payroll_csv_path = M
 
 if __name__ == "__main__":
     import os.path as path
-    print("Running ",  path.abspath(__file__), '...')
+    logging.info("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv")
     # payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path)
     
-    # print("payroll_data_dict_by_employee_name:")
+    # logging.info("payroll_data_dict_by_employee_name:")
     # pprint(payroll_data_dict_by_employee_name)
     out = get_hours_by_date_by_employee_name(in_csv_path)
     
-    print("out:")
+    logging.info("out:")
     pprint(out)
-    print("End of Main") 
+    logging.info("End of Main") 
     
     
     

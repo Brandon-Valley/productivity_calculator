@@ -2,7 +2,10 @@
 
 from datetime import datetime
 from pathlib import Path
+import logging
+from pprint import pformat
 from pprint import pprint
+
 import file_io_utils
 
 ROW_TYPE_FACILITY_NAME = "FACILITY_NAME"
@@ -77,7 +80,7 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
 
 
 def get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names):
-    print("in get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export")
+    logging.info("in get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export")
 
     total_units_by_date_by_provider_name = {}
     productivity_data_dicts_by_date_by_provider_name = _get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(
@@ -99,13 +102,13 @@ if __name__ == "__main__":
     SCRIPT_PARENT_DIR_PATH = Path('__file__').parent
 
     import os.path as path
-    print("Running ",  path.abspath(__file__), '...')
+    logging.info("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
     out = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path, facility_names = ["TP1"])
     
-    print("out:")
+    logging.info("out:")
     pprint(out)
-    print("End of Main") 
+    logging.info("End of Main") 
     
     

@@ -25,7 +25,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
 
         for employee_name, _hours_by_date in hours_by_date_by_employee_name.items():
             for provider_name, _total_units_by_date in total_units_by_date_by_provider_name.items():
-                print(f"{provider_name.split(',')=}")
+                logging.info(f"{provider_name.split(',')=}")
                 first_name = provider_name.split(",")[-1].strip()
                 name_suffix = " ".join(provider_name.split(",")[:-1])
                 normalized_provider_name_plus_title = first_name +  " " + name_suffix
@@ -80,7 +80,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                 }
             )
 
-    # print("row_dicts:")
+    # logging.info("row_dicts:")
     # pprint(row_dicts)
 
     write_csv_from_row_dicts(row_dicts, output_report_file_path, OUTPUT_REPORT_ORDERED_HEADERS)
