@@ -49,7 +49,6 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
     provider_name_by_employee_name = _get_provider_name_by_employee_name()
     logging.info(f"{provider_name_by_employee_name=}")
     logging.info("provider_name_by_employee_name:")
-    # pprint(provider_name_by_employee_name)#FIX HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     # Build row_dicts
     row_dicts = []
@@ -79,9 +78,6 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                     "Calculated Productivity %": round((total_units / max_units) * 100, 2)
                 }
             )
-
-    # logging.info("row_dicts:")
-    # pprint(row_dicts)
 
     write_csv_from_row_dicts(row_dicts, output_report_file_path, OUTPUT_REPORT_ORDERED_HEADERS)
 

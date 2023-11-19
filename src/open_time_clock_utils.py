@@ -150,10 +150,6 @@ if __name__ == "__main__":
     logging.info("Running ",  path.abspath(__file__), '...')
 
     in_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv")
-    # payroll_data_dict_by_employee_name = get_payroll_data_dict_by_employee_name(in_csv_path)
-    
-    # logging.info("payroll_data_dict_by_employee_name:")
-    # pprint(payroll_data_dict_by_employee_name)
     out = get_hours_by_date_by_employee_name(in_csv_path)
     
     logging.info("out:")
