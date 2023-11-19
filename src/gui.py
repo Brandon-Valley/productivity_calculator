@@ -15,7 +15,6 @@ import traceback
 import cfg
 from logging_tools import set_up_logging
 from   sms.GUI_tools import GUI_tools_utils as gtu
-from   sms.file_system_utils import file_system_utils as fsu
 import Main_Tab
 
 import logging
