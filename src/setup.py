@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 # Usage:
-#  Packaging:
+#  Packaging (Run commands from parent dir of this file):
 #    - To just run a quick test for the built exe, run:  `python setup.py build`
 #    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
 #  Icon Files:
 #    Icon Creation:
 #      - .png -> .ico: https://www.freeconvert.com/png-to-ico/download
 #      - Looks best if img is square, PowerPoint w/ right-click "Size & Position" is good enough for me at least
-#    Addition Icon File Doc:
+#    Additional Icon File Doc:
 #      - There are many icons/imgs that could all be made different but for simplicity have been set up to be the same
 #      - The best way to do this is to have the same image file in 2 formats:
 #        - .ico - Required for .exe, .msi, and .lnk icons
@@ -28,6 +28,9 @@ from pathlib import Path
 import sys
 import cfg
 from os.path import relpath
+
+# import ctypes# TMP
+# MessageBox = ctypes.WinDLL('user32').MessageBoxW
 
 SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
@@ -63,7 +66,7 @@ ADD_DESKTOP_SHORTCUT_FROM_MSI = True
 ADD_START_MENU_SHORTCUT_FROM_MSI = True # Adds to "Recently Added"
 ADD_STARTUP_SHORTCUT_FROM_MSI = False # Only use if program should run on startup
 
-SHOW_CMD = False # Useful for testing
+SHOW_CMD = True # Useful for testing - Seems to be broken?
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -163,10 +166,10 @@ setup(
 
     options={
         "build_exe": {
-            "include_files": _get_input_file_tups_from_data_file_paths(DATA_FILE_PATHS)
+            "include_files": _get_input_file_tups_from_data_file_paths(DATA_FILE_PATHS),
 
             # # Haven't needed these options yet, but I think they're for including/excluding python files?
-            # "includes": BasicPackages,
+            # "includes": ["ctypes"],#TMP
             # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
             # "zip_include_packages": ["encodings"] ##
         },
@@ -176,6 +179,7 @@ setup(
             'data': {
                 # Create the table dictionary
                 "Shortcut": _get_shortcut_table()
+                # FIX add upgrade code at least
             }
         }
     }

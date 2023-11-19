@@ -1,5 +1,6 @@
 # taskkill /im python.exe /F
 
+import ctypes
 from datetime import datetime
 import os
 from pathlib import Path
@@ -11,7 +12,7 @@ import subprocess
 
 # if __name__ == "__main__": 
 from   sms.GUI_tools                             import Tab
-from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
+from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup # FIX?
 from   sms.msg_box_utils                         import msg_box_utils               as mbu
 from   main import main
 
@@ -197,6 +198,7 @@ class Main_Tab(Tab.Tab):
                     icon = 'info',
                     app_id = self.app_id
             )
+            print(f"{reveal_in_file_explorer=}")#TMP
 
             if reveal_in_file_explorer:
                 subprocess.Popen(f'explorer /select,"{output_report_file_path_str}"')
@@ -287,6 +289,22 @@ class Main_Tab(Tab.Tab):
         #  Calculate
         # --------------------------------------------------------------------------------------------------------------
         self.calculate_btn  .grid(column=1, row=4, padx=5, pady=5, sticky='E')
+
+
+        MB_OK = 0x0
+        MB_OKCXL = 0x01
+        MB_YESNOCXL = 0x03
+        MB_YESNO = 0x04
+        MB_HELP = 0x4000
+        MB_SYSTEMMODAL = 4096
+        ICON_EXCLAIM = 0x30
+        ICON_INFO = 0x40
+        ICON_STOP = 0x10
+
+        def message_box(title, text):
+            ctypes.windll.user32.MessageBoxW(0, text, title, MB_OK | ICON_INFO | MB_SYSTEMMODAL)
+
+        message_box("test", "this is tesfgfrd")
 
 
 

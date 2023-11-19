@@ -14,6 +14,8 @@ import Main_Tab
 
 SCRIPT_PARENT_DIR_PATH = Path(__file__).parent
 
+# import ctypes# TMP
+# MessageBox = ctypes.WinDLL('user32').MessageBoxW
 
 def _get_data_dir_path():
     """
