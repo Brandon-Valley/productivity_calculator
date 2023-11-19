@@ -52,7 +52,6 @@ ADD_START_MENU_SHORTCUT_FROM_MSI = False
 SHOW_CMD = False # Useful for testing
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
@@ -74,7 +73,11 @@ def _get_input_file_tups_from_data_file_paths(data_file_paths: List[Path]) -> Li
 
 
 def _get_shortcut_table():
-    """ http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx """
+    """
+    This gets into the Windows shortcut / directory tables, seems complicated, never dove very deep into this, probably
+    possible to do more useful things here.
+      - http://msdn.microsoft.com/en-us/library/windows/desktop/aa371847(v=vs.85).aspx
+    """
     shortcut_table = []
 
     if ADD_DESKTOP_SHORTCUT_FROM_MSI:
@@ -139,9 +142,11 @@ setup(
 
     options={
         "build_exe": {
+            "include_files": _get_input_file_tups_from_data_file_paths(DATA_FILE_PATHS)
+
+            # # Haven't needed these options yet, but I think they're for including/excluding python files?
             # "includes": BasicPackages,
             # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
-            "include_files": _get_input_file_tups_from_data_file_paths(DATA_FILE_PATHS)
             # "zip_include_packages": ["encodings"] ##
         },
 
@@ -151,9 +156,9 @@ setup(
                 # Create the table dictionary
                 "Shortcut": _get_shortcut_table()
             }
-}
+}   
 
     }
 )
 
-print(f"Done! Output written to {SCRIPT_PARENT_DIR_PATH}/dist/{cfg.PRODUCT_NAME}-{cfg.PRODUCT_VERSION_STR}-win64.msi")
+print(f"\nDone! Output written to {SCRIPT_PARENT_DIR_PATH}/dist/{cfg.PRODUCT_NAME}-{cfg.PRODUCT_VERSION_STR}-win64.msi")
