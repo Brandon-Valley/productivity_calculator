@@ -63,14 +63,23 @@ bdist_msi_options = {'data': msi_data}
 
 
 
-executables = [
-    Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py", base=BASE)
-]
+# executables = [
+#     Executable(SCRIPT_PARENT_DIR_PATH  / "gui.py", base=BASE)
+# ]
 
 setup(name='ProductivityCalculator',
       version='0.0.6',
       description=PRODUCT_DESCRIPTION,
-      executables=executables,
+    executables=[
+        Executable(
+            SCRIPT_PARENT_DIR_PATH  / "gui.py",
+            # copyright="Copyright (C) 2024 cx_Freeze",
+            base=BASE,
+            icon="imgs//icon.ico", # DOC https://www.freeconvert.com/png-to-ico/download
+            # shortcut_name=PRODUCT_NAME,
+            # shortcut_dir="MyProgramMenu",
+        )
+    ],
 
     #   # Comment this out if only want exe & run with: python setup.py build
       options={
