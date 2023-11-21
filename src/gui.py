@@ -36,7 +36,7 @@ def _get_root_dir_path():
         # The application is not
         logging.info("not frozen")
         return SCRIPT_PARENT_DIR_PATH
-    
+
 
 
 def main(msg = None):

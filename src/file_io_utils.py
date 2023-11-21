@@ -69,14 +69,13 @@ def read_csv_as_row_dicts(csv_path) -> List[Dict[str, str]]:
                    >>   |3.1|$%^|         >>       },
                    >>                     >>       {
                    >>                     >>           'Foo': '3.1',
-                   >>                     >>           'Bar': '$%^' 
+                   >>                     >>           'Bar': '$%^'
                    >>                     >>       }
                    >>                     >>   ]
     ```
     """
     assert isfile(csv_path), csv_path
     return list(csv.DictReader(open(csv_path, "r", newline="", encoding="utf8"), dialect="excel"))
-
 
 
 def read_lines_from_txt(filePath):

@@ -9,8 +9,6 @@ from open_time_clock_utils import get_hours_by_date_by_employee_name
 from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
 
-
-
 MAX_POSSIBLE_UNITS_PER_HOUR = 4
 
 FACILITY_NAMES = ["TP1"]
@@ -38,13 +36,14 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                         f"{normalized_provider_name_plus_title=}. Something is wrong with name mapping, look at new hire names?"
                     )
                     provider_name_by_employee_name[employee_name] = provider_name
-            
+
             logging.info(f"Employee: {employee_name} does not appear in Provider Productivity report, skipping...")
 
         return provider_name_by_employee_name
-            
+
     logging.info(f"{hours_by_date_by_employee_name=}")
     logging.info(f"{total_units_by_date_by_provider_name=}")
+    
     # Build provider_name_by_employee_name
     provider_name_by_employee_name = _get_provider_name_by_employee_name()
     logging.info(f"{provider_name_by_employee_name=}")
@@ -67,7 +66,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                 continue
 
             max_units = hours * MAX_POSSIBLE_UNITS_PER_HOUR
-            
+
             row_dicts.append(
                 {
                     "Employee Name": employee_name,
@@ -96,7 +95,7 @@ def calculate_productivity(exported_open_time_clock_payroll_csv_path, quick_emr_
         hours_by_date_by_employee_name,
         total_units_by_date_by_provider_name,
         output_report_file_path)
-    
+
     assert output_report_file_path.is_file(), output_report_file_path
     logging.info(f"Success! Report written to {output_report_file_path}")
 
@@ -110,5 +109,4 @@ if __name__ == "__main__":
          quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
          output_report_file_path=Path("C:/p/productivity_calculator/wrk/out.xlsx"))
 
-    logging.info("End of Main") 
-    
+    logging.info("End of Main")

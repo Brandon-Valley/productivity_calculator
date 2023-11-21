@@ -13,7 +13,7 @@ DEFAULT_LOG_FILE_PARENT_DIR_PATH = Path(__file__).parent / "logs"
 
 def set_up_logging(log_file_parent_dir_path: Path = DEFAULT_LOG_FILE_PARENT_DIR_PATH, max_old_log_file_age_sec: int = 2628288) -> Path:
     """2628288 sec ~= 1 month"""
-    
+
     # Delete any log files older than max_old_log_file_age_sec
     for path_obj in log_file_parent_dir_path.glob("*"):
         num_sec_since_last_modified = int(time.time() - os.path.getmtime(path_obj))
