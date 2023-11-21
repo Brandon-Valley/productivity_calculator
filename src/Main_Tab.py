@@ -20,6 +20,7 @@ from pprint import pprint
 from   sms.GUI_tools                             import Tab
 from   sms.GUI_tools.run_func_with_loading_popup import run_func_with_loading_popup
 from   calculate_productivity import calculate_productivity
+import file_io_utils
 
 DOWNLOADS_DIR_PATH_STR = str(Path.home() / "Downloads") 
 DEFAULT_OUTPUT_PARENT_DIR_PATH = Path.home() / "Documents" / "Productivity_Reports"
@@ -36,7 +37,8 @@ class Main_Tab(Tab.Tab):
         self.root_dir_path = root_dir_path
         self.log_file_path = log_file_path
 
-        # self.read_gui_vars()
+        self.gui_vars_json_path = root_dir_path / "storage" / "gui_vars.json"
+        self.read_gui_vars()
 
         self.calculate_btn_____widget_setup()
         self.inputs_____widget_setup()
@@ -47,21 +49,24 @@ class Main_Tab(Tab.Tab):
 
 
 
-    # def read_gui_vars(self):
-    #     self.gui_vars_d = json_logger.read(GUI_VARS_JSON_PATH, return_if_file_not_found = None)
+    def read_gui_vars(self):
+        try:
+            self.gui_vars_dict = file_io_utils.read_json(self.gui_vars_json_path)
+        except AssertionError:
+            self.gui_vars_dict = {}
 
-    #     if self.gui_vars_d == None:
-    #         self.gui_vars_d = {}
+        if self.gui_vars_dict == None:
+            self.gui_vars_dict = {}
 
-    # def write_gui_var(self, key_str, val):
-    #     self.gui_vars_d[key_str] = val
-    #     json_logger.write(self.gui_vars_d, GUI_VARS_JSON_PATH)
+    def write_gui_var(self, key_str, val):
+        self.gui_vars_dict[key_str] = val
+        file_io_utils.write_json(self.gui_vars_dict, self.gui_vars_json_path)
 
-    # def get_gui_var(self, key_str):
-    #     if key_str in self.gui_vars_d.keys():
-    #         return self.gui_vars_d[key_str]
-    #     else:
-    #         return ''
+    def get_gui_var(self, key_str):
+        if key_str in self.gui_vars_dict.keys():
+            return self.gui_vars_dict[key_str]
+        else:
+            return ''
 
 
 
@@ -132,6 +137,10 @@ class Main_Tab(Tab.Tab):
 
     def output_____widget_setup(self):
 
+        def update_gui_var__init_output_parent_dir_path_str__on_tb_edit(event=None):
+            self.write_gui_var("init_output_parent_dir_path_str", 
+                               self.output_pdfn_wg.parent_dir_tb.get())
+
         # Label Frame
         self.output_lbl_frm = LabelFrame(self.master, text=" Output: ")
 
@@ -142,12 +151,12 @@ class Main_Tab(Tab.Tab):
                                                                     file_name_lbl_txt = "Output File Name:",
                                                                     parent_dir_tb_width = None,
                                                                     file_name_tb_width = 30,
-                                                                    init_parent_dir_path_str = DEFAULT_OUTPUT_PARENT_DIR_PATH, #FIX replace with gui var?
+                                                                    init_parent_dir_path_str = self.get_gui_var('init_output_parent_dir_path_str') or DEFAULT_OUTPUT_PARENT_DIR_PATH,
                                                                     init_file_name = DEFAULT_OUTPUT_FILE_NAME,
                                                                     write_file_path_updated_func = None,
                                                                     focus_parent_dir_tb_after_browse = False,
                                                                     browse_btn_txt = 'Browse...',
-                                                                    parent_dir_tb_edit_func = None,
+                                                                    parent_dir_tb_edit_func = update_gui_var__init_output_parent_dir_path_str__on_tb_edit,
                                                                     file_path_tb_edit_func = None,
                                                                 )
 
