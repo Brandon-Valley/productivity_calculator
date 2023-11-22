@@ -23,6 +23,9 @@
 #  - Add option to prompt user to open program after install
 #    - https://cx-freeze-users.narkive.com/xThwhu4x/cx-freeze-bdist-msi-install-script-option
 
+# Other Useful Links:
+#   - cx_freeze setup script doc - https://cx-freeze.readthedocs.io/en/latest/setup_script.html
+
 from pprint import pprint
 from typing import List, Tuple
 from cx_Freeze import setup, Executable
@@ -83,10 +86,8 @@ COMMON_SHORTCUT_TABLE_TUP = (
     None,                          # Arguments
     PRODUCT_DESCRIPTION,           # Description
     None,                          # Hotkey
-    None,
-    None,
-    # EXE_ICON_ICO_PATH.as_posix(),  # Icon
-    # 0,                             # IconIndex
+    EXE_ICON_ICO_PATH.as_posix(),  # Icon
+    None,                             # IconIndex
     SHOW_CMD,                      # ShowCmd
     'TARGETDIR'                    # WkDir
 )
@@ -147,8 +148,12 @@ def _get_shortcut_table():
     return shortcut_table
 
 
-
+# Setup keyword options: https://cx-freeze.readthedocs.io/en/latest/keywords.html
 setup(
+    author="Brandon Valley",
+    # author_email="",
+    # url="",
+    # download_url="",
     name=cfg.PRODUCT_NAME,
     version=cfg.PRODUCT_VERSION_STR,
     description=PRODUCT_DESCRIPTION,
@@ -156,7 +161,7 @@ setup(
         Executable(
             script = TOP_LEVEL_PY_FILE_PATH,
             target_name = EXE_FILE_NAME,
-            # copyright="Copyright (C) 2024 cx_Freeze",
+            copyright="Copyright (C) 2024 PuffinPublishing",
             base=BASE,
             icon=EXE_ICON_ICO_PATH,
 
