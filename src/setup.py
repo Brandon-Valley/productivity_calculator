@@ -186,7 +186,7 @@ setup(
             # # Haven't needed these options yet, but I think they're for including/excluding python files?
             # "includes": ["abc"],
             # "excludes": [i for i in AllPackage() if notFound(BasicPackages,i)],
-            # "zip_include_packages": ["encodings"] ##
+            # "zip_include_packages": ["encodings"]
         },
 
         # Change some default MSI options and specify the use of the above defined tables
