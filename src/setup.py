@@ -51,6 +51,8 @@ TOP_LEVEL_PY_FILE_PATH = SCRIPT_PARENT_DIR_PATH  / "gui.py"
 EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
 GUI_ICON_PNG_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.png"
 
+EXE_ICON_ICO_PATH_REL_TO_EXE_PARENT_DIR = "imgs/icon.ico"#FIXME
+
 # DATA_FILE_PATHS:
 # - Paths to non-python data/config files that need to be copied to the build dir so they will be accessible by the
 #   python script files after freeze.
@@ -62,7 +64,8 @@ GUI_ICON_PNG_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.png"
 #   parent dir of the created .exe
 # - THEREFORE TO KEEP THINGS SIMPLE, `DATA_FILE_PATHS` should not include paths to files above this file's parent dir.
 DATA_FILE_PATHS = [
-    GUI_ICON_PNG_PATH
+    GUI_ICON_PNG_PATH,
+    EXE_ICON_ICO_PATH# FIX?
 ]
 
 ADD_DESKTOP_SHORTCUT_FROM_MSI = True
@@ -86,8 +89,9 @@ COMMON_SHORTCUT_TABLE_TUP = (
     None,                          # Arguments
     PRODUCT_DESCRIPTION,           # Description
     None,                          # Hotkey
-    EXE_ICON_ICO_PATH.as_posix(),  # Icon
-    None,                             # IconIndex
+    # EXE_ICON_ICO_PATH.as_posix(),  # Icon
+    f"[TARGETDIR]{EXE_ICON_ICO_PATH_REL_TO_EXE_PARENT_DIR}",  # Icon
+    None,                          # IconIndex
     SHOW_CMD,                      # ShowCmd
     'TARGETDIR'                    # WkDir
 )
