@@ -90,8 +90,11 @@ COMMON_SHORTCUT_TABLE_TUP = (
     PRODUCT_DESCRIPTION,           # Description
     None,                          # Hotkey
     # EXE_ICON_ICO_PATH.as_posix(),  # Icon
-    EXE_ICON_ICO_PATH_STR_REL_TO_EXE_PARENT_DIR,  # Icon #DOC
-    None,                          # IconIndex
+
+    # EXE_ICON_ICO_PATH_STR_REL_TO_EXE_PARENT_DIR,  # Icon #DOC
+    # None,                          # IconIndex
+    "",  # Icon #DOC
+    0,                          # IconIndex
     SHOW_CMD,                      # ShowCmd
     'TARGETDIR'                    # WkDir
 )
@@ -150,11 +153,11 @@ def _get_shortcut_table():
         )
 
     return shortcut_table
-
+# FIXME includes logs with msi
 
 # Setup keyword options: https://cx-freeze.readthedocs.io/en/latest/keywords.html
 setup(
-    author="Brandon Valley",
+    author="PuffinPublishing",
     # author_email="",
     # url="",
     # download_url="",
