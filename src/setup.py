@@ -51,7 +51,7 @@ TOP_LEVEL_PY_FILE_PATH = SCRIPT_PARENT_DIR_PATH  / "gui.py"
 EXE_ICON_ICO_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.ico"
 GUI_ICON_PNG_PATH = SCRIPT_PARENT_DIR_PATH / "imgs" / "icon.png"
 
-EXE_ICON_ICO_PATH_REL_TO_EXE_PARENT_DIR = "imgs/icon.ico"#FIXME
+EXE_ICON_ICO_PATH_STR_REL_TO_EXE_PARENT_DIR = "imgs/icon.ico"#FIXME
 
 # DATA_FILE_PATHS:
 # - Paths to non-python data/config files that need to be copied to the build dir so they will be accessible by the
@@ -90,7 +90,7 @@ COMMON_SHORTCUT_TABLE_TUP = (
     PRODUCT_DESCRIPTION,           # Description
     None,                          # Hotkey
     # EXE_ICON_ICO_PATH.as_posix(),  # Icon
-    f"[TARGETDIR]{EXE_ICON_ICO_PATH_REL_TO_EXE_PARENT_DIR}",  # Icon
+    EXE_ICON_ICO_PATH_STR_REL_TO_EXE_PARENT_DIR,  # Icon #DOC
     None,                          # IconIndex
     SHOW_CMD,                      # ShowCmd
     'TARGETDIR'                    # WkDir
