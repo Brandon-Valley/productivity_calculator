@@ -7,7 +7,8 @@
 #    - To build the full .msi (which takes ~10 sec longer) run:  `python setup.py bdist_msi`
 #  Icon Files:
 #    Icon Creation:
-#      - .png -> .ico: https://www.freeconvert.com/png-to-ico/download
+#      - .png or .ico -> Resized .ico: https://www.aconvert.com/icon/
+#      - .ico -> .png: https://cloudconvert.com/ico-to-png
 #      - Looks best if img is square, PowerPoint w/ right-click "Size & Position" is good enough for me at least
 #    Additional Icon File Doc:
 #      - There are many icons/imgs that could all be made different but for simplicity have been set up to be the same
@@ -82,8 +83,10 @@ COMMON_SHORTCUT_TABLE_TUP = (
     None,                          # Arguments
     PRODUCT_DESCRIPTION,           # Description
     None,                          # Hotkey
-    EXE_ICON_ICO_PATH.as_posix(),  # Icon
-    None,                          # IconIndex
+    None,
+    None,
+    # EXE_ICON_ICO_PATH.as_posix(),  # Icon
+    # 0,                             # IconIndex
     SHOW_CMD,                      # ShowCmd
     'TARGETDIR'                    # WkDir
 )
