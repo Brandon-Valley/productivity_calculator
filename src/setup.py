@@ -22,6 +22,8 @@
 # Future Improvements:
 #  - Add option to prompt user to open program after install
 #    - https://cx-freeze-users.narkive.com/xThwhu4x/cx-freeze-bdist-msi-install-script-option
+#  - Make icon image visible in Windows uninstall tool
+#    - https://stackoverflow.com/questions/56901596/how-to-display-icon-in-uninstall-list-of-programs-using-python-cx-freeze
 
 # Other Useful Links:
 #   - cx_freeze setup script doc - https://cx-freeze.readthedocs.io/en/latest/setup_script.html
@@ -43,6 +45,10 @@ BASE = "Win32GUI" if sys.platform == "win32" else None
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 #  .msi / .exe / General Dist. Inputs (Also see cfg.py)
 # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+# IMPORTANT - This code must be unique to your application, if you are starting from a copy-paste of this file, change
+#             a few characters of this code!
+UPGRADE_CODE = "{F6ED0771-FE83-4A1C-BE65-A06CB65B46D5}"
 
 PRODUCT_DESCRIPTION = 'Uses exports from QuickEMR & opentimeclock.com to calculate employee productivity'
 
@@ -149,7 +155,6 @@ def _get_shortcut_table():
         )
 
     return shortcut_table
-# FIXME includes logs with msi
 
 # Setup keyword options: https://cx-freeze.readthedocs.io/en/latest/keywords.html
 setup(
@@ -186,9 +191,11 @@ setup(
 
         # Change some default MSI options and specify the use of the above defined tables
         'bdist_msi': {
+            "upgrade_code": UPGRADE_CODE,
             'data': {
                 # Create the table dictionary
                 "Shortcut": _get_shortcut_table(),
+                
                 # https://stackoverflow.com/questions/68539511/is-there-a-way-to-update-application-created-with-cx-freeze
                 # 'upgrade_code': '{3F2504E0-4F89-11D3-9A0C-0305E82C3301}',
                 # 'add_to_path': False,

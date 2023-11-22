@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 from pathlib import Path
 import sys
+import tempfile
 import time
 
 from tkinter.ttk import *
@@ -43,7 +44,9 @@ def main(msg = None):
     root_dir_path = _get_root_dir_path()
     logging.info(f"{root_dir_path=}")
 
-    log_file_path = set_up_logging(root_dir_path / "logs")
+    # Set up logging under a temp. dir. instead of root_dir_path b/c the default windows uninstaller will not delete them
+    #   - For Windows, the temp. dir. can be found at %TMP% in File Explorer
+    log_file_path = set_up_logging(Path(tempfile.gettempdir()) /  f"{cfg.PRODUCT_NAME}_logs")
 
     # Main GUI params
     window_title = f"{cfg.PRODUCT_NAME}  v{cfg.PRODUCT_VERSION_STR}"
