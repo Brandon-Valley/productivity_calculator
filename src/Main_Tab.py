@@ -102,7 +102,7 @@ class Main_Tab(Tab.Tab):
 
         # Quick EMR Provider Productivity
         self.provider_prod_fsb_wg = self.File_System_Browse_WG(self.inputs_lbl_frm,
-                                                               lbl_txt='Quick EMR Export: Provider Productivity CSV:',
+                                                               lbl_txt='Quick EMR Export: Provider Productivity .csv:',
                                                                tb_width=80,
                                                                browse_for='file',
                                                                file_type='.csv',
