@@ -18,22 +18,62 @@ OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total
 
 def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_date_by_provider_name, output_report_file_path):
 
+    # def _get_provider_name_by_employee_name__full_name_match_method():
+    #     provider_name_by_employee_name = {}
+
+    #     for employee_name in hours_by_date_by_employee_name.keys():
+    #         for provider_name in total_units_by_date_by_provider_name.keys():
+    #             logging.info(f"{provider_name.split(',')=}")
+    #             first_name = provider_name.split(",")[-1].strip()
+    #             name_suffix = " ".join(provider_name.split(",")[:-1])
+    #             normalized_provider_name_plus_title = first_name +  " " + name_suffix
+    #             logging.info(f"{normalized_provider_name_plus_title=}")
+    #             logging.info(f"{employee_name=}")
+
+    #             if normalized_provider_name_plus_title.startswith(employee_name):
+    #                 assert employee_name not in provider_name_by_employee_name, (
+    #                     f"ERROR, {employee_name=} already in {provider_name_by_employee_name=}, found while handling "
+    #                     f"{normalized_provider_name_plus_title=}. Something is wrong with name mapping, look at new hire names?"
+    #                 )
+    #                 provider_name_by_employee_name[employee_name] = provider_name
+
+    #         logging.info(f"Employee: {employee_name} does not appear in Provider Productivity report, skipping...")
+
+    #     return provider_name_by_employee_name
+
     def _get_provider_name_by_employee_name():
+        """First names might be different, assume last names same"""
         provider_name_by_employee_name = {}
 
-        for employee_name, _hours_by_date in hours_by_date_by_employee_name.items():
-            for provider_name, _total_units_by_date in total_units_by_date_by_provider_name.items():
+        for employee_name in hours_by_date_by_employee_name.keys():
+            print(f"{employee_name=}")
+            last_names = [] # for error checking
+
+            for provider_name in total_units_by_date_by_provider_name.keys():
                 logging.info(f"{provider_name.split(',')=}")
                 first_name = provider_name.split(",")[-1].strip()
                 name_suffix = " ".join(provider_name.split(",")[:-1])
-                normalized_provider_name_plus_title = first_name +  " " + name_suffix
-                logging.info(f"{normalized_provider_name_plus_title=}")
-                logging.info(f"{employee_name=}")
+                print(f"{name_suffix=}")#TMP
+                last_name = name_suffix.split(" ")[0]
 
-                if normalized_provider_name_plus_title.startswith(employee_name):
+                assert last_name not in last_names, f"ERROR: 2 Providers have the same last name: {last_name=}, {last_names=}"
+                last_names.append(last_name)
+                # print(f"{last_name=}")
+                # normalized_provider_name_plus_title = first_name +  " " + name_suffix
+                # logging.info(f"{normalized_provider_name_plus_title=}")
+                # logging.info(f"{employee_name=}")
+
+                # if normalized_provider_name_plus_title.startswith(employee_name):
+                #     assert employee_name not in provider_name_by_employee_name, (
+                #         f"ERROR, {employee_name=} already in {provider_name_by_employee_name=}, found while handling "
+                #         f"{normalized_provider_name_plus_title=}. Something is wrong with name mapping, look at new hire names?"
+                #     )
+                #     provider_name_by_employee_name[employee_name] = provider_name
+
+                if employee_name.endswith(last_name):
                     assert employee_name not in provider_name_by_employee_name, (
                         f"ERROR, {employee_name=} already in {provider_name_by_employee_name=}, found while handling "
-                        f"{normalized_provider_name_plus_title=}. Something is wrong with name mapping, look at new hire names?"
+                        f"{last_name=}. Something is wrong with name mapping, look at new hire names?"
                     )
                     provider_name_by_employee_name[employee_name] = provider_name
 
@@ -74,7 +114,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                     "Hours Worked": hours,
                     "Total Units": total_units,
                     "Max Possible Units for Number of Hours Worked": max_units,
-                    "Calculated Productivity %": round((total_units / max_units) * 100, 2)
+                    "Calculated Productivity %": round((total_units / max_units) * 100, 0)
                 }
             )
 
