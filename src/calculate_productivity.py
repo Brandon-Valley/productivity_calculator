@@ -114,6 +114,9 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
 
             max_units = hours * MAX_POSSIBLE_UNITS_PER_HOUR
 
+            calculated_productivity_percent = round((total_units / max_units) * 100, 0)
+            assert calculated_productivity_percent <= 100, f"{calculated_productivity_percent=}, {employee_name=}, {date_datetime=}"
+
             row_dicts.append(
                 {
                     "Employee Name": employee_name,
@@ -121,7 +124,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                     "Hours Worked": hours,
                     "Total Units": total_units,
                     "Max Possible Units for Number of Hours Worked": max_units,
-                    "Calculated Productivity %": round((total_units / max_units) * 100, 0)
+                    "Calculated Productivity %": calculated_productivity_percent
                 }
             )
 
