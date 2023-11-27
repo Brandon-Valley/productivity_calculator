@@ -14,7 +14,9 @@ ROW_TYPE_DATE_DATA = "DATE_DATA"
 
 def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path: Path, facility_names) -> dict:
 
-    def _get_row_type(row_dict):
+    def _get_row_type(row_dict: dict):
+
+        assert type(row_dict) is dict, row_dict
 
         row_is_blank = True
 
@@ -29,7 +31,7 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
 
         elif "Total for" not in row_dict["Prov/Facility"] and \
             row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names and \
-            row_dict["DOS"] == "":
+            row_dict["DOS"] == None:
 
             return ROW_TYPE_PROVIDER_NAME
         elif "/" in row_dict["DOS"]:
@@ -92,7 +94,8 @@ if __name__ == "__main__":
     import os.path as path
     logging.info("Running ",  path.abspath(__file__), '...')
 
-    in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
+    # in_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv")
+    in_csv_path = Path("C:/Users/Brandon/Downloads/Provider Productivity.csv")
     out = get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export(in_csv_path, facility_names = ["TP1"])
 
     logging.info("out:")

@@ -142,11 +142,14 @@ if __name__ == "__main__":
     import os.path as path
     logging.info("Running ",  path.abspath(__file__), '...')
 
-    in_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv")
+    # in_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv")
+    in_csv_path = Path("C:/Users/Brandon/Downloads/KjpbmSeS.csv")
     out = get_hours_by_date_by_employee_name(in_csv_path)
 
     logging.info("out:")
     pprint(out)
+
+    print("out:")
     logging.info("End of Main")
 
 

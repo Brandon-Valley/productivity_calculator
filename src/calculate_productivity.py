@@ -8,6 +8,11 @@ from file_io_utils import write_csv_from_row_dicts
 from open_time_clock_utils import get_hours_by_date_by_employee_name
 from quick_emr_utils import get_total_units_by_date_by_provider_name_from_provider_productivity_csv_export
 
+try:
+    from override_provider_name_by_employee_name import OVERRIDE_PROVIDER_NAME_BY_EMPLOYEE_NAME
+except ModuleNotFoundError:
+    logging.info("No override file found.")
+
 
 MAX_POSSIBLE_UNITS_PER_HOUR = 4
 
@@ -51,26 +56,23 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
 
             for provider_name in total_units_by_date_by_provider_name.keys():
                 logging.info(f"{provider_name.split(',')=}")
-                first_name = provider_name.split(",")[-1].strip()
-                name_suffix = " ".join(provider_name.split(",")[:-1])
-                print(f"{name_suffix=}")#TMP
-                last_name = name_suffix.split(" ")[0]
+                # first_name = provider_name.split(",")[-1].strip().lower()
+                name_suffix = " ".join(provider_name.split(",")[:-1]).lower()
+                last_name = name_suffix.split(" ")[0].lower()
 
+                # Check if 2 ppl have same last name
                 assert last_name not in last_names, f"ERROR: 2 Providers have the same last name: {last_name=}, {last_names=}"
                 last_names.append(last_name)
-                # print(f"{last_name=}")
-                # normalized_provider_name_plus_title = first_name +  " " + name_suffix
-                # logging.info(f"{normalized_provider_name_plus_title=}")
-                # logging.info(f"{employee_name=}")
 
-                # if normalized_provider_name_plus_title.startswith(employee_name):
-                #     assert employee_name not in provider_name_by_employee_name, (
-                #         f"ERROR, {employee_name=} already in {provider_name_by_employee_name=}, found while handling "
-                #         f"{normalized_provider_name_plus_title=}. Something is wrong with name mapping, look at new hire names?"
-                #     )
-                #     provider_name_by_employee_name[employee_name] = provider_name
+                try:
+                    if employee_name in OVERRIDE_PROVIDER_NAME_BY_EMPLOYEE_NAME:
+                        provider_name_by_employee_name[employee_name] = OVERRIDE_PROVIDER_NAME_BY_EMPLOYEE_NAME[employee_name]
+                        continue
+                # If no override file
+                except NameError:
+                    pass
 
-                if employee_name.endswith(last_name):
+                if employee_name.lower().endswith(last_name):
                     assert employee_name not in provider_name_by_employee_name, (
                         f"ERROR, {employee_name=} already in {provider_name_by_employee_name=}, found while handling "
                         f"{last_name=}. Something is wrong with name mapping, look at new hire names?"
@@ -83,7 +85,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
 
     logging.info(f"{hours_by_date_by_employee_name=}")
     logging.info(f"{total_units_by_date_by_provider_name=}")
-    
+
     # Build provider_name_by_employee_name
     provider_name_by_employee_name = _get_provider_name_by_employee_name()
     logging.info(f"{provider_name_by_employee_name=}")
@@ -97,6 +99,11 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
             continue
 
         for date_datetime, hours in hours_by_date.items():
+
+            if hours == 0:
+                logging.info(f"{hours=}, this means {employee_name} did not come in at all for the time period, they "
+                             "will not appear in the output csv, skipping...")
+                continue
 
             provider_name = provider_name_by_employee_name[employee_name]
             try:
@@ -145,8 +152,10 @@ if __name__ == "__main__":
     import os.path as path
     logging.info("Running ",  path.abspath(__file__), '...')
 
-    calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
-         quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
-         output_report_file_path=Path("C:/p/productivity_calculator/wrk/out.xlsx"))
+    # calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
+    #      quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
+    calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/Users/Brandon/Downloads/KjpbmSeS.csv"),
+         quick_emr_provider_productivity_csv_path = Path("C:/Users/Brandon/Downloads/Provider Productivity.csv"),
+         output_report_file_path=Path("C:/p/productivity_calculator/wrk/out.csv"))
 
     logging.info("End of Main")

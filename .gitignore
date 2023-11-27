@@ -169,3 +169,4 @@ src/__pycache__/file_io_utils.cpython-312.pyc
 .history/**
 .vscode/**
 src/storage/gui_vars.json
+src/override_provider_name_by_provider_name.py
