@@ -31,7 +31,7 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
 
         elif "Total for" not in row_dict["Prov/Facility"] and \
             row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names and \
-            row_dict["DOS"] == None:
+            not row_dict["DOS"]:
 
             return ROW_TYPE_PROVIDER_NAME
         elif "/" in row_dict["DOS"]:
@@ -45,6 +45,8 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
 
     cur_provider_name = None
     for row_dict in row_dicts:
+        print("row_dict:")
+        pprint(row_dict)
 
         row_type = _get_row_type(row_dict)
 
