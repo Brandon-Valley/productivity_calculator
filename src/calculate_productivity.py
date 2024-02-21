@@ -20,6 +20,7 @@ FACILITY_NAMES = ["TP1"]
 
 OUTPUT_REPORT_ORDERED_HEADERS = ["Employee Name", "Date", "Hours Worked", "Total Units", "Max Possible Units for Number of Hours Worked", "Calculated Productivity %"]
 
+IGNORE_PRODUCTIVITY_OF_PROVIDERS_WHO_LEFT_COMPANY_WITHIN_PAY_PERIOD = True
 
 def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_date_by_provider_name, output_report_file_path):
 
@@ -55,13 +56,32 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
             last_names = [] # for error checking
 
             for provider_name in total_units_by_date_by_provider_name.keys():
+
+                # Check for "Unknown" Provider
+                if provider_name == "Unknown":
+                    if IGNORE_PRODUCTIVITY_OF_PROVIDERS_WHO_LEFT_COMPANY_WITHIN_PAY_PERIOD:
+                        logging.info(
+                            f"{provider_name=}, this probably means this provider left the company within the past pay "
+                            f"period. Skipping b/c "
+                            f"{IGNORE_PRODUCTIVITY_OF_PROVIDERS_WHO_LEFT_COMPANY_WITHIN_PAY_PERIOD=}..."
+                        )
+                        continue
+                    else:
+                        raise NotImplementedError(
+                            f"{IGNORE_PRODUCTIVITY_OF_PROVIDERS_WHO_LEFT_COMPANY_WITHIN_PAY_PERIOD=} - {provider_name=}"
+                        )
+
+                # Get last_name from provider_name
                 logging.info(f"{provider_name.split(',')=}")
-                # first_name = provider_name.split(",")[-1].strip().lower()
                 name_suffix = " ".join(provider_name.split(",")[:-1]).lower()
                 last_name = name_suffix.split(" ")[0].lower()
                 
-                assert last_name, f"Last name empty str - {last_name=} - {provider_name=} - {employee_name=}"
+                logging.info(f"{last_name=} - {provider_name=} - {employee_name=}")
 
+                assert last_name, (
+                        f"{last_name=} is empty, this means no match was found in Provider Productivity CSV "
+                        f"for {employee_name=} from OpenTimeClock Export CSV - {provider_name=}"
+                        )
 
                 # Check if 2 ppl have same last name
                 assert last_name not in last_names, f"ERROR: 2 Providers have the same last name: {last_name=}, {last_names=}"
@@ -161,8 +181,8 @@ if __name__ == "__main__":
 
     # calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
     #      quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
-    calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/Users/Brandon/Downloads/KjpbmSeS.csv"),
-         quick_emr_provider_productivity_csv_path = Path("C:/Users/Brandon/Downloads/Provider Productivity.csv"),
+    calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/Users/Brandon/Downloads/PayrollExcel 2_5-2_16.csv"),
+         quick_emr_provider_productivity_csv_path = Path("C:/Users/Brandon/Downloads/Provider Productivity 2_5-2_16.csv"),
          output_report_file_path=Path("C:/p/productivity_calculator/wrk/out.csv"))
 
     logging.info("End of Main")
