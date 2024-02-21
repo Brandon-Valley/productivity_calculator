@@ -60,7 +60,7 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
                 name_suffix = " ".join(provider_name.split(",")[:-1]).lower()
                 last_name = name_suffix.split(" ")[0].lower()
                 
-                assert last_name, f"Last name empty str - {last_name=}"
+                assert last_name, f"Last name empty str - {last_name=} - {provider_name=} - {employee_name=}"
 
 
                 # Check if 2 ppl have same last name
