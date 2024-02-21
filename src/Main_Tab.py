@@ -45,6 +45,8 @@ class Main_Tab(Tab.Tab):
         self.output_____widget_setup()
         self.update_calculate_btn_disable_tool_tip_and_state()
 
+        self.show_logs_button = self.Show_Logs_Button(self.master, log_file_path)
+
         self.grid_init_widgets()
 
     def read_gui_vars(self):
@@ -177,8 +179,7 @@ class Main_Tab(Tab.Tab):
             )
 
             if reveal_in_file_explorer:
-                subprocess.Popen(
-                    f'explorer /select,"{output_report_file_path_str}"')
+                subprocess.Popen(f'explorer /select,"{output_report_file_path_str}"')
 
             # Exit gracefully
             self.master.destroy()
@@ -278,6 +279,11 @@ class Main_Tab(Tab.Tab):
         #  Calculate
         # --------------------------------------------------------------------------------------------------------------
         self.calculate_btn  .grid(column=1, row=4, padx=5, pady=5, sticky='E')
+
+        # --------------------------------------------------------------------------------------------------------------
+        #  Misc.
+        # --------------------------------------------------------------------------------------------------------------
+        self.show_logs_button  .grid(column=1, row=4, padx=5, pady=5, sticky='W')
 
 
 if __name__ == '__main__':
