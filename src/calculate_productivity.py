@@ -139,7 +139,12 @@ def _write_productivity_report(hours_by_date_by_employee_name, total_units_by_da
             max_units = hours * MAX_POSSIBLE_UNITS_PER_HOUR
 
             calculated_productivity_percent = round((total_units / max_units) * 100, 0)
-            assert calculated_productivity_percent <= 100, f"{calculated_productivity_percent=}, {employee_name=}, {date_datetime=}"
+
+            assert calculated_productivity_percent <= 100, (
+                f"{calculated_productivity_percent=}, {max_units=}, {total_units=}, {employee_name=}, {date_datetime=} "
+                "For the date/name in question, check Provider Productivity CSV for unusually high values, and check "
+                "Payroll Excel csv for unusually low values."
+                )
 
             row_dicts.append(
                 {
@@ -181,8 +186,8 @@ if __name__ == "__main__":
 
     # calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/p/productivity_calculator/inputs/exported_PayrollExcel_10_16.csv"),
     #      quick_emr_provider_productivity_csv_path = Path("C:/p/productivity_calculator/inputs/Provider Productivity 10_16.csv"),
-    calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/Users/Brandon/Downloads/PayrollExcel 2_5-2_16.csv"),
-         quick_emr_provider_productivity_csv_path = Path("C:/Users/Brandon/Downloads/Provider Productivity 2_5-2_16.csv"),
+    calculate_productivity(exported_open_time_clock_payroll_csv_path = Path("C:/Users/Brandon/Downloads/PayrollExcel 2_19-3_1.csv"),
+         quick_emr_provider_productivity_csv_path = Path("C:/Users/Brandon/Downloads/Provider Productivity 2_19-3_1.csv"),
          output_report_file_path=Path("C:/p/productivity_calculator/wrk/out.csv"))
 
     logging.info("End of Main")
