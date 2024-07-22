@@ -27,11 +27,11 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
     """
     Example input csv:
 
-    | Provider Details   | Facility | DOS                                 | POS       | Type | Units | Units To Bill |
-    |--------------------|----------|-------------------------------------|-----------|------|-------|---------------|
-    | Green OT, John     | TP1      | [07/19/2024](note_228122)           | 11: Office| OT   | 5     | 1             |
-    | Lee SLP, Bruce     | TP1      | [07/19/2024](note_228075)           | 11: Office| ST   | 4     | 4             |
-    | Lee SLP, Bruce     | TP1      | [07/11/2024](note_226711)           | 11: Office| ST   | 4     | 4             |
+    | Provider Details   | Facility | DOS                                                                                       | POS       | Type | Units | Units To Bill |
+    |--------------------|----------|-------------------------------------------------------------------------------------------|-----------|------|-------|---------------|
+    | Green OT, John     | TP1      | <a target="note_228122" href="/TP001V8/note?note_id=228122&amp;tab=charge">07/19/2024</a> | 11: Office| OT   | 5     | 1             |
+    | Lee SLP, Bruce     | TP1      | <a target="note_228075" href="/TP001V8/note?note_id=228075&amp;tab=charge">07/19/2024</a> | 11: Office| ST   | 4     | 4             |
+    | Lee SLP, Bruce     | TP1      | <a target="note_226711" href="/TP001V8/note?note_id=226711&amp;tab=charge">07/11/2024</a> | 11: Office| ST   | 4     | 4             |
 
     Example output:
     {
@@ -45,6 +45,7 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
                                                                 'Type': 'OT',
                                                                 'Units': '4',
                                                                 'Units To Bill': '4'},
+        ...
     }
     """
     def _validate_provider_productivity_csv_format(row_dicts: List[dict]) -> None:
@@ -67,68 +68,46 @@ def _get_productivity_data_dicts_by_date_by_provider_name_from_provider_producti
             for key, value in row_dict.items():
                 assert (value != "" and value != None), f"Format Error: {in_csv_path=} - CSV has blank value at {key=}"
 
-
+    def _get_date_datetime_from_date_str(date_str: str) -> datetime:
+        """Example input: <a target="note_226711" href="/TP001V8/note?note_id=226711&amp;tab=charge">07/11/2024</a>"""
+        date_str = date_str.split(">")[1].split("<")[0]
+        date_datetime = datetime.strptime(date_str, "%m/%d/%Y")
+        return date_datetime
+    
 
     row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
 
     logging.info(f"Validating {in_csv_path=}...")
     _validate_provider_productivity_csv_format(row_dicts)
 
-    exit("here")
-    # def _get_row_type(row_dict: dict):
+    productivity_data_dicts_by_date_by_provider_name = {}
+    for row_dict in row_dicts:
+        provider_name = row_dict["Provider Details"]
+        facility_name = row_dict["Facility"]
+        date_str = row_dict["DOS"]
 
-    #     assert type(row_dict) is dict, row_dict
+        if facility_name not in facility_names:
+            raise NotImplementedError(
+                f"Facility name '{facility_name}' not in {facility_names=} - Have not needed to deal with this yet.")
 
-    #     row_is_blank = True
+        date_datetime = _get_date_datetime_from_date_str(date_str)
 
-    #     for v in row_dict.values():
-    #         if v != "":
-    #             row_is_blank = False
-    #     if row_is_blank:
-    #         return None
+        if provider_name not in productivity_data_dicts_by_date_by_provider_name:
+            productivity_data_dicts_by_date_by_provider_name[provider_name] = {}
 
-    #     if row_dict["Prov/Facility"] in facility_names:
-    #         return ROW_TYPE_FACILITY_NAME
+        if date_datetime not in productivity_data_dicts_by_date_by_provider_name[provider_name]:
+            productivity_data_dicts_by_date_by_provider_name[provider_name][date_datetime] = []
 
-    #     elif "Total for" not in row_dict["Prov/Facility"] and \
-    #         row_dict["Prov/Facility"] not in ["", "UNITS/Visits", "Grand Total"] + facility_names and \
-    #         not row_dict["DOS"]:
+        productivity_data_dicts_by_date_by_provider_name[provider_name][date_datetime].append(row_dict)
 
-    #         return ROW_TYPE_PROVIDER_NAME
-    #     elif "/" in row_dict["DOS"]:
-    #         return ROW_TYPE_DATE_DATA
-    #     return None
+        # Remove 'DOS', 'Facility', and 'Provider Details' from productivity_data_dicts_by_date_by_provider_name
+        #   - Only doing this b/c these fields were not needed in the previous version of this function (before the 
+        #     Quick EMR update changed the csv format)
+        for key in ["DOS", "Facility", "Provider Details"]:
+            row_dict.pop(key)
 
+    return productivity_data_dicts_by_date_by_provider_name
 
-    # total_units_dict_by_date_by_provider_name = {}
-
-    # row_dicts = file_io_utils.read_csv_as_row_dicts(in_csv_path)
-
-    # cur_provider_name = None
-    # for row_dict in row_dicts:
-    #     print("row_dict:")
-    #     pprint(row_dict)
-
-    #     row_type = _get_row_type(row_dict)
-
-    #     # Set cur_provider_name if needed
-    #     if row_type == ROW_TYPE_PROVIDER_NAME:
-    #         new_provider_name = row_dict["Prov/Facility"]
-    #         cur_provider_name = new_provider_name
-    #         total_units_dict_by_date_by_provider_name[cur_provider_name] = {}
-
-    #     # Set cur_provider_name if needed
-    #     if row_type == ROW_TYPE_DATE_DATA:
-    #         date_datetime = datetime.strptime(row_dict["DOS"], '%m/%d/%Y')
-
-    #         if date_datetime not in total_units_dict_by_date_by_provider_name[cur_provider_name]:
-    #             total_units_dict_by_date_by_provider_name[cur_provider_name][date_datetime] = []
-
-    #         row_dict.pop("Prov/Facility")
-    #         row_dict.pop("DOS")
-    #         total_units_dict_by_date_by_provider_name[cur_provider_name][date_datetime].append(row_dict)
-
-    # return total_units_dict_by_date_by_provider_name
 
 
 
@@ -139,7 +118,7 @@ def get_total_units_by_date_by_provider_name_from_provider_productivity_csv_expo
     productivity_data_dicts_by_date_by_provider_name = _get_productivity_data_dicts_by_date_by_provider_name_from_provider_productivity_csv_export(
         in_csv_path, facility_names)
     
-    pprint(productivity_data_dicts_by_date_by_provider_name)#TMP
+    # pprint(productivity_data_dicts_by_date_by_provider_name)#TMP
 
     for provider_name, productivity_data_dicts_by_date in productivity_data_dicts_by_date_by_provider_name.items():
         total_units_by_date_by_provider_name[provider_name] = {}
